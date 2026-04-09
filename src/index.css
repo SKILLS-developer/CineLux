@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+*{color: #f6f8ff;
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #00a86b rgba(255, 255, 255, 0.08);
+}
+body {
+  font-family: "Inter", sans-serif;
+  background: #070b14;
+  color: #f6f8ff;
+}
+a {
+  color: inherit;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid rgba(7, 11, 20, 0.95);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #17c37f 0%, #00a86b 100%);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #24d18c 0%, #02945f 100%);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(255, 255, 255, 0.06);
+}
