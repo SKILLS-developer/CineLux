@@ -1,51 +1,7 @@
 import { useRef } from "react";
 import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
-import MoviePoster from "../../assets/Hero.png";
-
+import { Releases } from "../../data/Release.js";
 import "./LatestRelease.css";
-
-const releases = [
-  {
-    title: "Enola Holmes 2",
-    rating: 4.8,
-    meta: "Action ",
-    image: MoviePoster,
-    type: "Movie",
-    tone: "gold",
-  },
-  {
-    title: "Satan's Slaves",
-    rating: 4.6,
-    meta: "Horror ",
-    image: MoviePoster,
-    type: "Movie",
-    tone: "gold",
-  },
-  {
-    title: "The Flash",
-    rating: 4.6,
-    meta: "Mystery ",
-    image: MoviePoster,
-    type: "Movie",
-    tone: "gold",
-  },
-  {
-    title: "Weak Hero",
-    rating: 4.6,
-    meta: "Action • Drama",
-    image: MoviePoster,
-    type: "Serie",
-    tone: "gold",
-  },
-  {
-    title: "Wonder Woman",
-    rating: 4.6,
-    meta: "Action ",
-    image: MoviePoster,
-    type: "Movie",
-    tone: "gold",
-  },
-];
 
 export default function LatestRelease() {
   const railRef = useRef(null);
@@ -93,7 +49,7 @@ export default function LatestRelease() {
         </div>
 
         <div className="latest-release-rail" ref={railRef}>
-          {releases.map((release) => (
+          {Releases.map((release) => (
             <article
               className={`release-card release-card-${release.tone}`}
               key={release.title}

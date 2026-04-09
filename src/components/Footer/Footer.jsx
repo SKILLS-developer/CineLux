@@ -1,33 +1,14 @@
 import Logo from "../../assets/CineLux-Logo.png";
 import { FiFacebook, FiInstagram, FiTwitter } from "react-icons/fi";
 import "./Footer.css";
-
-const footerGroups = [
-  {
-    title: "Company",
-    links: ["About Us", "Careers", "Press", "Investors"],
-  },
-  {
-    title: "Help & Support",
-    links: ["Help Center", "FAQs", "Support", "Account & Billing"],
-  },
-  {
-    title: "Legal",
-    links: [
-      "Terms of Service",
-      "Privacy Policy",
-      "Cookie Preferences",
-      "Accessibility",
-    ],
-  },
-];
+import { FooterGroups } from "../../data/FooterGroups";
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-shell">
-        <div className="footer-grid">
-          <div className="footer-brand">
+    <footer className="footer py-5 pb-4">
+      <div className="container footer-shell">
+        <div className="row footer-grid gy-4 pb-4">
+          <div className="col-12 col-lg-5 footer-brand">
             <a href="/" className="footer-logo">
               <img src={Logo} alt="CineLux Logo" />
             </a>
@@ -65,23 +46,34 @@ export default function Footer() {
             </div>
           </div>
 
-          {footerGroups.map((group) => (
-            <div className="footer-column" key={group.title}>
-              <h3>{group.title}</h3>
-              <div className="footer-links">
-                {group.links.map((link) => (
-                  <a href="/" key={link}>
-                    {link}
-                  </a>
-                ))}
-              </div>
+          <div className="col-12 col-lg-7">
+            <div className="row g-4">
+              {FooterGroups.map((group) => (
+                <div
+                  className="col-12 col-sm-6 col-md-4 footer-column"
+                  key={group.title}
+                >
+                  <h3>{group.title}</h3>
+                  <div className="footer-links">
+                    {group.links.map((link) => (
+                      <a href="/" key={link}>
+                        {link}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
-        <div className="footer-bottom">
-          <p>All rights reserved. 2026 CineLux Movies.</p>
-          <span>Built for movie lovers everywhere.</span>
+        <div className="row footer-bottom pt-4 gy-2">
+          <div className="col-12 col-md-6">
+            <p className="mb-0">All rights reserved. 2026 CineLux Movies.</p>
+          </div>
+          <div className="col-12 col-md-6 text-md-end">
+            <span>Built for movie lovers everywhere.</span>
+          </div>
         </div>
       </div>
     </footer>
