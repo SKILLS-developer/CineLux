@@ -3,12 +3,9 @@ import Footer from "../shared/Footer/Footer.jsx";
 import "./Plans.css";
 import { useState } from "react";
 import { LoginNotification } from "../Notification/Notification.jsx";
-
 export default function Plans() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   const [showLoginNotification, setShowLoginNotification] = useState(false);
-
-  //   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true" || false; // Placeholder for authentication state
   const isLoggedIn = false;
 
   function handlePlan(type) {

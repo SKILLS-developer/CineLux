@@ -3,6 +3,7 @@ import { FiBookmark, FiPlay, FiPlayCircle } from "react-icons/fi";
 import Header from "../../shared/Header/Header";
 import "./Hero.css";
 import { HeroSlides } from "../../../data/HeroSlides";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -14,6 +15,7 @@ export default function Hero() {
     slide.trailer.toLowerCase().endsWith(".mp4");
 
   return (
+    
     <section
       className="hero position-relative overflow-hidden min-vh-100"
       aria-label="Featured movie hero"
@@ -59,10 +61,10 @@ export default function Hero() {
             <p className="hero-description">{slide.description}</p>
 
             <div className="hero-cta-row d-flex flex-wrap gap-2 gap-md-3 mt-3 mt-md-4">
-              <button type="button" className="btn hero-btn hero-btn-primary">
+              <Link to="/play" className="btn hero-btn hero-btn-primary">
                 <FiPlay />
                 Play Now
-              </button>
+              </Link>
               <button type="button" className="btn hero-btn hero-btn-ghost">
                 <FiPlayCircle />
                 Watch Trailer

@@ -107,9 +107,10 @@
   background: #111;
   scroll-snap-align: start;
   box-shadow: 0 22px 34px rgba(0, 0, 0, 0.36);
+  cursor: pointer;
 }
 
-.release-card::after {
+.release-card:hover::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -140,6 +141,9 @@
   inset: auto 0 0;
   z-index: 1;
   padding: 1.2rem 1.2rem 1.3rem;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .release-card-overlay h3 {
@@ -167,7 +171,19 @@
 }
 
 .release-rating svg {
-  color: #ffca3a;
+  color: #facc15;
+  filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.35));
+}
+
+.release-rating .rating-star {
+  color: #facc15 !important;
+  fill: #facc15 !important;
+}
+
+.release-meta-data {
+  color: rgba(226, 232, 240, 0.82);
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 @media (max-width: 900px) {
@@ -259,6 +275,93 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.release-card:hover .release-type {
+  transform: translateY(-1px);
+}
+
+@media (hover: hover) {
+  .release-type,
+  .release-card-overlay {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .release-card-overlay {
+    transform: translateY(8px);
+  }
+
+  .release-card:hover .release-type,
+  .release-card:hover .release-card-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .release-card:hover .release-card-overlay {
+    transform: translateY(0);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .release-type,
+  .release-card-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .release-card-overlay {
+    transform: translateY(0);
+  }
+}
+
+.release-type.free {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.26) 0%,
+    rgba(34, 197, 94, 0.18) 100%
+  );
+  border-color: rgba(74, 222, 128, 0.65);
+  color: #dcfce7;
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.24),
+    inset 0 0 0 1px rgba(187, 247, 208, 0.14);
+}
+
+.release-type.paid {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.25) 0%,
+    rgba(234, 179, 8, 0.16) 100%
+  );
+  border-color: rgba(251, 191, 36, 0.6);
+  color: #fef3c7;
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.24),
+    inset 0 0 0 1px rgba(252, 211, 77, 0.16);
+}
+
+.release-type.free::before,
+.release-type.paid::before {
+  content: "";
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  margin-right: 0.42rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.release-type.free::before {
+  background: #4ade80;
+}
+
+.release-type.paid::before {
+  background: #fbbf24;
 }
 
 .release-card::before {

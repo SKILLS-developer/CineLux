@@ -8,6 +8,7 @@ import SignUp from "./components/Auth/SignUp";
 import Login from "./components/Auth/Login";
 import Home from "./components/Home/Home";
 import Plans from "./components/Plans/Plans";
+import Play from "./components/Play/Play";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function AnimatedRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/plans" element={<Plans />} />
         <Route path="/" element={<Home />} />
+        <Route path="/play" element={<Play />} />
       </Routes>
     </div>
   );

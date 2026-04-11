@@ -1,4 +1,8 @@
-import HeroImage from "../assets/Hero.png";
+import Batman from "../assets/Hero.png";
+import Dune from "../assets/Dune.png";
+import Oppenheimer from "../assets/Oppen Heimer.png";
+import JohnWick from "../assets/John Wick.png";
+import Spiderman from "../assets/SpiderMan.png";
 import BatmanTrailer from "../videos/THE BATMAN – Trailer.mp4";
 export const HeroSlides = [
   {
@@ -8,7 +12,7 @@ export const HeroSlides = [
     meta: "2 hr 56 min • Action • Drama",
     description:
       "Batman is called to intervene when the mayor of Gotham City is murdered. Soon, his investigation leads him to uncover a web of corruption, linked to his own dark past.",
-    thumbnail: HeroImage,
+    thumbnail: Batman,
     trailer: BatmanTrailer,
   },
   {
@@ -18,7 +22,7 @@ export const HeroSlides = [
     meta: "2 hr 46 min • Sci-Fi • Adventure",
     description:
       "Paul Atreides unites with the Fremen while seeking vengeance against those who destroyed his family, balancing destiny, loyalty, and the fate of Arrakis.",
-    thumbnail: HeroImage,
+    thumbnail: Dune,
     trailer: "https://www.youtube.com/watch?v=jkl012",
   },
   {
@@ -28,7 +32,7 @@ export const HeroSlides = [
     meta: "3 hr 0 min • History • Thriller",
     description:
       "The story of J. Robert Oppenheimer and the creation of the atomic bomb unfolds as a high-stakes portrait of ambition, politics, and moral consequence.",
-    thumbnail: HeroImage,
+    thumbnail: Oppenheimer,
     trailer: "https://www.youtube.com/watch?v=jkl012",
   },
   {
@@ -38,7 +42,7 @@ export const HeroSlides = [
     meta: "2 hr 49 min • Action • Crime",
     description:
       "John Wick discovers a path to defeat The High Table, but before earning his freedom he must face new enemies and old ghosts in a global showdown.",
-    thumbnail: HeroImage,
+    thumbnail: JohnWick,
     trailer: "https://www.youtube.com/watch?v=jkl012",
   },
   {
@@ -48,7 +52,7 @@ export const HeroSlides = [
     meta: "2 hr 20 min • Animation • Adventure",
     description:
       "Miles Morales catapults across dimensions and collides with a team of Spider-People who must redefine what heroism means when every universe is at risk.",
-    thumbnail: HeroImage,
+    thumbnail: Spiderman,
     trailer: "https://www.youtube.com/watch?v=jkl012",
   },
 ];
