@@ -2,6 +2,7 @@ import Logo from "../../../assets/CineLux-Logo.png";
 import { FiFacebook, FiInstagram, FiTwitter } from "react-icons/fi";
 import "./Footer.css";
 import { FooterGroups } from "../../../data/FooterGroups";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -9,9 +10,10 @@ export default function Footer() {
       <div className="container footer-shell">
         <div className="row footer-grid gy-4 pb-4">
           <div className="col-12 col-lg-5 footer-brand">
-            <a href="/" className="footer-logo">
+          
+            <Link to="/" className="footer-logo">
               <img src={Logo} alt="CineLux Logo" />
-            </a>
+            </Link>
 
             <p>
               CineLux is your destination for bold movie nights, trending
@@ -56,9 +58,9 @@ export default function Footer() {
                   <h3>{group.title}</h3>
                   <div className="footer-links">
                     {group.links.map((link) => (
-                      <a href="/" key={link}>
+                      <Link to="/" key={link}>
                         {link}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>

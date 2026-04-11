@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiBookmark, FiPlay, FiPlayCircle } from "react-icons/fi";
-import Header from "../Header/Header";
+import Header from "../../shared/Header/Header";
 import "./Hero.css";
 import { HeroSlides } from "../../../data/HeroSlides";
 

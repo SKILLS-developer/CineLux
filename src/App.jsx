@@ -1,6 +1,3 @@
-import Footer from "./components/Home/Footer/Footer";
-import Hero from "./components/Home/Hero/Hero";
-import LatestRelease from "./components/Home/LatestRelease/LatestRelease";
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,6 +6,8 @@ import {
 } from "react-router-dom";
 import SignUp from "./components/Auth/SignUp";
 import Login from "./components/Auth/Login";
+import Home from "./components/Home/Home";
+import Plans from "./components/Plans/Plans";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -18,16 +17,8 @@ function AnimatedRoutes() {
       <Routes location={location}>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/"
-          element={
-            <>
-              <Hero />
-              <LatestRelease />
-              <Footer />
-            </>
-          }
-        />
+        <Route path="/plans" element={<Plans />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </div>
   );
