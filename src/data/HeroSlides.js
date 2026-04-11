@@ -1,4 +1,5 @@
 import HeroImage from "../assets/Hero.png";
+import BatmanTrailer from "../videos/THE BATMAN – Trailer.mp4";
 export const HeroSlides = [
   {
     id: "batman",
@@ -7,7 +8,8 @@ export const HeroSlides = [
     meta: "2 hr 56 min • Action • Drama",
     description:
       "Batman is called to intervene when the mayor of Gotham City is murdered. Soon, his investigation leads him to uncover a web of corruption, linked to his own dark past.",
-    image: HeroImage,
+    thumbnail: HeroImage,
+    trailer: BatmanTrailer,
   },
   {
     id: "dune",
@@ -16,7 +18,8 @@ export const HeroSlides = [
     meta: "2 hr 46 min • Sci-Fi • Adventure",
     description:
       "Paul Atreides unites with the Fremen while seeking vengeance against those who destroyed his family, balancing destiny, loyalty, and the fate of Arrakis.",
-    image: HeroImage,
+    thumbnail: HeroImage,
+    trailer: "https://www.youtube.com/watch?v=jkl012",
   },
   {
     id: "oppenheimer",
@@ -25,7 +28,8 @@ export const HeroSlides = [
     meta: "3 hr 0 min • History • Thriller",
     description:
       "The story of J. Robert Oppenheimer and the creation of the atomic bomb unfolds as a high-stakes portrait of ambition, politics, and moral consequence.",
-    image: HeroImage,
+    thumbnail: HeroImage,
+    trailer: "https://www.youtube.com/watch?v=jkl012",
   },
   {
     id: "johnwick",
@@ -34,7 +38,8 @@ export const HeroSlides = [
     meta: "2 hr 49 min • Action • Crime",
     description:
       "John Wick discovers a path to defeat The High Table, but before earning his freedom he must face new enemies and old ghosts in a global showdown.",
-    image: HeroImage,
+    thumbnail: HeroImage,
+    trailer: "https://www.youtube.com/watch?v=jkl012",
   },
   {
     id: "spiderman",
@@ -43,6 +48,7 @@ export const HeroSlides = [
     meta: "2 hr 20 min • Animation • Adventure",
     description:
       "Miles Morales catapults across dimensions and collides with a team of Spider-People who must redefine what heroism means when every universe is at risk.",
-    image: HeroImage,
+    thumbnail: HeroImage,
+    trailer: "https://www.youtube.com/watch?v=jkl012",
   },
 ];

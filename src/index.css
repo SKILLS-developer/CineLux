@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-*{color: #f6f8ff;
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+* {
+  color: #f6f8ff;
 }
 html {
   scrollbar-width: thin;
@@ -10,6 +11,31 @@ body {
   background: #070b14;
   color: #f6f8ff;
 }
+
+.route-page-transition {
+  animation: routeFadeSlide 420ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+@keyframes routeFadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-page-transition {
+    animation: none;
+  }
+}
+
 a {
   color: inherit;
 }

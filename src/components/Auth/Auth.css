@@ -1,0 +1,258 @@
+.auth-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2.25rem 1rem;
+  background:
+    radial-gradient(
+      circle at 80% 10%,
+      rgba(0, 168, 107, 0.2) 0%,
+      rgba(0, 168, 107, 0) 40%
+    ),
+    radial-gradient(
+      circle at 15% 85%,
+      rgba(255, 152, 78, 0.16) 0%,
+      rgba(255, 152, 78, 0) 36%
+    ),
+    linear-gradient(165deg, #050810 0%, #0a0f1d 45%, #06090f 100%);
+}
+
+.auth-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 4, 8, 0.35) 0%,
+    rgba(4, 4, 8, 0.8) 100%
+  );
+}
+
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  padding: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  background: rgba(12, 12, 18, 0.82);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.45);
+  animation: authCardIntro 520ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.auth-title,
+.auth-subtitle,
+.auth-field,
+.auth-btn,
+.auth-footnote {
+  animation: authItemReveal 460ms ease both;
+}
+
+.auth-subtitle {
+  animation-delay: 70ms;
+}
+
+.auth-field:nth-of-type(1) {
+  animation-delay: 110ms;
+}
+
+.auth-field:nth-of-type(2) {
+  animation-delay: 160ms;
+}
+
+.auth-field:nth-of-type(3) {
+  animation-delay: 210ms;
+}
+
+.auth-btn {
+  animation-delay: 250ms;
+}
+
+.auth-footnote {
+  animation-delay: 300ms;
+}
+
+@keyframes authCardIntro {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes authItemReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-title {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.auth-subtitle {
+  margin: 0.65rem 0 1.5rem;
+  color: rgba(246, 248, 255, 0.83);
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  font-size: 1rem;
+}
+
+.auth-form {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.auth-field {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.auth-label {
+  color: rgba(246, 248, 255, 0.9);
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.78rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(16, 16, 20, 0.45);
+  color: #f7f8ff;
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-input::placeholder {
+  color: rgba(247, 248, 255, 0.55);
+}
+
+.auth-input:focus {
+  border-color: #00a86b;
+  background: rgba(19, 19, 25, 0.62);
+  outline: none;
+}
+
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0.68rem 1.55rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.auth-btn-primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, #00a86b 0%, #00a86b 100%);
+  color: #ffffff;
+}
+
+.auth-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.auth-btn-ghost {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(16, 16, 20, 0.45);
+  color: #f7f8ff;
+}
+
+.auth-btn-ghost:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(19, 19, 25, 0.62);
+}
+
+.auth-input:focus-visible,
+.auth-btn:focus-visible,
+.auth-footnote a:focus-visible {
+  outline: 2px solid #00a86b;
+  outline-offset: 2px;
+}
+
+.auth-footnote {
+  margin: 1rem 0 0;
+  color: rgba(247, 248, 255, 0.78);
+  font-family: "Outfit", "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.auth-footnote a {
+  color: #00a86b;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.auth-footnote a:hover {
+  color: #17c37f;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .auth-page {
+    padding: 1.4rem 0.85rem;
+  }
+
+  .auth-card {
+    padding: 1.3rem;
+    border-radius: 14px;
+  }
+
+  .auth-subtitle {
+    margin-bottom: 1.2rem;
+    font-size: 0.94rem;
+  }
+
+  .auth-btn {
+    min-height: 2.75rem;
+    padding: 0.6rem 1.05rem;
+    font-size: 0.92rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-card,
+  .auth-title,
+  .auth-subtitle,
+  .auth-field,
+  .auth-btn,
+  .auth-footnote {
+    animation: none;
+  }
+}
