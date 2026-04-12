@@ -2,10 +2,6 @@
 * {
   color: #f6f8ff;
 }
-html {
-  scrollbar-width: thin;
-  scrollbar-color: #00a86b rgba(255, 255, 255, 0.08);
-}
 body {
   font-family: "Inter", sans-serif;
   background: #070b14;

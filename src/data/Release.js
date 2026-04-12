@@ -1,8 +1,8 @@
-import EnolaHolmes2 from "../assets/Enola Holmes 2.png";
-import SatansSlaves from "../assets/Satan's Slaves .png";
-import TheFlash from "../assets/The Flash.png";
-import WeakHero from "../assets/Weak Hero.png";
-import WonderWoman from "../assets/Wonder Woman.png";
+import EnolaHolmes2 from "../assets/thumnail/Enola Holmes 2.jpg";
+import SatansSlaves from "../assets/thumnail/Satan's Slaves .jpg";
+import TheFlash from "../assets/thumnail/The Flash.jpg";
+import WeakHero from "../assets/thumnail/Weak Hero.jpg";
+import WonderWoman from "../assets/thumnail/Wonder Woman.jpg";
 export const ReleaseList = [
   {
     title: "Enola Holmes 2",

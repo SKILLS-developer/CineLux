@@ -10,11 +10,9 @@ export default function Footer() {
       <div className="container footer-shell">
         <div className="row footer-grid gy-4 pb-4">
           <div className="col-12 col-lg-5 footer-brand">
-          
             <Link to="/" className="footer-logo">
               <img src={Logo} alt="CineLux Logo" />
             </Link>
-
             <p>
               CineLux is your destination for bold movie nights, trending
               series, and a cinematic streaming experience built for discovery.
@@ -58,7 +56,10 @@ export default function Footer() {
                   <h3>{group.title}</h3>
                   <div className="footer-links">
                     {group.links.map((link) => (
-                      <Link to="/" key={link}>
+                      <Link
+                        to={"/about" }
+                        key={link}
+                      >
                         {link}
                       </Link>
                     ))}

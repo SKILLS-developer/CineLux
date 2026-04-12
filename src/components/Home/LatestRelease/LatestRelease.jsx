@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
 import { ReleaseList } from "../../../data/Release.js";
-import { SubscriptionNotification } from "../../Notification/Notification.jsx";
+import { SubscriptionNotification } from "../../shared/Notification/Notification.jsx";
 import "./LatestRelease.css";
 
 export default function LatestRelease() {

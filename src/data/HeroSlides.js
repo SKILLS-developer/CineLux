@@ -1,8 +1,8 @@
-import Batman from "../assets/Hero.png";
-import Dune from "../assets/Dune.png";
-import Oppenheimer from "../assets/Oppen Heimer.png";
-import JohnWick from "../assets/John Wick.png";
-import Spiderman from "../assets/SpiderMan.png";
+import Batman from "../assets/thumnail/The Batman.png";
+import Dune from "../assets/thumnail/Dune.png";
+import Oppenheimer from "../assets/thumnail/Oppen Heimer.jpg";
+import JohnWick from "../assets/thumnail/John Wick.jpg";
+import Spiderman from "../assets/thumnail/SpiderMan.png";
 import BatmanTrailer from "../videos/THE BATMAN – Trailer.mp4";
 export const HeroSlides = [
   {

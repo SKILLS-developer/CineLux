@@ -2,12 +2,14 @@ import Header from "../shared/Header/Header.jsx";
 import Footer from "../shared/Footer/Footer.jsx";
 import "./Plans.css";
 import { useState } from "react";
-import { LoginNotification } from "../Notification/Notification.jsx";
+import { LoginNotification } from "../shared/Notification/Notification.jsx";
 export default function Plans() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   const [showLoginNotification, setShowLoginNotification] = useState(false);
-  const isLoggedIn = false;
-
+  const isLoggedIn =
+    typeof window !== "undefined" &&
+    Boolean(window.localStorage.getItem("cinelux_user"));
+  //const isLoggedIn = false; // Placeholder for authentication state
   function handlePlan(type) {
     if (!isLoggedIn) {
       setShowLoginNotification(true);

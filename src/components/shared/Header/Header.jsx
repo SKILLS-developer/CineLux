@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isLoggedIn = false; // Placeholder for authentication state
+  const isLoggedIn =
+    typeof window !== "undefined" &&
+    Boolean(window.localStorage.getItem("cinelux_user"));
+  //const isLoggedIn = false; // Placeholder for authentication state
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -34,10 +37,10 @@ export default function Header() {
         >
           <Link to="/upcoming">Upcoming</Link>
           <Link to="/shows">Shows</Link>
-          <Link to="/fanart">Fanart</Link>
+          <Link to="/discover">Discover</Link>
           <Link to="/plans">Plans</Link>
-          <Link to="/community">Community</Link>
-          {isLoggedIn && <Link to="/account">Account</Link>}
+          <Link to="/about">About</Link>
+          {isLoggedIn && <Link to="/profile">Profile</Link>}
         </nav>
         <div className="header-actions-desktop d-none d-lg-flex align-items-center gap-2 gap-lg-3 ms-auto">
           <div className="header-search-wrapper">
@@ -80,6 +83,7 @@ export default function Header() {
         </div>
 
         {/* Mobile Menu View */}
+
         <button
           type="button"
           className="header-menu-btn ms-auto d-inline-flex d-lg-none "
@@ -98,18 +102,18 @@ export default function Header() {
             <Link to="/shows" onClick={closeMenu}>
               Shows
             </Link>
-            <Link to="/fanart" onClick={closeMenu}>
-              Fanart
+            <Link to="/discover" onClick={closeMenu}>
+              Discover
             </Link>
             <Link to="/plans" onClick={closeMenu}>
               Plans
             </Link>
-            <Link to="/community" onClick={closeMenu}>
-              Community
+            <Link to="/about" onClick={closeMenu}>
+              About
             </Link>
             {isLoggedIn && (
-              <Link to="/account" onClick={closeMenu}>
-                Account
+              <Link to="/profile" onClick={closeMenu}>
+                Profile
               </Link>
             )}
           </nav>
@@ -131,7 +135,7 @@ export default function Header() {
               </button>
             </div>
             {!isLoggedIn && (
-              <>
+              <div>
                 <Link to="/signup">
                   <button
                     type="button"
@@ -141,15 +145,11 @@ export default function Header() {
                   </button>
                 </Link>
                 <Link to="/login">
-                  <button
-                    type="button"
-                    className="btn header-btn ms-2 ms-lg-3"
-                    // Placeholder for login action
-                  >
+                  <button type="button" className="btn header-btn ms-2 ms-lg-3">
                     Login
                   </button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>

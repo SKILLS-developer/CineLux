@@ -9,6 +9,11 @@ import Login from "./components/Auth/Login";
 import Home from "./components/Home/Home";
 import Plans from "./components/Plans/Plans";
 import Play from "./components/Play/Play";
+import Upcoming from "./components/Upcoming/Upcoming";
+import Shows from "./components/Shows/Shows";
+import Profile from "./components/Profile/Profile";
+import About from "./components/About/About";
+import Discover from "./components/Discover/Discover";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -21,6 +26,11 @@ function AnimatedRoutes() {
         <Route path="/plans" element={<Plans />} />
         <Route path="/" element={<Home />} />
         <Route path="/play" element={<Play />} />
+        <Route path="/upcoming" element={<Upcoming />} />
+        <Route path="/discover" element={<Discover />} />
+        <Route path="/shows" element={<Shows />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </div>
   );
