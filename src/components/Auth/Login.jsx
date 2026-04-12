@@ -1,7 +1,24 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    if (user && email === user.email && password === user.password) {
+      alert(`Login Successful!\nWelcome back, ${user.name}!`);
+      localStorage.setItem("isLoggedIn", "true");
+      navigate("/");
+    } else {
+      alert("Invalid email or password. Please try again.");
+    }
+  }
+
   return (
     <section className="auth-page">
       <div className="auth-card">
@@ -10,7 +27,7 @@ export default function Login() {
           Sign in to continue watching on CineLux.
         </p>
 
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
             <label className="auth-label" htmlFor="login-email">
               Email

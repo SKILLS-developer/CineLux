@@ -20,6 +20,7 @@ export default function Profile() {
     memberSince: "January 2023",
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
   };
+  const userloggedIn = JSON.parse(localStorage.getItem("user"));
 
   const subscription = {
     plan: "Premium",
@@ -45,14 +46,14 @@ export default function Profile() {
             <div className="profile-header-content">
               <img
                 src={user.avatar}
-                alt={user.name}
+                alt={userloggedIn.name ||user.name}
                 className="profile-avatar"
               />
               <div className="profile-info">
-                <h1>{user.name}</h1>
-                <p className="profile-email">{user.email}</p>
+                <h1>{userloggedIn.name || user.name}</h1>
+                <p className="profile-email">{userloggedIn.email || user.email}</p>
                 <p className="profile-member">
-                  Member since {user.memberSince}
+                  Member since {userloggedIn.memberSince || user.memberSince}
                 </p>
               </div>
             </div>
@@ -161,7 +162,14 @@ export default function Profile() {
                 <span>Privacy Settings</span>
                 <span>→</span>
               </button>
-              <button className="settings-item danger">
+              <button
+                className="settings-item danger"
+                onClick={() => {
+                  localStorage.setItem("isLoggedIn", "false");
+                  alert("Logged out!");
+                  window.location.href = "/";
+                }}
+              >
                 <FaSignOutAlt />
                 <span>Logout</span>
               </button>

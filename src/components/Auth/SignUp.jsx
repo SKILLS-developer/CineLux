@@ -1,14 +1,30 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const user = { name, email, password };
+    localStorage.setItem("user", JSON.stringify(user));
+    alert(
+      `Registered Successfully!\nName: ${user.name}, Email: ${user.email}, Password: ${user.password}`,
+    );
+    navigate("/login");
+  }
   return (
     <section className="auth-page">
       <div className="auth-card">
         <h1 className="auth-title">Create an Account</h1>
         <p className="auth-subtitle">Join CineLux and unlock your watchlist.</p>
 
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
             <label className="auth-label" htmlFor="signup-name">
               Name
