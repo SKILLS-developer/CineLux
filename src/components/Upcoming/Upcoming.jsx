@@ -20,8 +20,12 @@ export default function Upcoming() {
           </div>
 
           <div className="upcoming-grid">
-            {ReleaseList.map((release, index) => (
-              <article className="upcoming-card" key={`${index}-${release.title}`}>
+            {ReleaseList.map((release) => (
+              <article
+                className="upcoming-card"
+                key={release.id}
+                style={{ cursor: "pointer" }}
+              >
                 <span className="upcoming-type soon">Soon</span>
 
                 <img

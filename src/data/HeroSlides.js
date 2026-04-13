@@ -1,9 +1,13 @@
-import Batman from "../assets/thumnail/The Batman.png";
-import Dune from "../assets/thumnail/Dune.png";
-import Oppenheimer from "../assets/thumnail/Oppen Heimer.jpg";
-import JohnWick from "../assets/thumnail/John Wick.jpg";
-import Spiderman from "../assets/thumnail/SpiderMan.png";
+import Batman from "../assets/thumbnail/The Batman.png";
+import Dune from "../assets/thumbnail/Dune.png";
+import Oppenheimer from "../assets/thumbnail/Oppen Heimer.jpg";
+import JohnWick from "../assets/thumbnail/John Wick.jpg";
+import Spiderman from "../assets/thumbnail/SpiderMan.png";
 import BatmanTrailer from "../videos/THE BATMAN – Trailer.mp4";
+import DuneV from "../videos/Dune.mp4";
+import OppenheimerV from "../videos/Oppenheimer.mp4";
+import JohnWickV from "../videos/John Wick.mp4";
+import SpidermanV from "../videos/Spider-Man.mp4";
 export const HeroSlides = [
   {
     id: "batman",
@@ -16,14 +20,14 @@ export const HeroSlides = [
     trailer: BatmanTrailer,
   },
   {
-    id: "dune",
+    id: "dune-part-two",
     year: "2024",
     title: "Dune: Part Two",
     meta: "2 hr 46 min • Sci-Fi • Adventure",
     description:
       "Paul Atreides unites with the Fremen while seeking vengeance against those who destroyed his family, balancing destiny, loyalty, and the fate of Arrakis.",
     thumbnail: Dune,
-    trailer: "https://www.youtube.com/watch?v=jkl012",
+    trailer: DuneV,
   },
   {
     id: "oppenheimer",
@@ -33,26 +37,26 @@ export const HeroSlides = [
     description:
       "The story of J. Robert Oppenheimer and the creation of the atomic bomb unfolds as a high-stakes portrait of ambition, politics, and moral consequence.",
     thumbnail: Oppenheimer,
-    trailer: "https://www.youtube.com/watch?v=jkl012",
+    trailer: OppenheimerV,
   },
   {
-    id: "johnwick",
+    id: "john-wick-4",
     year: "2023",
     title: "John Wick 4",
     meta: "2 hr 49 min • Action • Crime",
     description:
       "John Wick discovers a path to defeat The High Table, but before earning his freedom he must face new enemies and old ghosts in a global showdown.",
     thumbnail: JohnWick,
-    trailer: "https://www.youtube.com/watch?v=jkl012",
+    trailer: JohnWickV,
   },
   {
-    id: "spiderman",
+    id: "across-the-spider-verse",
     year: "2023",
     title: "Across the Spider-Verse",
     meta: "2 hr 20 min • Animation • Adventure",
     description:
       "Miles Morales catapults across dimensions and collides with a team of Spider-People who must redefine what heroism means when every universe is at risk.",
     thumbnail: Spiderman,
-    trailer: "https://www.youtube.com/watch?v=jkl012",
+    trailer: SpidermanV,
   },
 ];

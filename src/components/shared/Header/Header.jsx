@@ -1,15 +1,20 @@
 import { useState } from "react";
-import Logo from "../../../assets/CineLux-Logo.png";
 import { FiMenu, FiSearch, FiX } from "react-icons/fi";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import logo from "../../../assets/CineLux-Logo.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isLoggedIn =
     typeof window !== "undefined" &&
-    Boolean(window.localStorage.getItem("user"))&& window.localStorage.getItem("isLoggedIn") === "true";
+    Boolean(window.localStorage.getItem("user")) &&
+    window.localStorage.getItem("isLoggedIn") === "true";
   //const isLoggedIn = false; // Placeholder for authentication state
+  const user =
+    typeof window !== "undefined"
+      ? JSON.parse(window.localStorage.getItem("user"))
+      : null;
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -28,7 +33,7 @@ export default function Header() {
     <header className={`header ${isMenuOpen ? "menu-open" : ""}`}>
       <div className="container-fluid px-3 px-lg-4 d-flex align-items-center position-relative">
         <Link to="/" className="header-logo flex-shrink-0 me-3 me-xl-4">
-          <img src={Logo} alt="CineLux Logo" />
+          <img src={logo} alt="CineLux" />
         </Link>
 
         <nav
@@ -59,7 +64,7 @@ export default function Header() {
               {isSearchOpen ? <FiX /> : <FiSearch />}
             </button>
           </div>
-          {!isLoggedIn && (
+          {!isLoggedIn ? (
             <>
               <Link to="/signup">
                 <button
@@ -79,6 +84,8 @@ export default function Header() {
                 </button>
               </Link>
             </>
+          ) : (
+            <span className="Username">Welcome back, {user.name}!</span>
           )}
         </div>
 

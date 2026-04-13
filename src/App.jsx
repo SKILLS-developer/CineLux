@@ -25,7 +25,7 @@ function AnimatedRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/plans" element={<Plans />} />
         <Route path="/" element={<Home />} />
-        <Route path="/play" element={<Play />} />
+        <Route path="/play/:videoId" element={<Play />} />
         <Route path="/upcoming" element={<Upcoming />} />
         <Route path="/discover" element={<Discover />} />
         <Route path="/shows" element={<Shows />} />

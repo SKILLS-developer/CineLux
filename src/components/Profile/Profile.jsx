@@ -6,21 +6,30 @@ import {
   FaEdit,
   FaSignOutAlt,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { ReleaseList } from "../../data/Release.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./Profile.css";
 
 export default function Profile() {
+  const navigate = useNavigate();
+  const userloggedIn = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    if (!userloggedIn) {
+      navigate("/login");
+    }
+  }, [userloggedIn, navigate]);
+
   // Mock user data
   const user = {
     name: "Alex Anderson",
     email: "alex.anderson@example.com",
     memberSince: "January 2023",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(userloggedIn.email)}`,
   };
-  const userloggedIn = JSON.parse(localStorage.getItem("user"));
 
   const subscription = {
     plan: "Premium",
@@ -35,6 +44,8 @@ export default function Profile() {
   // Mock saved titles (favorited items)
   const savedTitles = ReleaseList.filter((_, i) => i % 2 === 0).slice(0, 4);
 
+  if (!userloggedIn) return null;
+
   return (
     <>
       <Header />
@@ -46,12 +57,14 @@ export default function Profile() {
             <div className="profile-header-content">
               <img
                 src={user.avatar}
-                alt={userloggedIn.name ||user.name}
+                alt={userloggedIn.name || user.name}
                 className="profile-avatar"
               />
               <div className="profile-info">
                 <h1>{userloggedIn.name || user.name}</h1>
-                <p className="profile-email">{userloggedIn.email || user.email}</p>
+                <p className="profile-email">
+                  {userloggedIn.email || user.email}
+                </p>
                 <p className="profile-member">
                   Member since {userloggedIn.memberSince || user.memberSince}
                 </p>
@@ -105,8 +118,8 @@ export default function Profile() {
               </Link>
             </div>
             <div className="history-grid">
-              {watchHistory.map((item, index) => (
-                <div key={`${index}-${item.title}`} className="history-item">
+              {watchHistory.map((item) => (
+                <div key={item.id} className="history-item">
                   <img src={item.thumbnail} alt={item.title} />
                   <div className="history-overlay">
                     <h4>{item.title}</h4>
@@ -127,8 +140,8 @@ export default function Profile() {
               </Link>
             </div>
             <div className="favorites-grid">
-              {savedTitles.map((item, index) => (
-                <div key={`${index}-${item.title}`} className="favorite-card">
+              {savedTitles.map((item) => (
+                <div key={item.id} className="favorite-card">
                   <img src={item.thumbnail} alt={item.title} />
                   <div className="favorite-info">
                     <h4>{item.title}</h4>
@@ -165,8 +178,8 @@ export default function Profile() {
               <button
                 className="settings-item danger"
                 onClick={() => {
-                  localStorage.setItem("isLoggedIn", "false");
-                  alert("Logged out!");
+                  localStorage.removeItem("isLoggedIn");
+                  localStorage.removeItem("user");
                   window.location.href = "/";
                 }}
               >

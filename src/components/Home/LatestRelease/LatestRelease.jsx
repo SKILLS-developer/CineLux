@@ -2,10 +2,12 @@ import { useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
 import { ReleaseList } from "../../../data/Release.js";
 import { SubscriptionNotification } from "../../shared/Notification/Notification.jsx";
+import { useNavigate } from "react-router-dom";
 import "./LatestRelease.css";
 
 export default function LatestRelease() {
   const railRef = useRef(null);
+  const navigate = useNavigate();
   const [showSubscriptionNotification, setShowSubscriptionNotification] =
     useState(false);
 
@@ -22,11 +24,13 @@ export default function LatestRelease() {
       behavior: "smooth",
     });
   };
-  function handleClick(isFree) {
-    if (!isFree) {
+  function handleClick(release) {
+    if (!release.isFree) {
       setShowSubscriptionNotification(true);
       return;
     }
+
+    navigate(`/play/${release.id}`);
   }
 
   return (
@@ -63,18 +67,18 @@ export default function LatestRelease() {
         </div>
 
         <div className="latest-release-rail" ref={railRef}>
-          {ReleaseList.map((release, index) => (
+          {ReleaseList.map((release) => (
             <article
               className={`release-card `}
-              key={`${index}-${release.title}`}
+              key={release.id}
               onClick={() => {
-                handleClick(release.free);
+                handleClick(release);
               }}
             >
               <span
-                className={`release-type ${release.free === true ? "free" : "paid"}`}
+                className={`release-type ${release.isFree === true ? "free" : "paid"}`}
               >
-                {release.free === true ? "Free" : "Paid"}
+                {release.isFree === true ? "Free" : "Paid"}
               </span>
 
               <img

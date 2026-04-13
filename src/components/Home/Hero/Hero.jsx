@@ -3,19 +3,20 @@ import { FiBookmark, FiPlay, FiPlayCircle } from "react-icons/fi";
 import Header from "../../shared/Header/Header";
 import "./Hero.css";
 import { HeroSlides } from "../../../data/HeroSlides";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 export default function Hero() {
+  const navigate = useNavigate();
   const [activeSlide, setActiveSlide] = useState(0);
   const [isTrailerHover, setIsTrailerHover] = useState(false);
-
+  const [isFavorite, setIsFavorite] = useState(false);
   const slide = HeroSlides[activeSlide];
   const hasMp4Trailer =
     typeof slide.trailer === "string" &&
     slide.trailer.toLowerCase().endsWith(".mp4");
-
+  function handleClick(slide) {
+    navigate(`/play/${slide.id}`);
+  }
   return (
-    
     <section
       className="hero position-relative overflow-hidden min-vh-100"
       aria-label="Featured movie hero"
@@ -61,16 +62,33 @@ export default function Hero() {
             <p className="hero-description">{slide.description}</p>
 
             <div className="hero-cta-row d-flex flex-wrap gap-2 gap-md-3 mt-3 mt-md-4">
-              <Link to="/play" className="btn hero-btn hero-btn-primary">
+              <button
+                type="button"
+                onClick={() => handleClick(slide)}
+                className="btn hero-btn hero-btn-primary"
+              >
                 <FiPlay />
                 Play Now
-              </Link>
-              <button type="button" className="btn hero-btn hero-btn-ghost">
+              </button>
+              <button
+                type="button"
+                onClick={() => handleClick(slide)}
+                className="btn hero-btn hero-btn-ghost"
+              >
                 <FiPlayCircle />
                 Watch Trailer
               </button>
-              <button type="button" className="btn hero-btn hero-btn-ghost">
-                <FiBookmark />
+              <button
+                type="button"
+                className={`btn hero-btn hero-btn-ghost `}
+                onClick={() => setIsFavorite(!isFavorite)}
+                aria-pressed={isFavorite}
+              >
+                <FiBookmark
+                  color={isFavorite ? "#facc15" : "currentColor"}
+                  stroke={isFavorite ? "#facc15" : "currentColor"}
+                  fill={isFavorite ? "#facc15" : "none"}
+                />
                 Add to Wishlist
               </button>
             </div>

@@ -34,7 +34,7 @@ export default function Discover() {
 
     if (accessType !== "all") {
       filtered = filtered.filter((item) =>
-        accessType === "free" ? item.free : !item.free,
+        accessType === "free" ? item.isFree : !item.isFree,
       );
     }
 
@@ -171,9 +171,9 @@ export default function Discover() {
                     key={`${item.title}-${index}`}
                   >
                     <span
-                      className={`result-badge ${item.free ? "free" : "premium"}`}
+                      className={`result-badge ${item.isFree ? "free" : "premium"}`}
                     >
-                      {item.free ? "Free" : "Premium"}
+                      {item.isFree ? "Free" : "Premium"}
                     </span>
                     <img src={item.thumbnail} alt={item.title} loading="lazy" />
                     <div className="result-overlay">

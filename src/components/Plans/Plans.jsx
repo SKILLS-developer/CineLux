@@ -8,7 +8,8 @@ export default function Plans() {
   const [showLoginNotification, setShowLoginNotification] = useState(false);
   const isLoggedIn =
     typeof window !== "undefined" &&
-    Boolean(window.localStorage.getItem("cinelux_user"));
+    Boolean(window.localStorage.getItem("user")) &&
+    window.localStorage.getItem("isLoggedIn") === "true";
   //const isLoggedIn = false; // Placeholder for authentication state
   function handlePlan(type) {
     if (!isLoggedIn) {

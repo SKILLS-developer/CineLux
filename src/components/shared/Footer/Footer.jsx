@@ -1,8 +1,8 @@
-import Logo from "../../../assets/CineLux-Logo.png";
 import { FiFacebook, FiInstagram, FiTwitter } from "react-icons/fi";
 import "./Footer.css";
 import { FooterGroups } from "../../../data/FooterGroups";
 import { Link } from "react-router-dom";
+import logo from "../../../assets/CineLux-Logo.png";
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="row footer-grid gy-4 pb-4">
           <div className="col-12 col-lg-5 footer-brand">
             <Link to="/" className="footer-logo">
-              <img src={Logo} alt="CineLux Logo" />
+              <img src={logo} alt="CineLux" />
             </Link>
             <p>
               CineLux is your destination for bold movie nights, trending
@@ -55,14 +55,27 @@ export default function Footer() {
                 >
                   <h3>{group.title}</h3>
                   <div className="footer-links">
-                    {group.links.map((link) => (
-                      <Link
-                        to={"/about" }
-                        key={link}
-                      >
-                        {link}
-                      </Link>
-                    ))}
+                    {group.links.map((link) => {
+                      const routeMap = {
+                        "About Us": "/about",
+                        Careers: "#",
+                        Press: "#",
+                        Investors: "#",
+                        "Help Center": "#",
+                        FAQs: "#",
+                        Support: "#",
+                        "Account & Billing": "/plans",
+                        "Terms of Service": "#",
+                        "Privacy Policy": "#",
+                        "Cookie Preferences": "#",
+                        Accessibility: "#",
+                      };
+                      return (
+                        <Link to={routeMap[link] ?? "#"} key={link}>
+                          {link}
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               ))}

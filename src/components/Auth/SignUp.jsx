@@ -11,10 +11,14 @@ export default function SignUp() {
     const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
-    const user = { name, email, password };
+    const memberSince = new Date().toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
+    const user = { name, email, password, memberSince };
     localStorage.setItem("user", JSON.stringify(user));
     alert(
-      `Registered Successfully!\nName: ${user.name}, Email: ${user.email}, Password: ${user.password}`,
+      `Registered Successfully! Welcome, ${user.name}!\nPlease log in to continue.`,
     );
     navigate("/login");
   }
