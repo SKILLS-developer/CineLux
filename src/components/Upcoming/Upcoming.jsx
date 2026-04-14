@@ -1,7 +1,7 @@
-import { FaStar } from "react-icons/fa";
-import { ReleaseList } from "../../data/Release.js";
+import UpcomingMovies  from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
+import MediaCard from "../shared/MediaCard/MediaCard.jsx";
 import "./Upcoming.css";
 
 export default function Upcoming() {
@@ -16,36 +16,26 @@ export default function Upcoming() {
               <p className="upcoming-kicker">Coming soon</p>
               <h1>Upcoming Movies</h1>
             </div>
-            <span className="upcoming-count">{ReleaseList.length} titles</span>
+            <span className="upcoming-count">{UpcomingMovies.length} titles</span>
           </div>
 
-          <div className="upcoming-grid">
-            {ReleaseList.map((release) => (
-              <article
+          <div className="upcoming-grid media-card-grid">
+            {UpcomingMovies.map((movie) => (
+              <MediaCard
+                key={movie.id}
                 className="upcoming-card"
-                key={release.id}
-                style={{ cursor: "pointer" }}
-              >
-                <span className="upcoming-type soon">Soon</span>
-
-                <img
-                  src={release.thumbnail}
-                  alt={release.title}
-                  loading="lazy"
-                  decoding="async"
-                />
-
-                <div className="upcoming-card-overlay">
-                  <h3>{release.title}</h3>
-                  <div className="upcoming-card-meta">
-                    <span className="upcoming-rating">
-                      <FaStar className="rating-star" />
-                      {release.rating}
-                    </span>
-                    <span className="upcoming-meta-data">{release.meta}</span>
-                  </div>
-                </div>
-              </article>
+                tagClassName="upcoming-type soon"
+                overlayClassName="upcoming-card-overlay"
+                metaClassName="upcoming-card-meta"
+                ratingClassName="upcoming-rating"
+                metaTextClassName="upcoming-meta-data"
+                tagText="Soon"
+                imageSrc={movie.thumbnail}
+                imageAlt={movie.title}
+                title={movie.title}
+                rating={movie.rating}
+                meta={movie.meta}
+              />
             ))}
           </div>
         </div>

@@ -18,7 +18,7 @@ import SatansSlavesV from "../videos/SATAN'S SLAVES.mp4";
 import TheFlashV from "../videos/The Flash.mp4";
 import WeakHeroV from "../videos/Weak Hero Class 2.mp4";
 import WonderWomanV from "../videos/WONDER WOMAN.mp4";
-export const ReleaseList = [
+export default  [
   {
     id: "enola-holmes-2",
     title: "Enola Holmes 2",
@@ -98,7 +98,7 @@ export const ReleaseList = [
     id: "batman",
     title: "The Batman",
     rating: 4.8,
-    meta: "2 hr 56 min • Action • Drama",
+    meta: "Action • Drama",
     duration: "2h 56m",
     thumbnail: Batman,
     type: "movie",
@@ -113,7 +113,7 @@ export const ReleaseList = [
     id: "dune-part-two",
     title: "Dune: Part Two",
     rating: 4.9,
-    meta: "2 hr 46 min • Sci-Fi • Adventure",
+    meta: "Sci-Fi • Adventure",
     duration: "2h 46m",
     thumbnail: Dune,
     type: "movie",
@@ -128,7 +128,7 @@ export const ReleaseList = [
     id: "oppenheimer",
     title: "Oppenheimer",
     rating: 4.8,
-    meta: "3 hr 0 min • History • Thriller",
+    meta: "History • Thriller",
     duration: "3h 0m",
     thumbnail: Oppenheimer,
     type: "movie",
@@ -143,7 +143,7 @@ export const ReleaseList = [
     id: "john-wick-4",
     title: "John Wick 4",
     rating: 4.7,
-    meta: "2 hr 49 min • Action • Crime",
+    meta: "Action • Crime",
     duration: "2h 49m",
     thumbnail: JohnWick,
     type: "movie",
@@ -158,7 +158,7 @@ export const ReleaseList = [
     id: "across-the-spider-verse",
     title: "Across the Spider-Verse",
     rating: 4.9,
-    meta: "2 hr 20 min • Animation • Adventure",
+    meta: "Animation • Adventure",
     duration: "2h 20m",
     thumbnail: Spiderman,
     type: "movie",

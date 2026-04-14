@@ -1,11 +1,11 @@
 ﻿import { useState } from "react";
 import { FaClock, FaEye, FaFilm, FaStar } from "react-icons/fa";
-import { ReleaseList } from "../../data/Release";
+import MovieData from "../../data/Data.js";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Play.css";
 import Header from "../shared/Header/Header";
 
-const suggestions = ReleaseList.map((item) => ({
+const suggestions = MovieData.map((item) => ({
   id: item.id,
   title: item.title,
   meta: item.meta?.replace(/•/g, "-")?.trim() || "Action - Thriller",
@@ -24,7 +24,7 @@ export default function Play() {
   const navigate = useNavigate();
 
   const [activeVideo, setActiveVideo] = useState(
-    ReleaseList.find((item) => item.id === videoId) || suggestions[0],
+    MovieData.find((item) => item.id === videoId) || suggestions[0],
   );
   const handleVideoSelect = (item) => {
     setActiveVideo(item);

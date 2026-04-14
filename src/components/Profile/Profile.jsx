@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { ReleaseList } from "../../data/Release.js";
+import  MovieData  from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./Profile.css";
@@ -39,10 +39,10 @@ export default function Profile() {
   };
 
   // Mock watch history (last 6 items)
-  const watchHistory = ReleaseList.slice(0, 6);
+  const watchHistory = MovieData.slice(0, 6);
 
   // Mock saved titles (favorited items)
-  const savedTitles = ReleaseList.filter((_, i) => i % 2 === 0).slice(0, 4);
+  const savedTitles = MovieData.filter((_, i) => i % 2 === 0).slice(0, 4);
 
   if (!userloggedIn) return null;
 

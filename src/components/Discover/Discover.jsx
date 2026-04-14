@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { FaSearch, FaStar, FaTimes } from "react-icons/fa";
-import { ReleaseList } from "../../data/Release.js";
+import AllMovies from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./Discover.css";
@@ -16,7 +16,7 @@ export default function Discover() {
   const normalizedQuery = query.trim().toLowerCase();
 
   const results = useMemo(() => {
-    let filtered = [...ReleaseList];
+    let filtered = [...AllMovies];
 
     if (normalizedQuery) {
       filtered = filtered.filter((item) => {
@@ -80,6 +80,7 @@ export default function Discover() {
                 className="discover-searchbar"
                 placeholder="Search by title, genre, or keyword..."
                 aria-label="Search content"
+                focusable="true"
               />
               {query && (
                 <button

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { FiMenu, FiSearch, FiX } from "react-icons/fi";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/CineLux-Logo.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const isLoggedIn =
     typeof window !== "undefined" &&
     Boolean(window.localStorage.getItem("user")) &&
@@ -15,7 +16,6 @@ export default function Header() {
     typeof window !== "undefined"
       ? JSON.parse(window.localStorage.getItem("user"))
       : null;
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen((open) => !open);
@@ -25,8 +25,9 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
-  const toggleSearch = () => {
-    setIsSearchOpen((open) => !open);
+  const goToDiscover = () => {
+    setIsMenuOpen(false);
+    navigate("/discover");
   };
 
   return (
@@ -49,19 +50,13 @@ export default function Header() {
         </nav>
         <div className="header-actions-desktop d-none d-lg-flex align-items-center gap-2 gap-lg-3 ms-auto">
           <div className="header-search-wrapper">
-            <input
-              type="search"
-              className={`header-search-input${isSearchOpen ? " is-open" : ""}`}
-              placeholder="Search movies, shows…"
-              aria-label="Search"
-            />
             <button
               type="button"
               className="icon-btn"
-              aria-label={isSearchOpen ? "Close search" : "Open search"}
-              onClick={toggleSearch}
+              aria-label="Discover"
+              onClick={goToDiscover}
             >
-              {isSearchOpen ? <FiX /> : <FiSearch />}
+              <FiSearch />
             </button>
           </div>
           {!isLoggedIn ? (
@@ -127,18 +122,12 @@ export default function Header() {
 
           <div className="header-actions d-flex justify-content-start">
             <div className="header-search-wrapper">
-              <input
-                type="search"
-                className={`header-search-input header-search-mobile${isSearchOpen ? " is-open" : ""}`}
-                placeholder="Search movies, shows…"
-                aria-label="Search"
-              />
               <button
                 className="icon-btn"
-                aria-label={isSearchOpen ? "Close search" : "Open search"}
-                onClick={toggleSearch}
+                aria-label="Discover"
+                onClick={goToDiscover}
               >
-                {isSearchOpen ? <FiX /> : <FiSearch />}
+                <FiSearch />
               </button>
             </div>
             {!isLoggedIn && (

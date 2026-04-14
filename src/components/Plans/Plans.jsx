@@ -2,10 +2,12 @@ import Header from "../shared/Header/Header.jsx";
 import Footer from "../shared/Footer/Footer.jsx";
 import "./Plans.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LoginNotification } from "../shared/Notification/Notification.jsx";
 export default function Plans() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   const [showLoginNotification, setShowLoginNotification] = useState(false);
+  const navigate = useNavigate();
   const isLoggedIn =
     typeof window !== "undefined" &&
     Boolean(window.localStorage.getItem("user")) &&
@@ -17,7 +19,12 @@ export default function Plans() {
       return;
     }
 
-    alert(`You have selected the ${type} plan of ${selectedPlan}!`);
+    navigate("/payments", {
+      state: {
+        planType: type,
+        billingCycle: selectedPlan,
+      },
+    });
   }
 
   return (

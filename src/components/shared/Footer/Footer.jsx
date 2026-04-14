@@ -1,6 +1,5 @@
 import { FiFacebook, FiInstagram, FiTwitter } from "react-icons/fi";
 import "./Footer.css";
-import { FooterGroups } from "../../../data/FooterGroups";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/CineLux-Logo.png";
 
@@ -48,37 +47,35 @@ export default function Footer() {
 
           <div className="col-12 col-lg-7">
             <div className="row g-4">
-              {FooterGroups.map((group) => (
-                <div
-                  className="col-12 col-sm-6 col-md-4 footer-column"
-                  key={group.title}
-                >
-                  <h3>{group.title}</h3>
-                  <div className="footer-links">
-                    {group.links.map((link) => {
-                      const routeMap = {
-                        "About Us": "/about",
-                        Careers: "#",
-                        Press: "#",
-                        Investors: "#",
-                        "Help Center": "#",
-                        FAQs: "#",
-                        Support: "#",
-                        "Account & Billing": "/plans",
-                        "Terms of Service": "#",
-                        "Privacy Policy": "#",
-                        "Cookie Preferences": "#",
-                        Accessibility: "#",
-                      };
-                      return (
-                        <Link to={routeMap[link] ?? "#"} key={link}>
-                          {link}
-                        </Link>
-                      );
-                    })}
-                  </div>
+              <div className="col-12 col-sm-6 col-md-4 footer-column">
+                <h3>Company</h3>
+                <div className="footer-links">
+                  <Link to="/about">About Us</Link>
+                  <Link to="#">Careers</Link>
+                  <Link to="#">Press</Link>
+                  <Link to="#">Investors</Link>
                 </div>
-              ))}
+              </div>
+
+              <div className="col-12 col-sm-6 col-md-4 footer-column">
+                <h3>Help &amp; Support</h3>
+                <div className="footer-links">
+                  <Link to="#">Help Center</Link>
+                  <Link to="#">FAQs</Link>
+                  <Link to="#">Support</Link>
+                  <Link to="/plans">Account &amp; Billing</Link>
+                </div>
+              </div>
+
+              <div className="col-12 col-sm-6 col-md-4 footer-column">
+                <h3>Legal</h3>
+                <div className="footer-links">
+                  <Link to="#">Terms of Service</Link>
+                  <Link to="#">Privacy Policy</Link>
+                  <Link to="#">Cookie Preferences</Link>
+                  <Link to="#">Accessibility</Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
