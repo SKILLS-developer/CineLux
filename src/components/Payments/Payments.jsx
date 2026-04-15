@@ -23,7 +23,7 @@ export default function Payments() {
   return (
     <>
       <Header />
-      <div className="Space"></div>
+      <div className="Spacer"></div>
       <main className="payments-page">
         <section className="payments-card" aria-labelledby="payments-title">
           <div className="payments-top">

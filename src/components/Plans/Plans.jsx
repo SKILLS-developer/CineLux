@@ -30,7 +30,7 @@ export default function Plans() {
   return (
     <>
       <Header />
-      <div className="Space"></div>
+      <div className="Spacer"></div>
       {showLoginNotification && (
         <LoginNotification onClose={() => setShowLoginNotification(false)} />
       )}

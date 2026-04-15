@@ -58,7 +58,6 @@ export default function Discover() {
     <>
       <Header />
       <div className="Spacer"></div>
-
       <section className="discover-page">
         <div className="discover-shell">
           <header className="discover-header">

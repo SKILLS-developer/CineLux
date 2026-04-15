@@ -13,12 +13,12 @@ export default function Shows() {
   const [showSubscriptionNotification, setShowSubscriptionNotification] =
     useState(false);
 
-  function handleClick(release) {
-    if (!release.isFree) {
+  function handleClick(show) {
+    if (!show.isFree) {
       setShowSubscriptionNotification(true);
       return;
     }
-    navigate(`/play/${release.id}`);
+    navigate(`/play/${show.id}`);
   }
 
   return (

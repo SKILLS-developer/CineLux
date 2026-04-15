@@ -13,7 +13,7 @@ export default function Login() {
     if (user && email === user.email && password === user.password) {
       alert(`Login Successful!\nWelcome back, ${user.name}!`);
       localStorage.setItem("isLoggedIn", "true");
-      navigate("/");
+      navigate("/", { replace: true });
     } else {
       alert("Invalid email or password. Please try again.");
     }

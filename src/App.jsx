@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import SignUp from "./components/Auth/SignUp";
 import Login from "./components/Auth/Login";
 import Home from "./components/Home/Home";
@@ -16,6 +21,7 @@ function App() {
     <Router>
       <div className="route-page-transition">
         <Routes>
+          <Route path="*" element={<Navigate to="/" replace/>} />
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
