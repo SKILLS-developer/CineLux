@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiBookmark, FiPlay, FiPlayCircle } from "react-icons/fi";
 import Header from "../../shared/Header/Header";
 import "./Hero.css";
@@ -8,7 +8,10 @@ export default function Hero() {
   const navigate = useNavigate();
   const [activeSlide, setActiveSlide] = useState(0);
   const [isTrailerHover, setIsTrailerHover] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem("favoritedVideos");
+    return new Set(saved ? JSON.parse(saved) : []);
+  });
   const slide = HeroSlides[activeSlide];
   const hasMp4Trailer =
     typeof slide.trailer === "string" &&
@@ -16,6 +19,24 @@ export default function Hero() {
   function handleClick(slide) {
     navigate(`/play/${slide.id}`);
   }
+
+  useEffect(() => {
+    localStorage.setItem(
+      "favoritedVideos",
+      JSON.stringify(Array.from(favorites)),
+    );
+  }, [favorites]);
+
+  const toggleFavorite = (e) => {
+    e.stopPropagation();
+    const newFavorites = new Set(favorites);
+    if (newFavorites.has(slide.id)) {
+      newFavorites.delete(slide.id);
+    } else {
+      newFavorites.add(slide.id);
+    }
+    setFavorites(newFavorites);
+  };
   return (
     <section
       className="hero position-relative overflow-hidden min-vh-100"
@@ -45,9 +66,7 @@ export default function Hero() {
             muted
             loop
             playsInline
-            
             preload="metadata"
-            
           />
         )}
       </div>
@@ -82,16 +101,18 @@ export default function Hero() {
               </button>
               <button
                 type="button"
-                className={`btn hero-btn hero-btn-ghost `}
-                onClick={() => setIsFavorite(!isFavorite)}
-                aria-pressed={isFavorite}
+                className={`btn hero-btn hero-btn-ghost ${favorites.has(slide.id) ? "favorited" : ""}`}
+                onClick={toggleFavorite}
+                aria-pressed={favorites.has(slide.id)}
               >
                 <FiBookmark
-                  color={isFavorite ? "#facc15" : "currentColor"}
-                  stroke={isFavorite ? "#facc15" : "currentColor"}
-                  fill={isFavorite ? "#facc15" : "none"}
+                  color={favorites.has(slide.id) ? "#facc15" : "currentColor"}
+                  stroke={favorites.has(slide.id) ? "#facc15" : "currentColor"}
+                  fill={favorites.has(slide.id) ? "#facc15" : "none"}
                 />
-                Add to Wishlist
+                {favorites.has(slide.id)
+                  ? "Added to Favorites"
+                  : "Add to Favorites"}
               </button>
             </div>
           </div>

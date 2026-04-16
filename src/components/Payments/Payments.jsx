@@ -1,10 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../shared/Header/Header.jsx";
 import Footer from "../shared/Footer/Footer.jsx";
 import "./Payments.css";
 
 export default function Payments() {
   const location = useLocation();
+  const navigate = useNavigate();
   const planType = location.state?.planType ?? "Standard";
   const billingCycle = location.state?.billingCycle ?? "monthly";
   const totalPrice =
@@ -19,6 +20,33 @@ export default function Payments() {
         : billingCycle === "yearly"
           ? "169.99"
           : "19.99";
+  const renewalDate = (() => {
+    const next = new Date();
+    if (billingCycle === "yearly") {
+      next.setFullYear(next.getFullYear() + 1);
+    } else {
+      next.setMonth(next.getMonth() + 1);
+    }
+    return next.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  })();
+
+  const handleFinishPayment = () => {
+    const subscription = {
+      plan: planType,
+      status: "Active",
+      renewalDate,
+      price: `$${totalPrice}/${billingCycle}`,
+      billingCycle,
+      startedAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem("subscription", JSON.stringify(subscription));
+    navigate("/profile");
+  };
 
   return (
     <>
@@ -116,6 +144,7 @@ export default function Payments() {
               <button
                 type="button"
                 className="payments-btn payments-btn-primary"
+                onClick={handleFinishPayment}
               >
                 Pay ${totalPrice}
               </button>

@@ -15,7 +15,10 @@ export default function SignUp() {
       month: "long",
       year: "numeric",
     });
-    const user = { name, email, password, memberSince };
+    const watchHistory = [];
+    const savedTitles = [];
+    const isSubscribed = false;
+    const user = { name, email, password, memberSince, watchHistory, savedTitles, isSubscribed };
     localStorage.setItem("user", JSON.stringify(user));
     alert(
       `Registered Successfully! Welcome, ${user.name}!\nPlease log in to continue.`,

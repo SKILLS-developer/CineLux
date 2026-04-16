@@ -7,8 +7,8 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import  MovieData  from "../../data/Data.js";
+import { useEffect, useState } from "react";
+import MovieData from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./Profile.css";
@@ -16,6 +16,14 @@ import "./Profile.css";
 export default function Profile() {
   const navigate = useNavigate();
   const userloggedIn = JSON.parse(localStorage.getItem("user"));
+  const [favoritedVideos, setFavoritedVideos] = useState([]);
+  const [watchHistory, setWatchHistory] = useState([]);
+  const [subscription, setSubscription] = useState({
+    plan: "No active plan",
+    status: "Inactive",
+    renewalDate: "-",
+    price: "-",
+  });
 
   useEffect(() => {
     if (!userloggedIn) {
@@ -23,26 +31,68 @@ export default function Profile() {
     }
   }, [userloggedIn, navigate]);
 
+  useEffect(() => {
+    const loadProfileVideoData = () => {
+      try {
+        const saved = localStorage.getItem("favoritedVideos");
+        const favoriteIds = saved ? JSON.parse(saved) : [];
+        const favorites = MovieData.filter((video) =>
+          favoriteIds.includes(video.id),
+        );
+        setFavoritedVideos(favorites);
+
+        const savedHistory = localStorage.getItem("watchHistoryVideos");
+        const historyIds = savedHistory ? JSON.parse(savedHistory) : [];
+        const history = historyIds
+          .map((id) => MovieData.find((video) => video.id === id))
+          .filter(Boolean);
+        setWatchHistory(history);
+
+        const savedSubscription = localStorage.getItem("subscription");
+        const parsedSubscription = savedSubscription
+          ? JSON.parse(savedSubscription)
+          : null;
+
+        if (parsedSubscription) {
+          setSubscription(parsedSubscription);
+        } else {
+          setSubscription({
+            plan: "No active plan",
+            status: "InActive",
+            renewalDate: "-",
+            price: "-",
+          });
+        }
+      } catch {
+        setFavoritedVideos([]);
+        setWatchHistory([]);
+        setSubscription({
+          plan: "No active plan",
+          status: "InActive",
+          renewalDate: "-",
+          price: "-",
+        });
+      }
+    };
+
+    loadProfileVideoData();
+
+    // Keep profile data updated when localStorage changes.
+    const handleStorageChange = () => loadProfileVideoData();
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
   // Mock user data
   const user = {
     name: "Alex Anderson",
     email: "alex.anderson@example.com",
     memberSince: "January 2023",
-    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(userloggedIn.email)}`,
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(userloggedIn?.email || "alex.anderson@example.com")}`,
   };
-
-  const subscription = {
-    plan: "Premium",
-    status: "Active",
-    renewalDate: "April 28, 2026",
-    price: "$29.99/month",
-  };
-
-  // Mock watch history (last 6 items)
-  const watchHistory = MovieData.slice(0, 6);
-
-  // Mock saved titles (favorited items)
-  const savedTitles = MovieData.filter((_, i) => i % 2 === 0).slice(0, 4);
 
   if (!userloggedIn) return null;
 
@@ -89,7 +139,9 @@ export default function Profile() {
               </div>
               <div className="subscription-item">
                 <span className="subscription-label">Status</span>
-                <span className="subscription-value status-active">
+                <span
+                  className={`subscription-value ${subscription.status === "Active" ? "status-active" : "status-inactive"}`}
+                >
                   {subscription.status}
                 </span>
               </div>
@@ -103,7 +155,14 @@ export default function Profile() {
                   {subscription.renewalDate}
                 </span>
               </div>
-              <button className="subscription-btn">Manage Subscription</button>
+              {subscription.status === "InActive" && (
+                <button
+                  className="subscription-btn"
+                  onClick={() => navigate("/plans")}
+                >
+                  Subscribe
+                </button>
+              )}
             </div>
           </div>
 
@@ -118,14 +177,20 @@ export default function Profile() {
               </Link>
             </div>
             <div className="history-grid">
-              {watchHistory.map((item) => (
-                <div key={item.id} className="history-item">
-                  <img src={item.thumbnail} alt={item.title} />
-                  <div className="history-overlay">
-                    <h4>{item.title}</h4>
+              {watchHistory.length > 0 ? (
+                watchHistory.map((item) => (
+                  <div key={item.id} className="history-item">
+                    <img src={item.thumbnail} alt={item.title} />
+                    <div className="history-overlay">
+                      <h4>{item.title}</h4>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="no-favorites">
+                  No watch history yet. Start playing videos to see them here.
+                </p>
+              )}
             </div>
           </div>
 
@@ -140,18 +205,25 @@ export default function Profile() {
               </Link>
             </div>
             <div className="favorites-grid">
-              {savedTitles.map((item) => (
-                <div key={item.id} className="favorite-card">
-                  <img src={item.thumbnail} alt={item.title} />
-                  <div className="favorite-info">
-                    <h4>{item.title}</h4>
-                    <div className="favorite-meta">
-                      <span>{item.rating} ⭐</span>
-                      <span>{item.type}</span>
+              {favoritedVideos.length > 0 ? (
+                favoritedVideos.map((item) => (
+                  <div key={item.id} className="favorite-card">
+                    <img src={item.thumbnail} alt={item.title} />
+                    <div className="favorite-info">
+                      <h4>{item.title}</h4>
+                      <div className="favorite-meta">
+                        <span>{item.rating} ⭐</span>
+                        <span>{item.type}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="no-favorites">
+                  No favorite videos yet. Start adding your favorites on the
+                  Play page!
+                </p>
+              )}
             </div>
           </div>
 

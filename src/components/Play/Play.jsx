@@ -1,9 +1,19 @@
-﻿import { useState } from "react";
-import { FaClock, FaEye, FaFilm, FaStar } from "react-icons/fa";
+﻿import { useState, useEffect } from "react";
+import { FaClock, FaEye, FaFilm, FaStar, FaHeart } from "react-icons/fa";
 import MovieData from "../../data/Data.js";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Play.css";
 import Header from "../shared/Header/Header";
+
+const getStoredArray = (key) => {
+  try {
+    const value = localStorage.getItem(key);
+    const parsed = value ? JSON.parse(value) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
 
 const suggestions = MovieData.map((item) => ({
   id: item.id,
@@ -26,11 +36,45 @@ export default function Play() {
   const [activeVideo, setActiveVideo] = useState(
     MovieData.find((item) => item.id === videoId) || suggestions[0],
   );
+  const [favorites, setFavorites] = useState(() => {
+    return new Set(getStoredArray("favoritedVideos"));
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      "favoritedVideos",
+      JSON.stringify(Array.from(favorites)),
+    );
+  }, [favorites]);
+
+  useEffect(() => {
+    if (!activeVideo?.id) return;
+
+    const existingHistory = getStoredArray("watchHistoryVideos");
+    const dedupedHistory = [
+      activeVideo.id,
+      ...existingHistory.filter((id) => id !== activeVideo.id),
+    ].slice(0, 12);
+
+    localStorage.setItem("watchHistoryVideos", JSON.stringify(dedupedHistory));
+  }, [activeVideo]);
+
   const handleVideoSelect = (item) => {
     setActiveVideo(item);
     navigate(`/play/${item.id}`, { replace: true });
   };
-  
+
+  const toggleFavorite = (e) => {
+    e.stopPropagation();
+    const newFavorites = new Set(favorites);
+    if (newFavorites.has(activeVideo.id)) {
+      newFavorites.delete(activeVideo.id);
+    } else {
+      newFavorites.add(activeVideo.id);
+    }
+    setFavorites(newFavorites);
+  };
+
   return (
     <>
       <Header />
@@ -83,6 +127,17 @@ export default function Play() {
                     <FaStar /> {activeVideo.rating}
                   </span>
                   <span>Released: {activeVideo.releaseDate}</span>
+                  <button
+                    className={`favorite-btn ${favorites.has(activeVideo.id) ? "favorited" : ""}`}
+                    onClick={toggleFavorite}
+                    type="button"
+                    aria-label="Add to favorites"
+                  >
+                    <FaHeart />{" "}
+                    {favorites.has(activeVideo.id)
+                      ? "Favorited"
+                      : "Add to Favorites"}
+                  </button>
                 </div>
 
                 <p>{activeVideo.description}</p>

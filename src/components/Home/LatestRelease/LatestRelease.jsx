@@ -26,7 +26,7 @@ export default function LatestRelease() {
     });
   };
   function handleClick(release) {
-    if (!release.isFree) {
+    if (!release.isFree && (!localStorage.getItem("user") || JSON.parse(localStorage.getItem("user")).isSubscribed === false)) {
       setShowSubscriptionNotification(true);
       return;
     }

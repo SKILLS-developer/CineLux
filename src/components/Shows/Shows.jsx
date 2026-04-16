@@ -14,7 +14,7 @@ export default function Shows() {
     useState(false);
 
   function handleClick(show) {
-    if (!show.isFree) {
+    if (!show.isFree && (!localStorage.getItem("user") || JSON.parse(localStorage.getItem("user")).isSubscribed === false)) {
       setShowSubscriptionNotification(true);
       return;
     }
