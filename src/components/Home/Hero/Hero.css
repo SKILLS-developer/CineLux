@@ -133,7 +133,6 @@
 .hero-year {
   margin: 0;
   color: rgba(246, 248, 255, 0.78);
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0.02em;
@@ -142,7 +141,6 @@
 .hero-title {
   margin: 0.45rem 0 0;
   color: #ffffff;
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: clamp(2.2rem, 5.8vw, 4.3rem);
   font-weight: 700;
   line-height: 1;
@@ -152,7 +150,6 @@
 .hero-meta {
   margin: 1rem 0 0;
   color: rgba(246, 248, 255, 0.9);
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: 1.85rem;
   font-weight: 500;
   line-height: 1.2;
@@ -162,7 +159,6 @@
   margin: 1rem 0 0;
   max-width: 610px;
   color: rgba(233, 235, 242, 0.93);
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: clamp(1rem, 2.1vw, 1.35rem);
   line-height: 1.35;
 }
@@ -176,7 +172,6 @@
   padding: 0.68rem 1.55rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: 1.07rem;
   font-weight: 600;
   cursor: pointer;

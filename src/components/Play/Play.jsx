@@ -30,7 +30,7 @@ export default function Play() {
     setActiveVideo(item);
     navigate(`/play/${item.id}`, { replace: true });
   };
-  //window. history.pushState(null, "", `/play/${item.id} );
+  
   return (
     <>
       <Header />

@@ -1,0 +1,79 @@
+/* Shared layout for catalog pages (Shows, Upcoming) */
+
+.shows-page,
+.upcoming-page {
+  padding: 2rem 2rem 4.5rem;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.05), transparent 28%),
+    linear-gradient(180deg, #050505 0%, #0d0d12 100%);
+}
+
+.shows-shell,
+.upcoming-shell {
+  width: min(100%, 1600px);
+  margin: 0 auto;
+}
+
+.shows-heading,
+.upcoming-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.shows-kicker,
+.upcoming-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.shows-heading h1,
+.upcoming-heading h1 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.shows-count,
+.upcoming-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+  .shows-page,
+  .upcoming-page {
+    padding: 1.75rem 1.5rem 3.5rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .shows-heading,
+  .upcoming-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .shows-page,
+  .upcoming-page {
+    padding: 1.5rem 1rem 3rem;
+  }
+}

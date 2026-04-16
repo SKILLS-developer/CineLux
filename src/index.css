@@ -1,12 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "./styles/home-rail-shared.css";
-* {
-  color: #f6f8ff;
-}
+@import "./styles/catalog-page.css";
+
 body {
   font-family: "Inter", sans-serif;
   background: #070b14;
   color: #f6f8ff;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+.auth-card,
+.hero,
+.header,
+.notification {
+  font-family: "Outfit", "Segoe UI", sans-serif;
 }
 
 .route-page-transition {

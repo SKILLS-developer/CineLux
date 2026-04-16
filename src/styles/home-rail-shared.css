@@ -1,13 +1,11 @@
-.latest-release-shell,
-.trending-shell {
+.rail-shell {
   max-width: 100%;
   margin: 0 auto;
   position: relative;
   z-index: 1;
 }
 
-.latest-release-heading,
-.trending-heading {
+.rail-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,23 +15,20 @@
   z-index: 3;
 }
 
-.latest-release-heading h2,
-.trending-heading h2 {
+.rail-heading h2 {
   margin: 0;
   font-size: clamp(1.5rem, 2.4vw, 2rem);
   font-weight: 700;
   letter-spacing: -0.03em;
 }
 
-.latest-release-controls,
-.trending-controls {
+.rail-controls {
   display: flex;
   align-items: center;
   gap: 0.65rem;
 }
 
-.release-nav-btn,
-.trending-nav-btn {
+.rail-nav-btn {
   width: 2.9rem;
   height: 2.9rem;
   display: grid;
@@ -49,20 +44,17 @@
     border-color 0.2s ease;
 }
 
-.release-nav-btn:hover,
-.trending-nav-btn:hover {
+.rail-nav-btn:hover {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.28);
 }
 
-.release-nav-btn-primary,
-.trending-nav-btn-primary {
+.rail-nav-btn-primary {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.latest-release-rail,
-.trending-rail {
+.rail-track {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(320px, 25vw);
@@ -74,42 +66,35 @@
   z-index: 1;
 }
 
-.latest-release-rail::-webkit-scrollbar,
-.trending-rail::-webkit-scrollbar {
+.rail-track::-webkit-scrollbar {
   display: none;
 }
 
-.release-card,
-.trending-card {
+.rail-card {
   scroll-snap-align: start;
 }
 
-.release-meta-data,
-.trending-meta-data {
+.rail-meta-data {
   letter-spacing: 0.01em;
 }
 
 @media (max-width: 900px) {
-  .latest-release-rail,
-  .trending-rail {
+  .rail-track {
     grid-auto-columns: minmax(260px, 76vw);
   }
 }
 
 @media (max-width: 640px) {
-  .latest-release-heading,
-  .trending-heading {
+  .rail-heading {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .latest-release-controls,
-  .trending-controls {
+  .rail-controls {
     display: none;
   }
 
-  .latest-release-rail,
-  .trending-rail {
+  .rail-track {
     grid-auto-columns: minmax(240px, 82vw);
     gap: 1rem;
   }

@@ -18,8 +18,6 @@ export default function MediaCard({
   rating,
   meta,
   onClick,
-  loading = "lazy",
-  decoding = "async",
 }) {
   return (
     <article className={classNames("media-card", className)} onClick={onClick}>
@@ -29,7 +27,7 @@ export default function MediaCard({
         </span>
       ) : null}
 
-      <img src={imageSrc} alt={imageAlt} loading={loading} decoding={decoding} />
+      <img src={imageSrc} alt={imageAlt} loading="lazy" decoding="async" />
 
       <div className={classNames("media-card-overlay", overlayClassName)}>
         <h3 className="media-card-title">{title}</h3>
@@ -41,7 +39,9 @@ export default function MediaCard({
             </span>
           ) : null}
           {meta ? (
-            <span className={classNames("media-card-meta-text", metaTextClassName)}>
+            <span
+              className={classNames("media-card-meta-text", metaTextClassName)}
+            >
               {meta}
             </span>
           ) : null}

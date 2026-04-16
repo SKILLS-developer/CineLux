@@ -15,7 +15,7 @@ export default function Trending() {
   const scrollRail = (direction) => {
     if (!railRef.current) return;
 
-    const card = railRef.current.querySelector(".trending-card");
+    const card = railRef.current.querySelector(".rail-card");
     const scrollAmount = card
       ? card.getBoundingClientRect().width + 24
       : railRef.current.clientWidth * 0.8;
@@ -42,13 +42,13 @@ export default function Trending() {
           onClose={() => setShowSubscriptionNotification(false)}
         />
       )}
-      <div className="trending-shell">
-        <div className="trending-heading">
+      <div className="rail-shell">
+        <div className="rail-heading">
           <h2>Trending Worldwide</h2>
-          <div className="trending-controls" aria-label="trending navigation">
+          <div className="rail-controls" aria-label="trending navigation">
             <button
               type="button"
-              className="trending-nav-btn"
+              className="rail-nav-btn"
               aria-label="Show previous trending titles"
               onClick={() => scrollRail(-1)}
             >
@@ -56,7 +56,7 @@ export default function Trending() {
             </button>
             <button
               type="button"
-              className="trending-nav-btn trending-nav-btn-primary"
+              className="rail-nav-btn rail-nav-btn-primary"
               aria-label="Show next trending titles"
               onClick={() => scrollRail(1)}
             >
@@ -65,16 +65,16 @@ export default function Trending() {
           </div>
         </div>
 
-        <div className="trending-rail" ref={railRef}>
+        <div className="rail-track" ref={railRef}>
           {trendingList.slice(5).map((release) => (
             <MediaCard
               key={release.id}
-              className="trending-card"
+              className="rail-card"
               tagClassName={`trending-type ${release.isFree === true ? "free" : "paid"}`}
               overlayClassName="trending-card-overlay"
               metaClassName="trending-card-meta"
               ratingClassName="trending-rating"
-              metaTextClassName="trending-meta-data"
+              metaTextClassName="rail-meta-data"
               tagText={release.isFree === true ? "free" : "paid"}
               imageSrc={release.thumbnail}
               imageAlt={release.title}

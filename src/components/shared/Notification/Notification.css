@@ -28,14 +28,12 @@
 .notification p {
   margin: 0;
   color: rgba(247, 248, 255, 0.92);
-  font-family: "Outfit", "Segoe UI", sans-serif;
 }
 
 .notification-title {
   margin: 0;
   padding-right: 1.8rem;
   color: #ffffff;
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: 1.12rem;
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -44,7 +42,6 @@
 .notification-message {
   margin: 0;
   color: rgba(247, 248, 255, 0.94);
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: 0.95rem;
   line-height: 1.45;
 }
@@ -52,7 +49,6 @@
 .notification-note {
   margin: -0.1rem 0 0;
   color: rgba(247, 248, 255, 0.66);
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-size: 0.86rem;
   line-height: 1.4;
 }
@@ -86,7 +82,6 @@
   border-radius: 8px;
   background: linear-gradient(135deg, #00a86b 0%, #00a86b 100%);
   color: #ffffff;
-  font-family: "Outfit", "Segoe UI", sans-serif;
   font-weight: 600;
   cursor: pointer;
   transition:
