@@ -1,0 +1,441 @@
+/* ==========================================
+   ALL CONTENT — CineLux Admin
+   ========================================== */
+
+/* ── Content Table ── */
+.adm-table-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.adm-table-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adm-table-section__header h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f6f8ff;
+}
+
+.adm-table-wrapper {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(12, 14, 24, 0.75);
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.adm-table thead tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.adm-table th {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(246, 248, 255, 0.42);
+  white-space: nowrap;
+}
+
+.adm-table td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.adm-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.adm-table tbody tr {
+  transition: background 150ms;
+}
+
+.adm-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Thumbnail */
+.adm-thumb {
+  width: 56px;
+  height: 38px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.adm-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adm-thumb__placeholder {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(246, 248, 255, 0.28);
+  font-size: 1rem;
+}
+
+.adm-table__title {
+  font-weight: 500;
+  color: #f6f8ff;
+  white-space: nowrap;
+}
+
+.adm-table__meta {
+  color: rgba(246, 248, 255, 0.5);
+  font-size: 0.8rem;
+}
+
+.adm-table__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #f6c90e;
+  font-size: 0.82rem;
+}
+
+/* Badges */
+.adm-badge {
+  display: inline-block;
+  padding: 0.25em 0.65em;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+}
+
+.adm-badge--movie {
+  background: rgba(99, 179, 237, 0.14);
+  color: #63b3ed;
+  border: 1px solid rgba(99, 179, 237, 0.3);
+}
+.adm-badge--series {
+  background: rgba(159, 122, 234, 0.14);
+  color: #9f7aea;
+  border: 1px solid rgba(159, 122, 234, 0.3);
+}
+.adm-badge--free {
+  background: rgba(0, 168, 107, 0.14);
+  color: #00a86b;
+  border: 1px solid rgba(0, 168, 107, 0.3);
+}
+.adm-badge--premium {
+  background: rgba(255, 152, 78, 0.14);
+  color: #ff984e;
+  border: 1px solid rgba(255, 152, 78, 0.3);
+}
+
+/* Action buttons */
+.adm-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.adm-icon-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: rgba(246, 248, 255, 0.5);
+  transition:
+    background 150ms,
+    color 150ms,
+    border-color 150ms;
+}
+
+.adm-icon-btn--edit:hover {
+  background: rgba(99, 179, 237, 0.14);
+  color: #63b3ed;
+  border-color: rgba(99, 179, 237, 0.35);
+}
+
+.adm-icon-btn--delete:hover {
+  background: rgba(252, 129, 129, 0.14);
+  color: #fc8181;
+  border-color: rgba(252, 129, 129, 0.35);
+}
+
+/* ── Buttons ── */
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 9px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background 150ms,
+    opacity 150ms,
+    transform 120ms;
+  line-height: 1;
+}
+
+.adm-btn:active {
+  transform: scale(0.97);
+}
+
+.adm-btn--primary {
+  background: #00a86b;
+  color: #fff;
+  border-color: #00a86b;
+}
+
+.adm-btn--primary:hover {
+  background: #00c97f;
+  border-color: #00c97f;
+}
+
+.adm-btn--ghost {
+  background: transparent;
+  color: rgba(246, 248, 255, 0.62);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.adm-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #f6f8ff;
+}
+
+/* ── Modal ── */
+.adm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: admOverlayIn 200ms ease;
+}
+
+@keyframes admOverlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.adm-modal {
+  width: 100%;
+  max-width: 560px;
+  border-radius: 18px;
+  background: rgba(11, 14, 24, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.55);
+  animation: admModalIn 260ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+@keyframes admModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.adm-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.adm-modal__header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f6f8ff;
+  margin: 0;
+}
+
+.adm-modal__close {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  border: none;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(246, 248, 255, 0.55);
+  cursor: pointer;
+  font-size: 1rem;
+  transition:
+    background 150ms,
+    color 150ms;
+}
+
+.adm-modal__close:hover {
+  background: rgba(255, 255, 255, 0.13);
+  color: #f6f8ff;
+}
+
+.adm-modal__form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.adm-modal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.adm-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.adm-form-field label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(246, 248, 255, 0.48);
+  text-transform: uppercase;
+}
+
+.adm-form-field input,
+.adm-form-field select {
+  padding: 0.6rem 0.85rem;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f6f8ff;
+  font-size: 0.875rem;
+  outline: none;
+  transition:
+    border-color 180ms,
+    background 180ms;
+}
+
+.adm-form-field input::placeholder {
+  color: rgba(246, 248, 255, 0.28);
+}
+
+.adm-form-field input:focus,
+.adm-form-field select:focus {
+  border-color: rgba(0, 168, 107, 0.55);
+  background: rgba(0, 168, 107, 0.04);
+}
+
+.adm-form-field select option {
+  background: #0a0f1d;
+}
+
+/* Toggle switch */
+.adm-form-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.adm-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.adm-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.adm-toggle__slider {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transition:
+    background 200ms,
+    border-color 200ms;
+  flex-shrink: 0;
+}
+
+.adm-toggle__slider::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(246, 248, 255, 0.45);
+  transition:
+    transform 200ms,
+    background 200ms;
+}
+
+.adm-toggle input:checked + .adm-toggle__slider {
+  background: rgba(0, 168, 107, 0.35);
+  border-color: rgba(0, 168, 107, 0.55);
+}
+
+.adm-toggle input:checked + .adm-toggle__slider::after {
+  transform: translateX(20px);
+  background: #00a86b;
+}
+
+.adm-toggle__label {
+  font-size: 0.875rem;
+  color: rgba(246, 248, 255, 0.65);
+  min-width: 90px;
+}
+
+.adm-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .adm-modal__grid {
+    grid-template-columns: 1fr;
+  }
+}

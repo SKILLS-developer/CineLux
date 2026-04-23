@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import SignUp from "./components/Auth/SignUp";
 import Login from "./components/Auth/Login";
+import AdminDashboard from "./components/admin/Dashboard/Dashboard";
 import Home from "./components/Home/Home";
 import Plans from "./components/Plans/Plans";
 import Play from "./components/Play/Play";
@@ -21,7 +22,7 @@ function App() {
     <Router>
       <div className="route-page-transition">
         <Routes>
-          <Route path="*" element={<Navigate to="/" replace/>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
@@ -33,6 +34,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
           <Route path="/payments" element={<Payments />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </div>
     </Router>
