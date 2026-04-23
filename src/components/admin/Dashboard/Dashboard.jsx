@@ -1,92 +1,63 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FiFilm,
   FiUsers,
   FiSettings,
   FiHome,
   FiLogOut,
-  FiMenu,
   FiEye,
   FiLock,
   FiUnlock,
-  FiTrendingUp,
-  FiBarChart2,
 } from "react-icons/fi";
 import Data from "../../../data/Data.js";
 import AllContent from "../AllContent/AllContent.jsx";
+import logo from "../../../assets/CineLux-Logo.png";
 import "./Dashboard.css";
 
+const NAV_ITEMS = [
+  { key: "dashboard", label: "Dashboard", icon: <FiHome /> },
+  { key: "content", label: "Content", icon: <FiFilm /> },
+  { key: "users", label: "Users", icon: <FiUsers /> },
+  { key: "settings", label: "Settings", icon: <FiSettings /> },
+];
+
+function formatViews(v) {
+  if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
+  if (v >= 1_000) return (v / 1_000).toFixed(1) + "K";
+  return String(v || 0);
+}
+
 export default function AdminDashboard() {
+  const navigate = useNavigate();
+  if (localStorage.getItem("isAdmin") !== "true") {
+    alert("Access denied. Please log in as admin.");
+    navigate("/admin/login");
+  }
   const [activeSection, setActiveSection] = useState("dashboard");
   const [mediaList, setMediaList] = useState(Data);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const stats = useMemo(() => {
-    const total = mediaList.length;
-    const totalViews = mediaList.reduce((s, m) => s + (m.views || 0), 0);
-    const freeCount = mediaList.filter((m) => m.isFree).length;
-    const premiumCount = total - freeCount;
-    const movieCount = mediaList.filter((m) => m.type === "movie").length;
-    const seriesCount = mediaList.filter((m) => m.type === "series").length;
-    return {
-      total,
-      totalViews,
-      freeCount,
-      premiumCount,
-      movieCount,
-      seriesCount,
-    };
-  }, [mediaList]);
-
-  const topByViews = useMemo(
-    () =>
-      [...mediaList]
-        .sort((a, b) => (b.views || 0) - (a.views || 0))
-        .slice(0, 6),
-    [mediaList],
-  );
-  const maxViews = topByViews[0]?.views || 1;
-
-  const formatViews = (v) => {
-    if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
-    if (v >= 1_000) return (v / 1_000).toFixed(1) + "K";
-    return v?.toString() ?? "0";
-  };
-
-  const navItems = [
-    { key: "dashboard", label: "Dashboard", icon: <FiHome /> },
-    { key: "content", label: "Content", icon: <FiFilm /> },
-    { key: "users", label: "Users", icon: <FiUsers /> },
-    { key: "settings", label: "Settings", icon: <FiSettings /> },
-  ];
+  const total = mediaList.length;
+  const freeCount = mediaList.filter((m) => m.isFree).length;
+  const premiumCount = total - freeCount;
+  const totalViews = mediaList.reduce((s, m) => s + (m.views || 0), 0);
 
   return (
     <div className="adm-layout">
-      {sidebarOpen && (
-        <div className="adm-overlay" onClick={() => setSidebarOpen(false)} />
-      )}
-
       {/* ── Sidebar ── */}
-      <aside
-        className={`adm-sidebar ${sidebarOpen ? "adm-sidebar--open" : ""}`}
-      >
+      <aside className="adm-sidebar">
         <div className="adm-sidebar__logo">
-          <span className="adm-logo-text">
-            Cine<span>Lux</span>
-          </span>
+          <img src={logo} alt="CineLux" className="adm-logo-img" />
           <span className="adm-sidebar__badge">Admin</span>
         </div>
 
         <nav className="adm-nav">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <button
               key={item.key}
               className={`adm-nav__item ${activeSection === item.key ? "adm-nav__item--active" : ""}`}
-              onClick={() => {
-                setActiveSection(item.key);
-                setSidebarOpen(false);
-              }}
+              onClick={() => setActiveSection(item.key)}
             >
               <span className="adm-nav__icon">{item.icon}</span>
               <span>{item.label}</span>
@@ -108,15 +79,8 @@ export default function AdminDashboard() {
       <main className="adm-main">
         {/* Top bar */}
         <div className="adm-topbar">
-          <button
-            className="adm-topbar__menu"
-            onClick={() => setSidebarOpen((o) => !o)}
-            aria-label="Toggle sidebar"
-          >
-            <FiMenu />
-          </button>
           <div className="adm-topbar__title">
-            {navItems.find((n) => n.key === activeSection)?.label}
+            {NAV_ITEMS.find((n) => n.key === activeSection)?.label}
           </div>
           <div className="adm-topbar__admin">
             <div className="adm-avatar">A</div>
@@ -135,7 +99,7 @@ export default function AdminDashboard() {
                     <FiFilm />
                   </div>
                   <div>
-                    <div className="adm-stat-card__value">{stats.total}</div>
+                    <div className="adm-stat-card__value">{total}</div>
                     <div className="adm-stat-card__label">Total Titles</div>
                   </div>
                 </div>
@@ -145,7 +109,7 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <div className="adm-stat-card__value">
-                      {formatViews(stats.totalViews)}
+                      {formatViews(totalViews)}
                     </div>
                     <div className="adm-stat-card__label">Total Views</div>
                   </div>
@@ -155,9 +119,7 @@ export default function AdminDashboard() {
                     <FiUnlock />
                   </div>
                   <div>
-                    <div className="adm-stat-card__value">
-                      {stats.freeCount}
-                    </div>
+                    <div className="adm-stat-card__value">{freeCount}</div>
                     <div className="adm-stat-card__label">Free Titles</div>
                   </div>
                 </div>
@@ -166,82 +128,8 @@ export default function AdminDashboard() {
                     <FiLock />
                   </div>
                   <div>
-                    <div className="adm-stat-card__value">
-                      {stats.premiumCount}
-                    </div>
+                    <div className="adm-stat-card__value">{premiumCount}</div>
                     <div className="adm-stat-card__label">Premium Titles</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Charts */}
-              <div className="adm-charts-row">
-                <div className="adm-chart-card">
-                  <div className="adm-chart-card__header">
-                    <FiBarChart2 />
-                    <span>Top Titles by Views</span>
-                  </div>
-                  <div className="adm-bar-chart">
-                    {topByViews.map((item) => (
-                      <div className="adm-bar-row" key={item.id}>
-                        <div className="adm-bar-row__label">{item.title}</div>
-                        <div className="adm-bar-row__track">
-                          <div
-                            className="adm-bar-row__fill"
-                            style={{
-                              width: `${(item.views / maxViews) * 100}%`,
-                            }}
-                          />
-                        </div>
-                        <div className="adm-bar-row__value">
-                          {formatViews(item.views)}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="adm-chart-card">
-                  <div className="adm-chart-card__header">
-                    <FiTrendingUp />
-                    <span>Content Breakdown</span>
-                  </div>
-                  <div className="adm-breakdown">
-                    {[
-                      {
-                        label: "Movies",
-                        count: stats.movieCount,
-                        mod: "green",
-                      },
-                      {
-                        label: "Series",
-                        count: stats.seriesCount,
-                        mod: "orange",
-                      },
-                      { label: "Free", count: stats.freeCount, mod: "blue" },
-                      {
-                        label: "Premium",
-                        count: stats.premiumCount,
-                        mod: "purple",
-                      },
-                    ].map(({ label, count, mod }) => (
-                      <div className="adm-breakdown__item" key={label}>
-                        <div className="adm-breakdown__top">
-                          <span>{label}</span>
-                          <span>{count}</span>
-                        </div>
-                        <div className="adm-breakdown__track">
-                          <div
-                            className={`adm-breakdown__fill adm-breakdown__fill--${mod}`}
-                            style={{
-                              width: stats.total
-                                ? `${(count / stats.total) * 100}%`
-                                : "0%",
-                            }}
-                          />
-                        </div>
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>

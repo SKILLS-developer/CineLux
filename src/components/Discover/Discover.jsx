@@ -27,17 +27,6 @@ export default function Discover() {
         );
       });
     }
-
-    if (contentType !== "all") {
-      filtered = filtered.filter((item) => item.type === contentType);
-    }
-
-    if (accessType !== "all") {
-      filtered = filtered.filter((item) =>
-        accessType === "free" ? item.isFree : !item.isFree,
-      );
-    }
-
     if (sortBy === "rating") {
       filtered.sort((a, b) => b.rating - a.rating);
     } else if (sortBy === "title") {
@@ -52,7 +41,7 @@ export default function Discover() {
     }
 
     return filtered;
-  }, [accessType, contentType, normalizedQuery, sortBy]);
+  }, [normalizedQuery, sortBy]);
 
   return (
     <>
@@ -107,30 +96,6 @@ export default function Discover() {
             </div>
 
             <div className="discover-filters">
-              <label className="filter-control">
-                <span>Type</span>
-                <select
-                  value={contentType}
-                  onChange={(event) => setContentType(event.target.value)}
-                >
-                  <option value="all">All</option>
-                  <option value="movie">Movies</option>
-                  <option value="series">Series</option>
-                </select>
-              </label>
-
-              <label className="filter-control">
-                <span>Access</span>
-                <select
-                  value={accessType}
-                  onChange={(event) => setAccessType(event.target.value)}
-                >
-                  <option value="all">All</option>
-                  <option value="free">Free</option>
-                  <option value="premium">Premium</option>
-                </select>
-              </label>
-
               <label className="filter-control">
                 <span>Sort</span>
                 <select
@@ -193,7 +158,6 @@ export default function Discover() {
           </section>
         </div>
       </section>
-
       <Footer />
     </>
   );

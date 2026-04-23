@@ -12,34 +12,32 @@ const EMPTY_FORM = {
   isFree: true,
 };
 
+const formatViews = (v) => {
+  if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
+  if (v >= 1_000) return (v / 1_000).toFixed(1) + "K";
+  return v?.toString() ?? "0";
+};
+
 export default function AllContent({ mediaList, setMediaList }) {
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [formData, setFormData] = useState(EMPTY_FORM);
 
-  const formatViews = (v) => {
-    if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
-    if (v >= 1_000) return (v / 1_000).toFixed(1) + "K";
-    return v?.toString() ?? "0";
-  };
-
-  const openAddModal = () => {
-    setEditItem(null);
-    setFormData(EMPTY_FORM);
-    setShowModal(true);
-  };
-
-  const openEditModal = (item) => {
+  const openModal = (item = null) => {
     setEditItem(item);
-    setFormData({
-      title: item.title,
-      meta: item.meta,
-      duration: item.duration,
-      type: item.type,
-      rating: item.rating,
-      views: item.views,
-      isFree: item.isFree,
-    });
+    setFormData(
+      item
+        ? {
+            title: item.title,
+            meta: item.meta,
+            duration: item.duration,
+            type: item.type,
+            rating: item.rating,
+            views: item.views,
+            isFree: item.isFree,
+          }
+        : EMPTY_FORM,
+    );
     setShowModal(true);
   };
 
@@ -48,56 +46,52 @@ export default function AllContent({ mediaList, setMediaList }) {
     setEditItem(null);
   };
 
-  const handleFormChange = (e) => {
-    const { name, value, type: inputType, checked } = e.target;
+  const handleFormChange = ({ target: { name, value, type, checked } }) =>
     setFormData((prev) => ({
       ...prev,
-      [name]: inputType === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const parsed = {
+      ...formData,
+      rating: parseFloat(formData.rating) || 0,
+      views: parseInt(formData.views) || 0,
+    };
     if (editItem) {
       setMediaList((prev) =>
-        prev.map((m) =>
-          m.id === editItem.id
-            ? {
-                ...m,
-                ...formData,
-                rating: parseFloat(formData.rating),
-                views: parseInt(formData.views) || 0,
-              }
-            : m,
-        ),
+        prev.map((m) => (m.id === editItem.id ? { ...m, ...parsed } : m)),
       );
     } else {
-      const newItem = {
-        ...formData,
-        id: `custom-${Date.now()}`,
-        rating: parseFloat(formData.rating) || 0,
-        views: parseInt(formData.views) || 0,
-        thumbnail: null,
-        videoUrl: null,
-        trailer: null,
-        createdAt: new Date().toISOString().split("T")[0],
-        releaseDate: new Date().toISOString().split("T")[0],
-      };
-      setMediaList((prev) => [newItem, ...prev]);
+      setMediaList((prev) => [
+        {
+          ...parsed,
+          id: `custom-${Date.now()}`,
+          thumbnail: null,
+          videoUrl: null,
+          trailer: null,
+          createdAt: new Date().toISOString().split("T")[0],
+          releaseDate: new Date().toISOString().split("T")[0],
+        },
+        ...prev,
+      ]);
     }
     closeModal();
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id) =>
     setMediaList((prev) => prev.filter((m) => m.id !== id));
-  };
 
   return (
     <>
       <div className="adm-table-section">
         <div className="adm-table-section__header">
           <h2>All Content</h2>
-          <button className="adm-btn adm-btn--primary" onClick={openAddModal}>
+          <button
+            className="adm-btn adm-btn--primary"
+            onClick={() => openModal()}
+          >
             <FiPlus /> Add Content
           </button>
         </div>
@@ -144,9 +138,7 @@ export default function AllContent({ mediaList, setMediaList }) {
                   <td>{formatViews(item.views)}</td>
                   <td>
                     <span
-                      className={`adm-badge ${
-                        item.isFree ? "adm-badge--free" : "adm-badge--premium"
-                      }`}
+                      className={`adm-badge adm-badge--${item.isFree ? "free" : "premium"}`}
                     >
                       {item.isFree ? "Free" : "Premium"}
                     </span>
@@ -155,7 +147,7 @@ export default function AllContent({ mediaList, setMediaList }) {
                     <div className="adm-actions">
                       <button
                         className="adm-icon-btn adm-icon-btn--edit"
-                        onClick={() => openEditModal(item)}
+                        onClick={() => openModal(item)}
                         title="Edit"
                       >
                         <FiEdit2 />

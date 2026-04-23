@@ -1,8 +1,21 @@
-
+import { useNavigate } from "react-router-dom";
 import "../../Auth/Auth.css";
 
-export default function Login() {
-  
+export default function LoginAdmin() {
+  const navigate = useNavigate();
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    if (email === "admin@gmail.com" && password === "admin123") {
+      localStorage.setItem("isAdmin", "true");
+      alert("Login successful! Redirecting to dashboard...");
+      navigate("/admin/dashboard");
+    } else {
+      alert("Invalid credentials. Please try again.");
+    }
+  }
 
   return (
     <section className="auth-page">
@@ -12,7 +25,7 @@ export default function Login() {
           Sign in to continue watching on CineLux.
         </p>
 
-        <form className="auth-form" >
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
             <label className="auth-label" htmlFor="login-email">
               Email

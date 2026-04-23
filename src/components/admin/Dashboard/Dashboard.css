@@ -45,16 +45,10 @@
   flex-shrink: 0;
 }
 
-.adm-logo-text {
-  font-family: "Outfit", "Segoe UI", sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #f6f8ff;
-}
-
-.adm-logo-text span {
-  color: #00a86b;
+.adm-logo-img {
+  height: 2rem;
+  width: auto;
+  object-fit: contain;
 }
 
 .adm-sidebar__badge {

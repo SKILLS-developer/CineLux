@@ -16,6 +16,7 @@ import Profile from "./components/Profile/Profile";
 import About from "./components/About/About";
 import Discover from "./components/Discover/Discover";
 import Payments from "./components/Payments/Payments";
+import LoginAdmin from "./components/admin/Login/Login";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
           <Route path="/payments" element={<Payments />} />
+          <Route path="/admin/login" element={<LoginAdmin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </div>
