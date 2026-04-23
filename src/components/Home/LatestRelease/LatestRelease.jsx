@@ -4,7 +4,6 @@ import ReleaseList from "../../../data/Data.js";
 import { SubscriptionNotification } from "../../shared/Notification/Notification.jsx";
 import { useNavigate } from "react-router-dom";
 import MediaCard from "../../shared/MediaCard/MediaCard.jsx";
-import "./LatestRelease.css";
 
 export default function LatestRelease() {
   const railRef = useRef(null);
@@ -26,7 +25,11 @@ export default function LatestRelease() {
     });
   };
   function handleClick(release) {
-    if (!release.isFree && (!localStorage.getItem("user") || JSON.parse(localStorage.getItem("user")).isSubscribed === false)) {
+    if (
+      !release.isFree &&
+      (!localStorage.getItem("user") ||
+        JSON.parse(localStorage.getItem("user")).isSubscribed === false)
+    ) {
       setShowSubscriptionNotification(true);
       return;
     }
@@ -35,7 +38,7 @@ export default function LatestRelease() {
   }
 
   return (
-    <section className="latest-release">
+    <section className="rail-section">
       {showSubscriptionNotification && (
         <SubscriptionNotification
           onClose={() => setShowSubscriptionNotification(false)}
@@ -69,10 +72,10 @@ export default function LatestRelease() {
             <MediaCard
               key={release.id}
               className="rail-card"
-              tagClassName={`release-type ${release.isFree === true ? "free" : "paid"}`}
-              overlayClassName="release-card-overlay"
-              metaClassName="release-card-meta"
-              ratingClassName="release-rating"
+              tagClassName={`rail-card-type ${release.isFree === true ? "free" : "paid"}`}
+              overlayClassName="rail-card-overlay"
+              metaClassName="rail-card-meta"
+              ratingClassName="rail-card-rating"
               metaTextClassName="rail-meta-data"
               tagText={release.isFree === true ? "Free" : "Paid"}
               imageSrc={release.thumbnail}

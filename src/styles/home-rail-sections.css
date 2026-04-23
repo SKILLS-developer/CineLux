@@ -1,4 +1,5 @@
-.latest-release {
+/* Shared styles for home rail sections (Trending, LatestRelease) */
+.rail-section {
   --media-card-height: 520px;
   --media-card-height-md: 430px;
   --media-card-height-sm: 380px;
@@ -31,7 +32,7 @@
   overflow: hidden;
 }
 
-.latest-release::after {
+.rail-section::after {
   content: "";
   position: absolute;
   top: 6.5rem;
@@ -50,29 +51,26 @@
   z-index: 2;
 }
 
-.latest-release .rail-heading h2 {
+.rail-section .rail-heading h2 {
   color: #f5f5f6;
 }
 
 @media (max-width: 900px) {
-  .latest-release {
+  .rail-section {
     --media-card-tag-top: 0.9rem;
     --media-card-tag-right: 0.9rem;
+    padding: 1.5rem 1.5rem 3rem;
   }
 
-  .latest-release::after {
+  .rail-section::after {
     top: 5.8rem;
     width: min(16vw, 120px);
     height: calc(100% - 5.8rem);
   }
-
-  .latest-release {
-    padding: 1.5rem 1.5rem 3rem;
-  }
 }
 
 @media (max-width: 640px) {
-  .latest-release {
+  .rail-section {
     --media-card-tag-top: 0.85rem;
     --media-card-tag-right: 0.85rem;
     --media-card-tag-min-width: 74px;
@@ -81,15 +79,12 @@
     --media-card-overlay-padding: 1rem;
     --media-card-title-size: 1.18rem;
     --media-card-meta-size: 0.88rem;
+    padding: 1.5rem 1rem 3rem;
   }
 
-  .latest-release::after {
+  .rail-section::after {
     top: 5.2rem;
     width: 72px;
     height: calc(100% - 5.2rem);
-  }
-
-  .latest-release {
-    padding: 1.5rem 1rem 3rem;
   }
 }

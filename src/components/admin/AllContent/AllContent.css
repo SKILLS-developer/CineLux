@@ -234,8 +234,8 @@
   justify-content: center;
   z-index: 200;
   padding: 1rem;
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   animation: admOverlayIn 200ms ease;
 }
 

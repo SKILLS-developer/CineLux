@@ -6,11 +6,11 @@ function classNames(...classes) {
 
 export default function MediaCard({
   className = "",
-  tagClassName = "",
-  overlayClassName = "",
-  metaClassName = "",
-  ratingClassName = "",
-  metaTextClassName = "",
+  tagClassName = "media-card-type",
+  overlayClassName = "media-card-overlay-inner",
+  metaClassName = "media-card-meta-inner",
+  ratingClassName = "media-card-rating-badge",
+  metaTextClassName = "media-card-meta-info",
   tagText,
   imageSrc,
   imageAlt,

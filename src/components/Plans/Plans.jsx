@@ -34,6 +34,9 @@ export default function Plans() {
       {showLoginNotification && (
         <LoginNotification onClose={() => setShowLoginNotification(false)} />
       )}
+      {
+        
+      }
       <div className="plans">
         <h1>Choose Your Plan</h1>
         <p>

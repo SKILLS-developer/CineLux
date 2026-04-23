@@ -1,20 +1,23 @@
 import { useState } from "react";
-import  ShowsTV  from "../../data/Data.js";
+import ShowsTV from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import MediaCard from "../shared/MediaCard/MediaCard.jsx";
 import { useNavigate } from "react-router-dom";
 import { SubscriptionNotification } from "../shared/Notification/Notification.jsx";
-import "./Shows.css";
+
 
 export default function Shows() {
-  const shows = ShowsTV.filter((item) => item.type === "series");
   const navigate = useNavigate();
-  const [showSubscriptionNotification, setShowSubscriptionNotification] =
-    useState(false);
+  const [showSubscriptionNotification, setShowSubscriptionNotification] = useState(false);
+  const shows = ShowsTV.filter((item) => item.type === "series");
 
   function handleClick(show) {
-    if (!show.isFree && (!localStorage.getItem("user") || JSON.parse(localStorage.getItem("user")).isSubscribed === false)) {
+    if (
+      !show.isFree &&
+      (!localStorage.getItem("user") ||
+        JSON.parse(localStorage.getItem("user")).isSubscribed === false)
+    ) {
       setShowSubscriptionNotification(true);
       return;
     }
@@ -30,26 +33,22 @@ export default function Shows() {
           onClose={() => setShowSubscriptionNotification(false)}
         />
       )}
-      <section className="shows-page">
-        <div className="shows-shell">
-          <div className="shows-heading">
+      <section className="catalog-page shows-page">
+        <div className="catalog-shell">
+          <div className="catalog-heading">
             <div>
-              <p className="shows-kicker">TV Series</p>
+              <p className="catalog-kicker" style={{ color: "#06b6d4" }}>
+                TV Series
+              </p>
               <h1>Shows</h1>
             </div>
-            <span className="shows-count">{shows.length} titles</span>
+            <span className="catalog-count">{shows.length} titles</span>
           </div>
 
-          <div className="shows-grid media-card-grid">
+          <div className="media-card-grid">
             {shows.map((show) => (
               <MediaCard
                 key={show.id}
-                className="shows-card"
-                tagClassName="shows-type series"
-                overlayClassName="shows-card-overlay"
-                metaClassName="shows-card-meta"
-                ratingClassName="shows-rating"
-                metaTextClassName="shows-meta-data"
                 tagText={show.type}
                 imageSrc={show.thumbnail}
                 imageAlt={show.title}

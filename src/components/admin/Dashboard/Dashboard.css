@@ -29,8 +29,8 @@
   flex-direction: column;
   background: rgba(10, 12, 22, 0.97);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   padding: 1.5rem 1rem;
   z-index: 100;
   overflow-y: auto;
@@ -145,8 +145,8 @@
   padding: 0.9rem 1.75rem;
   background: rgba(10, 12, 22, 0.9);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -220,8 +220,8 @@
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(12, 14, 24, 0.75);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   transition:
     transform 200ms,
     box-shadow 200ms;
@@ -300,8 +300,8 @@
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(12, 14, 24, 0.75);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .adm-chart-card__header {

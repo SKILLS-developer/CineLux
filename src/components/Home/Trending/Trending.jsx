@@ -4,7 +4,6 @@ import trendingList from "../../../data/Data.js";
 import { SubscriptionNotification } from "../../shared/Notification/Notification.jsx";
 import { useNavigate } from "react-router-dom";
 import MediaCard from "../../shared/MediaCard/MediaCard.jsx";
-import "./Trending.css";
 
 export default function Trending() {
   const railRef = useRef(null);
@@ -27,7 +26,11 @@ export default function Trending() {
   };
 
   function handleClick(release) {
-    if (!release.isFree && (!localStorage.getItem("user") || JSON.parse(localStorage.getItem("user")).isSubscribed === false)) {
+    if (
+      !release.isFree &&
+      (!localStorage.getItem("user") ||
+        JSON.parse(localStorage.getItem("user")).isSubscribed === false)
+    ) {
       setShowSubscriptionNotification(true);
       return;
     }
@@ -36,7 +39,7 @@ export default function Trending() {
   }
 
   return (
-    <section className="trending">
+    <section className="rail-section">
       {showSubscriptionNotification && (
         <SubscriptionNotification
           onClose={() => setShowSubscriptionNotification(false)}
@@ -70,10 +73,10 @@ export default function Trending() {
             <MediaCard
               key={release.id}
               className="rail-card"
-              tagClassName={`trending-type ${release.isFree === true ? "free" : "paid"}`}
-              overlayClassName="trending-card-overlay"
-              metaClassName="trending-card-meta"
-              ratingClassName="trending-rating"
+              tagClassName={`rail-card-type ${release.isFree === true ? "free" : "paid"}`}
+              overlayClassName="rail-card-overlay"
+              metaClassName="rail-card-meta"
+              ratingClassName="rail-card-rating"
               metaTextClassName="rail-meta-data"
               tagText={release.isFree === true ? "free" : "paid"}
               imageSrc={release.thumbnail}
