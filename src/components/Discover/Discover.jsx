@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FaSearch, FaStar, FaTimes } from "react-icons/fa";
 import AllMovies from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
@@ -7,41 +7,22 @@ import "./Discover.css";
 
 const quickTags = ["action", "drama", "horror", "mystery", "series"];
 
+function filterMovies(movies, query) {
+  const q = query.trim().toLowerCase();
+  let result = q
+    ? movies.filter(
+        (m) =>
+          m.title.toLowerCase().includes(q) || m.meta.toLowerCase().includes(q),
+      )
+    : [...movies];
+
+
+  return result;
+}
+
 export default function Discover() {
   const [query, setQuery] = useState("");
-  const [contentType, setContentType] = useState("all");
-  const [accessType, setAccessType] = useState("all");
-  const [sortBy, setSortBy] = useState("relevance");
-
-  const normalizedQuery = query.trim().toLowerCase();
-
-  const results = useMemo(() => {
-    let filtered = [...AllMovies];
-
-    if (normalizedQuery) {
-      filtered = filtered.filter((item) => {
-        const title = item.title.toLowerCase();
-        const meta = item.meta.toLowerCase();
-        return (
-          title.includes(normalizedQuery) || meta.includes(normalizedQuery)
-        );
-      });
-    }
-    if (sortBy === "rating") {
-      filtered.sort((a, b) => b.rating - a.rating);
-    } else if (sortBy === "title") {
-      filtered.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortBy === "newest") {
-      filtered.sort(
-        (a, b) =>
-          new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime(),
-      );
-    } else {
-      filtered.sort((a, b) => b.views - a.views);
-    }
-
-    return filtered;
-  }, [normalizedQuery, sortBy]);
+  const results = filterMovies(AllMovies, query );
 
   return (
     <>
@@ -95,29 +76,13 @@ export default function Discover() {
               ))}
             </div>
 
-            <div className="discover-filters">
-              <label className="filter-control">
-                <span>Sort</span>
-                <select
-                  value={sortBy}
-                  onChange={(event) => setSortBy(event.target.value)}
-                >
-                  <option value="relevance">Most Viewed</option>
-                  <option value="rating">Top Rated</option>
-                  <option value="newest">Newest</option>
-                  <option value="title">A-Z</option>
-                </select>
-              </label>
-            </div>
+           
           </section>
 
           <section className="discover-results-section">
             <div className="discover-results-header">
               <h2>Results</h2>
-              <p>
-                {results.length} result{results.length === 1 ? "" : "s"}
-                {normalizedQuery ? ` for "${query}"` : ""}
-              </p>
+             
             </div>
 
             {results.length === 0 ? (

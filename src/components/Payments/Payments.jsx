@@ -1,13 +1,11 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../shared/Header/Header.jsx";
 import Footer from "../shared/Footer/Footer.jsx";
 import "./Payments.css";
 
 export default function Payments() {
-  const location = useLocation();
+  const { planType = "Standard", billingCycle = "monthly" } = useParams();
   const navigate = useNavigate();
-  const planType = location.state?.planType ?? "Standard";
-  const billingCycle = location.state?.billingCycle ?? "monthly";
   const totalPrice =
     planType === "Basic"
       ? billingCycle === "yearly"

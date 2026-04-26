@@ -8,23 +8,15 @@ export default function Plans() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   const [showLoginNotification, setShowLoginNotification] = useState(false);
   const navigate = useNavigate();
-  const isLoggedIn =
-    typeof window !== "undefined" &&
-    Boolean(window.localStorage.getItem("user")) &&
-    window.localStorage.getItem("isLoggedIn") === "true";
-  //const isLoggedIn = false; // Placeholder for authentication state
+
   function handlePlan(type) {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) {
       setShowLoginNotification(true);
       return;
     }
 
-    navigate("/payments", {
-      state: {
-        planType: type,
-        billingCycle: selectedPlan,
-      },
-    });
+    navigate(`/payments/${selectedPlan}/${type}`);
   }
 
   return (
@@ -34,9 +26,7 @@ export default function Plans() {
       {showLoginNotification && (
         <LoginNotification onClose={() => setShowLoginNotification(false)} />
       )}
-      {
-        
-      }
+      {}
       <div className="plans">
         <h1>Choose Your Plan</h1>
         <p>

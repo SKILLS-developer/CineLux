@@ -1,33 +1,17 @@
-import { useRef, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useState } from "react";
 import trendingList from "../../../data/Data.js";
 import { SubscriptionNotification } from "../../shared/Notification/Notification.jsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MediaCard from "../../shared/MediaCard/MediaCard.jsx";
 
 export default function Trending() {
-  const railRef = useRef(null);
   const navigate = useNavigate();
   const [showSubscriptionNotification, setShowSubscriptionNotification] =
     useState(false);
 
-  const scrollRail = (direction) => {
-    if (!railRef.current) return;
-
-    const card = railRef.current.querySelector(".rail-card");
-    const scrollAmount = card
-      ? card.getBoundingClientRect().width + 24
-      : railRef.current.clientWidth * 0.8;
-
-    railRef.current.scrollBy({
-      left: direction * scrollAmount,
-      behavior: "smooth",
-    });
-  };
-
-  function handleClick(release) {
+  function handleClick(trending) {
     if (
-      !release.isFree &&
+      !trending.isFree &&
       (!localStorage.getItem("user") ||
         JSON.parse(localStorage.getItem("user")).isSubscribed === false)
     ) {
@@ -35,7 +19,7 @@ export default function Trending() {
       return;
     }
 
-    navigate(`/play/${release.id}`);
+    navigate(`/play/${trending.id}`);
   }
 
   return (
@@ -48,45 +32,23 @@ export default function Trending() {
       <div className="rail-shell">
         <div className="rail-heading">
           <h2>Trending Worldwide</h2>
-          <div className="rail-controls" aria-label="trending navigation">
-            <button
-              type="button"
-              className="rail-nav-btn"
-              aria-label="Show previous trending titles"
-              onClick={() => scrollRail(-1)}
-            >
-              <FaChevronLeft />
-            </button>
-            <button
-              type="button"
-              className="rail-nav-btn rail-nav-btn-primary"
-              aria-label="Show next trending titles"
-              onClick={() => scrollRail(1)}
-            >
-              <FaChevronRight />
-            </button>
-          </div>
+          <Link to="/discover" className="rail-view-all">
+            View All
+          </Link>
         </div>
 
-        <div className="rail-track" ref={railRef}>
-          {trendingList.slice(5).map((release) => (
+        <div className="rail-track">
+          {trendingList.slice(5).map((trending) => (
             <MediaCard
-              key={release.id}
-              className="rail-card"
-              tagClassName={`rail-card-type ${release.isFree === true ? "free" : "paid"}`}
-              overlayClassName="rail-card-overlay"
-              metaClassName="rail-card-meta"
-              ratingClassName="rail-card-rating"
-              metaTextClassName="rail-meta-data"
-              tagText={release.isFree === true ? "free" : "paid"}
-              imageSrc={release.thumbnail}
-              imageAlt={release.title}
-              title={release.title}
-              rating={release.rating}
-              meta={release.meta}
-              onClick={() => {
-                handleClick(release);
-              }}
+              key={trending.id}
+              
+              tagText={trending.isFree === true ? "free" : "paid"}
+              imageSrc={trending.thumbnail}
+              imageAlt={trending.title}
+              title={trending.title}
+              rating={trending.rating}
+              meta={trending.meta}
+              onClick={() => handleClick(trending)}
             />
           ))}
         </div>

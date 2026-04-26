@@ -5,58 +5,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./Play.css";
 import Header from "../shared/Header/Header";
 
-const getStoredArray = (key) => {
-  try {
-    const value = localStorage.getItem(key);
-    const parsed = value ? JSON.parse(value) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-};
-
-const suggestions = MovieData.map((item) => ({
-  id: item.id,
-  title: item.title,
-  meta: item.meta?.replace(/•/g, "-")?.trim() || "Action - Thriller",
-  rating: item.rating,
-  views: item.views || 0,
-  releaseDate: item.releaseDate,
-  thumbnail: item.thumbnail,
-  isFree: item.isFree,
-  description: item.description || "No description available.",
-  duration: item.duration || "N/A",
-  videoUrl: item.videoUrl,
-}));
-
 export default function Play() {
   const { videoId } = useParams();
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [activeVideo, setActiveVideo] = useState(
-    MovieData.find((item) => item.id === videoId) || suggestions[0],
+    MovieData.find((item) => item.id === videoId) || MovieData[0],
   );
-  const [favorites, setFavorites] = useState(() => {
-    return new Set(getStoredArray("favoritedVideos"));
-  });
-
-  useEffect(() => {
-    localStorage.setItem(
-      "favoritedVideos",
-      JSON.stringify(Array.from(favorites)),
-    );
-  }, [favorites]);
 
   useEffect(() => {
     if (!activeVideo?.id) return;
-
-    const existingHistory = getStoredArray("watchHistoryVideos");
-    const dedupedHistory = [
+    const history =
+      JSON.parse(localStorage.getItem("watchHistoryVideos")) || [];
+    const updated = [
       activeVideo.id,
-      ...existingHistory.filter((id) => id !== activeVideo.id),
+      ...history.filter((id) => id !== activeVideo.id),
     ].slice(0, 12);
-
-    localStorage.setItem("watchHistoryVideos", JSON.stringify(dedupedHistory));
+    localStorage.setItem("watchHistoryVideos", JSON.stringify(updated));
   }, [activeVideo]);
 
   const handleVideoSelect = (item) => {
@@ -64,32 +30,32 @@ export default function Play() {
     navigate(`/play/${item.id}`, { replace: true });
   };
 
-  const toggleFavorite = (e) => {
-    e.stopPropagation();
-    const newFavorites = new Set(favorites);
-    if (newFavorites.has(activeVideo.id)) {
-      newFavorites.delete(activeVideo.id);
-    } else {
-      newFavorites.add(activeVideo.id);
+  const [favorites, setFavorites] = useState(() => user?.savedTitles || []);
+  const hasVideoSource =
+    typeof activeVideo?.videoUrl === "string" &&
+    activeVideo.videoUrl.length > 0;
+
+  const toggleFavorite = () => {
+    const updated = favorites.includes(activeVideo.id)
+      ? favorites.filter((id) => id !== activeVideo.id)
+      : [...favorites, activeVideo.id];
+    setFavorites(updated);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      user.savedTitles = updated;
+      localStorage.setItem("user", JSON.stringify(user));
     }
-    setFavorites(newFavorites);
   };
 
   return (
     <>
       <Header />
       <div className="Spacer"></div>
-      {!activeVideo ? (
-        <section className="play-page">
-          <div className="play-shell">
-            <p>No videos available right now.</p>
-          </div>
-        </section>
-      ) : (
-        <section className="play-page">
-          <div className="play-shell">
-            <div className="play-main">
-              <div className="video-wrap">
+      <section className="play-page">
+        <div className="play-shell">
+          <div className="play-main">
+            <div className="video-wrap">
+              {hasVideoSource ? (
                 <video
                   key={activeVideo.id}
                   src={activeVideo.videoUrl}
@@ -100,82 +66,97 @@ export default function Play() {
                   controls
                   autoPlay
                 />
-              </div>
-
-              <div className="video-description">
-                <div className="video-top-meta">
-                  <span
-                    className={`content-badge ${activeVideo.isFree ? "free" : "paid"}`}
-                  >
-                    {activeVideo.isFree ? "Free" : "Premium"}
-                  </span>
-                  <span>
-                    <FaFilm /> {activeVideo.meta}
-                  </span>
-                  <span>
-                    <FaClock /> {activeVideo.duration}
-                  </span>
-                  <span>
-                    <FaEye /> {activeVideo.views.toLocaleString()} views
-                  </span>
+              ) : (
+                <div className="video-frame video-frame--fallback">
+                  <img
+                    src={activeVideo.thumbnail}
+                    alt={activeVideo.title}
+                    className="video-frame__poster"
+                  />
+                  <div className="video-frame__overlay">
+                    <h2>Video unavailable</h2>
+                    <p>
+                      This title can still be browsed, but no local video file
+                      was found.
+                    </p>
+                  </div>
                 </div>
-
-                <h1>{activeVideo.title}</h1>
-
-                <div className="video-rating-row">
-                  <span>
-                    <FaStar /> {activeVideo.rating}
-                  </span>
-                  <span>Released: {activeVideo.releaseDate}</span>
-                  <button
-                    className={`favorite-btn ${favorites.has(activeVideo.id) ? "favorited" : ""}`}
-                    onClick={toggleFavorite}
-                    type="button"
-                    aria-label="Add to favorites"
-                  >
-                    <FaHeart />{" "}
-                    {favorites.has(activeVideo.id)
-                      ? "Favorited"
-                      : "Add to Favorites"}
-                  </button>
-                </div>
-
-                <p>{activeVideo.description}</p>
-              </div>
+              )}
             </div>
 
-            <aside className="related-videos" aria-label="Suggested videos">
-              <div className="related-header">
-                <h2>Suggested Videos</h2>
-                <span>{suggestions.length} titles</span>
+            <div className="video-description">
+              <div className="video-top-meta">
+                <span
+                  className={`content-badge ${activeVideo.isFree ? "free" : "paid"}`}
+                >
+                  {activeVideo.isFree ? "Free" : "Premium"}
+                </span>
+                <span>
+                  <FaFilm /> {activeVideo.meta}
+                </span>
+                <span>
+                  <FaClock /> {activeVideo.duration}
+                </span>
+                <span>
+                  <FaEye /> {activeVideo.views.toLocaleString()} views
+                </span>
               </div>
 
-              <div className="suggested-list">
-                {suggestions.map((item) => (
-                  <button
-                    key={item.id}
-                    className={`suggested-card ${activeVideo.id === item.id ? "active" : ""}`}
-                    onClick={() => handleVideoSelect(item)}
-                    type="button"
-                  >
-                    <img src={item.thumbnail} alt={item.title} loading="lazy" />
-                    <div className="suggested-details">
-                      <h3>{item.title}</h3>
-                      <p>{item.meta}</p>
-                      <div className="suggested-meta">
-                        <span>
-                          <FaStar /> {item.rating}
-                        </span>
-                        <span>{item.duration}</span>
-                      </div>
-                    </div>
-                  </button>
-                ))}
+              <h1>{activeVideo.title}</h1>
+
+              <div className="video-rating-row">
+                <span>
+                  <FaStar /> {activeVideo.rating}
+                </span>
+                <span>Released: {activeVideo.releaseDate}</span>
+                <button
+                  className={`favorite-btn ${favorites.includes(activeVideo.id) ? "favorited" : ""}`}
+                  onClick={toggleFavorite}
+                  type="button"
+                  aria-label="Add to favorites"
+                >
+                  <FaHeart />
+                  {favorites.includes(activeVideo.id)
+                    ? " Favorited"
+                    : " Add to Favorites"}
+                </button>
               </div>
-            </aside>
+
+              <p>{activeVideo.description}</p>
+            </div>
           </div>
-        </section>
-      )}
+
+          <aside className="related-videos" aria-label="Suggested videos">
+            <div className="related-header">
+              <h2>Suggested Videos</h2>
+              <span>{MovieData.length} titles</span>
+            </div>
+
+            <div className="suggested-list">
+              {MovieData.map((item) => (
+                <button
+                  key={item.id}
+                  className={`suggested-card ${activeVideo.id === item.id ? "active" : ""}`}
+                  onClick={() => handleVideoSelect(item)}
+                  type="button"
+                >
+                  <img src={item.thumbnail} alt={item.title} loading="lazy" />
+                  <div className="suggested-details">
+                    <h3>{item.title}</h3>
+                    <p>{item.meta}</p>
+                    <div className="suggested-meta">
+                      <span>
+                        <FaStar /> {item.rating}
+                      </span>
+                      <span>{item.duration}</span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </section>
     </>
   );
 }

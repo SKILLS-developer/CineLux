@@ -4,36 +4,6 @@ import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./About.css";
 
-const stats = [
-  { label: "Monthly Viewers", value: "2.4M+" },
-  { label: "Movies & Shows", value: "18K+" },
-  { label: "Countries Reached", value: "95+" },
-  { label: "Curated Lists", value: "1.2K+" },
-];
-
-const values = [
-  {
-    icon: <FaFilm />,
-    title: "Story First",
-    text: "We spotlight titles with strong storytelling, not just loud marketing.",
-  },
-  {
-    icon: <FaUsers />,
-    title: "Community Driven",
-    text: "Fan reactions and audience insights help shape what we recommend.",
-  },
-  {
-    icon: <FaGlobe />,
-    title: "Global Library",
-    text: "From blockbuster franchises to regional gems, we keep discovery diverse.",
-  },
-  {
-    icon: <FaRocket />,
-    title: "Built For Speed",
-    text: "Fast browsing, fluid playback, and smooth UX on desktop and mobile.",
-  },
-];
-
 export default function About() {
   return (
     <>
@@ -53,18 +23,28 @@ export default function About() {
           </header>
 
           <section className="about-stats" aria-label="CineLux statistics">
-            {stats.map((item) => (
-              <article key={item.label} className="about-stat-card">
-                <h2>{item.value}</h2>
-                <p>{item.label}</p>
-              </article>
-            ))}
+            <article className="about-stat-card">
+              <h2>2.4M+</h2>
+              <p>Monthly Viewers</p>
+            </article>
+            <article className="about-stat-card">
+              <h2>18K+</h2>
+              <p>Movies &amp; Shows</p>
+            </article>
+            <article className="about-stat-card">
+              <h2>95+</h2>
+              <p>Countries Reached</p>
+            </article>
+            <article className="about-stat-card">
+              <h2>1.2K+</h2>
+              <p>Curated Lists</p>
+            </article>
           </section>
 
           <section className="about-section about-mission">
             <div className="section-title">
               <FaBullseye />
-              <h2>Mission & Vision</h2>
+              <h2>Mission &amp; Vision</h2>
             </div>
             <p>
               Our mission is to connect audiences to stories they care about
@@ -82,13 +62,46 @@ export default function About() {
               <h2>What We Value</h2>
             </div>
             <div className="about-values-grid">
-              {values.map((value) => (
-                <article key={value.title} className="about-value-card">
-                  <div className="value-icon">{value.icon}</div>
-                  <h3>{value.title}</h3>
-                  <p>{value.text}</p>
-                </article>
-              ))}
+              <article className="about-value-card">
+                <div className="value-icon">
+                  <FaFilm />
+                </div>
+                <h3>Story First</h3>
+                <p>
+                  We spotlight titles with strong storytelling, not just loud
+                  marketing.
+                </p>
+              </article>
+              <article className="about-value-card">
+                <div className="value-icon">
+                  <FaUsers />
+                </div>
+                <h3>Community Driven</h3>
+                <p>
+                  Fan reactions and audience insights help shape what we
+                  recommend.
+                </p>
+              </article>
+              <article className="about-value-card">
+                <div className="value-icon">
+                  <FaGlobe />
+                </div>
+                <h3>Global Library</h3>
+                <p>
+                  From blockbuster franchises to regional gems, we keep
+                  discovery diverse.
+                </p>
+              </article>
+              <article className="about-value-card">
+                <div className="value-icon">
+                  <FaRocket />
+                </div>
+                <h3>Built For Speed</h3>
+                <p>
+                  Fast browsing, fluid playback, and smooth UX on desktop and
+                  mobile.
+                </p>
+              </article>
             </div>
           </section>
 

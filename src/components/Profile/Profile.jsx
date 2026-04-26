@@ -24,7 +24,7 @@ export default function Profile() {
     renewalDate: "-",
     price: "-",
   });
-
+  // Optional chaining
   useEffect(() => {
     if (!userloggedIn) {
       navigate("/login");
@@ -34,24 +34,22 @@ export default function Profile() {
   useEffect(() => {
     const loadProfileVideoData = () => {
       try {
-        const saved = localStorage.getItem("favoritedVideos");
-        const favoriteIds = saved ? JSON.parse(saved) : [];
+        const userObj = JSON.parse(localStorage.getItem("user"));
+        const favoriteIds = userObj?.savedTitles || [];
         const favorites = MovieData.filter((video) =>
           favoriteIds.includes(video.id),
         );
         setFavoritedVideos(favorites);
 
-        const savedHistory = localStorage.getItem("watchHistoryVideos");
-        const historyIds = savedHistory ? JSON.parse(savedHistory) : [];
+        const historyIds =
+          JSON.parse(localStorage.getItem("watchHistoryVideos")) || [];
         const history = historyIds
           .map((id) => MovieData.find((video) => video.id === id))
           .filter(Boolean);
         setWatchHistory(history);
 
-        const savedSubscription = localStorage.getItem("subscription");
-        const parsedSubscription = savedSubscription
-          ? JSON.parse(savedSubscription)
-          : null;
+        const parsedSubscription =
+          JSON.parse(localStorage.getItem("subscription")) || null;
 
         if (parsedSubscription) {
           setSubscription(parsedSubscription);
@@ -88,10 +86,7 @@ export default function Profile() {
 
   // Mock user data
   const user = {
-    name: "Alex Anderson",
-    email: "alex.anderson@example.com",
-    memberSince: "January 2023",
-    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(userloggedIn?.email || "alex.anderson@example.com")}`,
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent("alex.anderson@example.com")}`,
   };
 
   if (!userloggedIn) return null;
@@ -107,16 +102,14 @@ export default function Profile() {
             <div className="profile-header-content">
               <img
                 src={user.avatar}
-                alt={userloggedIn.name || user.name}
+                alt={userloggedIn.name}
                 className="profile-avatar"
               />
               <div className="profile-info">
-                <h1>{userloggedIn.name || user.name}</h1>
-                <p className="profile-email">
-                  {userloggedIn.email || user.email}
-                </p>
+                <h1>{userloggedIn.name}</h1>
+                <p className="profile-email">{userloggedIn.email}</p>
                 <p className="profile-member">
-                  Member since {userloggedIn.memberSince || user.memberSince}
+                  Member since {userloggedIn.memberSince}
                 </p>
               </div>
             </div>
@@ -235,18 +228,6 @@ export default function Profile() {
               </h2>
             </div>
             <div className="settings-list">
-              <button className="settings-item">
-                <span>Change Password</span>
-                <span>→</span>
-              </button>
-              <button className="settings-item">
-                <span>Notification Preferences</span>
-                <span>→</span>
-              </button>
-              <button className="settings-item">
-                <span>Privacy Settings</span>
-                <span>→</span>
-              </button>
               <button
                 className="settings-item danger"
                 onClick={() => {

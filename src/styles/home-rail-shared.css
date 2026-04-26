@@ -22,10 +22,17 @@
   letter-spacing: -0.03em;
 }
 
-.rail-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
+.rail-view-all {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+
+.rail-view-all:hover {
+  color: #fff;
 }
 
 .rail-nav-btn {

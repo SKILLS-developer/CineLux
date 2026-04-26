@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FiBookmark, FiPlay, FiPlayCircle } from "react-icons/fi";
 import Header from "../../shared/Header/Header";
 import "./Hero.css";
@@ -6,36 +6,35 @@ import { HeroSlides } from "../../../data/HeroSlides";
 import { useNavigate } from "react-router-dom";
 export default function Hero() {
   const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) === true;
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isTrailerHover, setIsTrailerHover] = useState(false);
-  const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem("favoritedVideos");
-    return new Set(saved ? JSON.parse(saved) : []);
-  });
+
   const slide = HeroSlides[activeSlide];
+
+  const [isTrailerHover, setIsTrailerHover] = useState(false);
+
   const hasMp4Trailer =
     typeof slide.trailer === "string" &&
     slide.trailer.toLowerCase().endsWith(".mp4");
+
   function handleClick(slide) {
     navigate(`/play/${slide.id}`);
   }
-
-  useEffect(() => {
-    localStorage.setItem(
-      "favoritedVideos",
-      JSON.stringify(Array.from(favorites)),
-    );
-  }, [favorites]);
+  const [favorites, setFavorites] = useState(() => user?.savedTitles || []);
 
   const toggleFavorite = (e) => {
     e.stopPropagation();
-    const newFavorites = new Set(favorites);
-    if (newFavorites.has(slide.id)) {
-      newFavorites.delete(slide.id);
-    } else {
-      newFavorites.add(slide.id);
+    const updatedFav = favorites.includes(slide.id)
+      ? favorites.filter((id) => id !== slide.id)
+      : [...favorites, slide.id];
+    setFavorites(updatedFav);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      user.savedTitles = updatedFav;
+      localStorage.setItem("user", JSON.stringify(user));
     }
-    setFavorites(newFavorites);
   };
   return (
     <section
@@ -99,21 +98,27 @@ export default function Hero() {
                 <FiPlayCircle />
                 Watch Trailer
               </button>
-              <button
-                type="button"
-                className={`btn hero-btn hero-btn-ghost ${favorites.has(slide.id) ? "favorited" : ""}`}
-                onClick={toggleFavorite}
-                aria-pressed={favorites.has(slide.id)}
-              >
-                <FiBookmark
-                  color={favorites.has(slide.id) ? "#facc15" : "currentColor"}
-                  stroke={favorites.has(slide.id) ? "#facc15" : "currentColor"}
-                  fill={favorites.has(slide.id) ? "#facc15" : "none"}
-                />
-                {favorites.has(slide.id)
-                  ? "Added to Favorites"
-                  : "Add to Favorites"}
-              </button>
+              {isLoggedIn && (
+                <button
+                  type="button"
+                  className={`btn hero-btn hero-btn-ghost ${favorites.includes(slide.id) ? "favorited" : ""}`}
+                  onClick={toggleFavorite}
+                  aria-pressed={favorites.includes(slide.id)}
+                >
+                  <FiBookmark
+                    color={
+                      favorites.includes(slide.id) ? "#facc15" : "currentColor"
+                    }
+                    stroke={
+                      favorites.includes(slide.id) ? "#facc15" : "currentColor"
+                    }
+                    fill={favorites.includes(slide.id) ? "#facc15" : "none"}
+                  />
+                  {favorites.includes(slide.id)
+                    ? "Added to Favorites"
+                    : "Add to Favorites"}
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "./Auth.css";
 
 export default function Login() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   function handleSubmit(e) {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const user = JSON.parse(localStorage.getItem("user"));
+
     if (user && email === user.email && password === user.password) {
       alert(`Login Successful!\nWelcome back, ${user.name}!`);
       localStorage.setItem("isLoggedIn", "true");
@@ -21,9 +23,9 @@ export default function Login() {
 
   return (
     <section className="auth-page">
-      <div className="auth-card">
+      <div className="auth-card">                               
         <h1 className="auth-title">Welcome Back</h1>
-        <p className="auth-subtitle">
+        <p className="auth-subtitle">                                             
           Sign in to continue watching on CineLux.
         </p>
 
@@ -38,6 +40,8 @@ export default function Login() {
               id="login-email"
               name="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -52,6 +56,8 @@ export default function Login() {
               id="login-password"
               name="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
