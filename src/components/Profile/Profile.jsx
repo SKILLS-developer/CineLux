@@ -233,7 +233,7 @@ export default function Profile() {
                 onClick={() => {
                   localStorage.removeItem("isLoggedIn");
                   localStorage.removeItem("user");
-                  window.location.href = "/";
+                  navigate("/", { replace: true });
                 }}
               >
                 <FaSignOutAlt />

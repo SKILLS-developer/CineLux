@@ -19,8 +19,12 @@ import Payments from "./components/Payments/Payments";
 import LoginAdmin from "./components/admin/Login/Login";
 
 function App() {
+  const baseUrl = import.meta.env.BASE_URL || "/";
+  const routerBaseName =
+    baseUrl !== "/" && baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+
   return (
-    <Router>
+    <Router basename={routerBaseName}>
       <div className="route-page-transition">
         <Routes>
           <Route path="*" element={<Navigate to="/" replace />} />
