@@ -1,0 +1,120 @@
+.notification-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(3, 4, 8, 0.44);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+
+.notification {
+  position: relative;
+  display: grid;
+  gap: 0.8rem;
+  width: min(92vw, 360px);
+  padding: 1rem 1rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(12, 12, 18, 0.9);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.36);
+  animation: notificationIn 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.notification p {
+  margin: 0;
+  color: rgba(247, 248, 255, 0.92);
+}
+
+.notification-title {
+  margin: 0;
+  padding-right: 1.8rem;
+  color: #ffffff;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.notification-message {
+  margin: 0;
+  color: rgba(247, 248, 255, 0.94);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.notification-note {
+  margin: -0.1rem 0 0;
+  color: rgba(247, 248, 255, 0.66);
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+.notification-close-btn {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.notification-close-btn:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.notification-action-btn {
+  width: fit-content;
+  min-height: 2.35rem;
+  padding: 0.48rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00a86b 0%, #00a86b 100%);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.notification-action-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+@keyframes notificationIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notification-backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .notification {
+    animation: none;
+  }
+}
+.notification-action-btn--full-width {
+  width: 100%;
+}

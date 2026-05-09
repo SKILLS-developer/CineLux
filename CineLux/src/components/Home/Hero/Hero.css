@@ -1,0 +1,368 @@
+.hero {
+  isolation: isolate;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 4, 8, 0.93) 0%,
+      rgba(4, 4, 8, 0.84) 28%,
+      rgba(4, 4, 8, 0.4) 55%,
+      rgba(4, 4, 8, 0.06) 100%
+    ),
+    radial-gradient(
+      circle at 70% 15%,
+      rgba(255, 152, 78, 0.14) 0%,
+      rgba(255, 152, 78, 0) 45%
+    );
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: 46%;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 4, 8, 0) 0%,
+    rgba(4, 4, 8, 0.86) 100%
+  );
+}
+
+.hero-backdrop {
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 16%;
+  filter: saturate(0.95) contrast(1.03);
+  transform: scale(1.025);
+  animation: heroReveal 0.55s ease;
+  transition: opacity 0.28s ease;
+}
+
+.hero-image.is-hidden {
+  opacity: 0;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 16%;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
+}
+
+.hero-video.is-visible {
+  opacity: 1;
+}
+
+@keyframes heroReveal {
+  from {
+    opacity: 0.72;
+    transform: scale(1.055);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.025);
+  }
+}
+
+.hero-content-shell {
+  padding-top: 8.4rem;
+  padding-bottom: 8.5rem;
+}
+
+.hero-copy-shell .hero-year,
+.hero-copy-shell .hero-title,
+.hero-copy-shell .hero-meta,
+.hero-copy-shell .hero-description,
+.hero-copy-shell .hero-cta-row {
+  opacity: 0;
+  animation: heroTextUp 520ms cubic-bezier(0.2, 0.75, 0.2, 1) forwards;
+}
+
+.hero-copy-shell .hero-title {
+  animation-delay: 70ms;
+}
+
+.hero-copy-shell .hero-meta {
+  animation-delay: 130ms;
+}
+
+.hero-copy-shell .hero-description {
+  animation-delay: 200ms;
+}
+
+.hero-copy-shell .hero-cta-row {
+  animation-delay: 280ms;
+}
+
+.hero-cta-row .hero-btn {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroButtonIn 360ms ease forwards;
+}
+
+.hero-cta-row .hero-btn:nth-child(1) {
+  animation-delay: 340ms;
+}
+
+.hero-cta-row .hero-btn:nth-child(2) {
+  animation-delay: 390ms;
+}
+
+.hero-cta-row .hero-btn:nth-child(3) {
+  animation-delay: 440ms;
+}
+
+.hero-year {
+  margin: 0;
+  color: rgba(246, 248, 255, 0.78);
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.hero-title {
+  margin: 0.45rem 0 0;
+  color: #ffffff;
+  font-size: clamp(2.2rem, 5.8vw, 4.3rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.hero-meta {
+  margin: 1rem 0 0;
+  color: rgba(246, 248, 255, 0.9);
+  font-size: 1.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.hero-description {
+  margin: 1rem 0 0;
+  max-width: 610px;
+  color: rgba(233, 235, 242, 0.93);
+  font-size: clamp(1rem, 2.1vw, 1.35rem);
+  line-height: 1.35;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0.68rem 1.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 1.07rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.hero-btn svg {
+  font-size: 1.08rem;
+}
+
+.hero-btn-primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, #00a86b 0%, #00a86b 100%);
+  color: #ffffff;
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.hero-btn-ghost {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(16, 16, 20, 0.45);
+  color: #f7f8ff;
+}
+
+.hero-btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(19, 19, 25, 0.62);
+}
+
+.hero-btn:focus-visible,
+.hero-dot:focus-visible {
+  outline: 2px solid #00a86b;
+  outline-offset: 2px;
+}
+
+.hero-dots {
+  right: 5.5vw;
+  bottom: 4.25rem;
+  animation: heroDotsIn 420ms ease-out 180ms both;
+}
+
+.hero-dot {
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(237, 238, 246, 0.72);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.hero-dot:hover {
+  transform: scale(1.08);
+}
+
+.hero-dot.is-active {
+  background: #00a86b;
+  transform: scale(1.17);
+  animation: heroDotPulse 0.45s ease;
+}
+
+@keyframes heroTextUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroButtonIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroDotsIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroDotPulse {
+  0% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.24);
+  }
+  100% {
+    transform: scale(1.17);
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-content-shell {
+    padding-top: 7.8rem;
+    padding-bottom: 7.3rem;
+  }
+
+  .hero-year {
+    font-size: 1.65rem;
+  }
+
+  .hero-meta {
+    font-size: 1.35rem;
+  }
+
+  .hero-description {
+    font-size: 1.04rem;
+  }
+
+  .hero-dots {
+    left: 1.25rem;
+    right: auto;
+    bottom: 2.25rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero::before {
+    background: linear-gradient(
+      90deg,
+      rgba(4, 4, 8, 0.9) 0%,
+      rgba(4, 4, 8, 0.68) 52%,
+      rgba(4, 4, 8, 0.26) 100%
+    );
+  }
+
+  .hero-content-shell {
+    padding-top: 7.2rem;
+    padding-bottom: 6.3rem;
+  }
+
+  .hero-year {
+    font-size: 1.28rem;
+  }
+
+  .hero-meta {
+    margin-top: 0.75rem;
+    font-size: 1.02rem;
+  }
+
+  .hero-description {
+    font-size: 0.93rem;
+  }
+
+  .hero-btn {
+    min-height: 2.75rem;
+    padding: 0.6rem 1.05rem;
+    font-size: 0.9rem;
+  }
+
+  .hero-dot {
+    width: 0.88rem;
+    height: 0.88rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image,
+  .hero-video,
+  .hero-copy-shell .hero-year,
+  .hero-copy-shell .hero-title,
+  .hero-copy-shell .hero-meta,
+  .hero-copy-shell .hero-description,
+  .hero-copy-shell .hero-cta-row,
+  .hero-cta-row .hero-btn,
+  .hero-dots,
+  .hero-dot.is-active {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
