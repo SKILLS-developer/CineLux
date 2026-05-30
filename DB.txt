@@ -1,0 +1,247 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace CineLuxApi.Models
+{
+    public class User
+    {
+        public long UserId { get; set; }
+
+        [Required, MaxLength(120)]
+        public string FullName { get; set; } = string.Empty;
+
+        [Required, MaxLength(255)]
+        public string Email { get; set; } = string.Empty;
+
+        [Required, MaxLength(255)]
+        public string PasswordHash { get; set; } = string.Empty;
+
+        [Required, MaxLength(20)]
+        public string Role { get; set; } = "viewer";
+
+        public bool IsActive { get; set; } = true;
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public ICollection<UserSubscription> Subscriptions { get; set; } = [];
+        public ICollection<Payment> Payments { get; set; } = [];
+        public ICollection<WatchHistory> WatchHistory { get; set; } = [];
+        public ICollection<UserWatchlist> Watchlist { get; set; } = [];
+    }
+
+    public class SubscriptionPlan
+    {
+        public long PlanId { get; set; }
+
+        [Required, MaxLength(50)]
+        public string PlanCode { get; set; } = string.Empty;
+
+        [Required, MaxLength(100)]
+        public string PlanName { get; set; } = string.Empty;
+
+        [Required, MaxLength(10)]
+        public string BillingInterval { get; set; } = string.Empty;
+
+        public decimal PriceAmount { get; set; }
+
+        [Required, MaxLength(3)]
+        public string CurrencyCode { get; set; } = "USD";
+
+        public short MaxStreams { get; set; } = 1;
+
+        [Required, MaxLength(10)]
+        public string VideoQuality { get; set; } = "HD";
+
+        public bool IsActive { get; set; } = true;
+
+        public DateTime CreatedAt { get; set; }
+
+        public ICollection<UserSubscription> Subscriptions { get; set; } = [];
+    }
+
+    public class UserSubscription
+    {
+        public long SubscriptionId { get; set; }
+
+        public long UserId { get; set; }
+        public long PlanId { get; set; }
+
+        [Required, MaxLength(20)]
+        public string Status { get; set; } = string.Empty;
+
+        public DateOnly StartDate { get; set; }
+        public DateOnly CurrentPeriodStart { get; set; }
+        public DateOnly CurrentPeriodEnd { get; set; }
+
+        public DateTime? CanceledAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+        public User User { get; set; } = null!;
+        public SubscriptionPlan Plan { get; set; } = null!;
+        public ICollection<Payment> Payments { get; set; } = [];
+    }
+
+    public class Payment
+    {
+        public long PaymentId { get; set; }
+
+        public long SubscriptionId { get; set; }
+        public long UserId { get; set; }
+
+        public decimal Amount { get; set; }
+
+        [Required, MaxLength(3)]
+        public string CurrencyCode { get; set; } = "USD";
+
+        [Required, MaxLength(30)]
+        public string PaymentMethod { get; set; } = string.Empty;
+
+        [MaxLength(120)]
+        public string? ProviderTxnId { get; set; }
+
+        [Required, MaxLength(20)]
+        public string PaymentStatus { get; set; } = string.Empty;
+
+        public DateTime? PaidAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+        public UserSubscription Subscription { get; set; } = null!;
+        public User User { get; set; } = null!;
+    }
+
+    public class MediaItem
+    {
+        public long MediaId { get; set; }
+
+        [Required, MaxLength(255)]
+        public string Title { get; set; } = string.Empty;
+
+        [Required, MaxLength(300)]
+        public string Slug { get; set; } = string.Empty;
+
+        [Required, MaxLength(10)]
+        public string MediaType { get; set; } = string.Empty;
+
+        [MaxLength(20)]
+        public string? MaturityRating { get; set; }
+
+        public string? Synopsis { get; set; }
+
+        public DateOnly? ReleaseDate { get; set; }
+
+        public int? RuntimeMinutes { get; set; }
+
+        public bool IsFree { get; set; } = false;
+
+        public string? PosterUrl { get; set; }
+        public string? ThumbnailUrl { get; set; }
+        public string? TrailerUrl { get; set; }
+        public string? StreamUrl { get; set; }
+
+        public decimal? AverageRating { get; set; }
+
+        public long TotalViews { get; set; } = 0;
+
+        public bool IsPublished { get; set; } = false;
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public ICollection<Season> Seasons { get; set; } = [];
+        public ICollection<MediaGenre> MediaGenres { get; set; } = [];
+        public ICollection<WatchHistory> WatchHistory { get; set; } = [];
+        public ICollection<UserWatchlist> Watchlist { get; set; } = [];
+    }
+
+    public class Season
+    {
+        public long SeasonId { get; set; }
+
+        public long MediaId { get; set; }
+
+        public int SeasonNumber { get; set; }
+
+        [MaxLength(255)]
+        public string? Title { get; set; }
+
+        public DateOnly? ReleaseDate { get; set; }
+
+        public MediaItem Media { get; set; } = null!;
+        public ICollection<Episode> Episodes { get; set; } = [];
+    }
+
+    public class Episode
+    {
+        public long EpisodeId { get; set; }
+
+        public long SeasonId { get; set; }
+
+        public int EpisodeNumber { get; set; }
+
+        [Required, MaxLength(255)]
+        public string Title { get; set; } = string.Empty;
+
+        public string? Synopsis { get; set; }
+
+        public int? RuntimeMinutes { get; set; }
+
+        public DateOnly? ReleaseDate { get; set; }
+
+        public string? StreamUrl { get; set; }
+
+        public string? ThumbnailUrl { get; set; }
+
+        public Season Season { get; set; } = null!;
+        public ICollection<WatchHistory> WatchHistory { get; set; } = [];
+    }
+
+    public class Genre
+    {
+        public long GenreId { get; set; }
+
+        [Required, MaxLength(80)]
+        public string GenreName { get; set; } = string.Empty;
+
+        public ICollection<MediaGenre> MediaGenres { get; set; } = [];
+    }
+
+    public class MediaGenre
+    {
+        public long MediaId { get; set; }
+        public long GenreId { get; set; }
+
+        public MediaItem Media { get; set; } = null!;
+        public Genre Genre { get; set; } = null!;
+    }
+
+    public class WatchHistory
+    {
+        public long WatchHistoryId { get; set; }
+
+        public long UserId { get; set; }
+        public long? MediaId { get; set; }
+        public long? EpisodeId { get; set; }
+
+        public int ProgressSeconds { get; set; } = 0;
+
+        public bool Completed { get; set; } = false;
+
+        public DateTime WatchedAt { get; set; }
+
+        public User User { get; set; } = null!;
+        public MediaItem? Media { get; set; }
+        public Episode? Episode { get; set; }
+    }
+
+    public class UserWatchlist
+    {
+        public long UserId { get; set; }
+        public long MediaId { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public User User { get; set; } = null!;
+        public MediaItem Media { get; set; } = null!;
+    }
+}
+

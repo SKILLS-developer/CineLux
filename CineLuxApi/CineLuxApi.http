@@ -1,0 +1,6 @@
+@CineLuxApi_HostAddress = http://localhost:5253
+
+GET {{CineLuxApi_HostAddress}}/
+Accept: application/json
+
+###

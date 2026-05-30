@@ -1,1 +1,0 @@
-I have remove some videos / images and reduce the size of the other (video,images) to be able to decrease the total size of project .
