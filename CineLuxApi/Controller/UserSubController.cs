@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CineLuxApi.Data;
 using CineLuxApi.Models;
+using Microsoft.EntityFrameworkCore;
 namespace CineLuxApi.Controllers
 {
     [ApiController]
@@ -15,22 +16,51 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("subscribe")]
-        public IActionResult Subscribe(UserSubscription subscription)
+        public async Task<IActionResult> Subscribe(UserSubscription subscription)
         {
+            var plan = await _context.SubscriptionPlan.FindAsync(subscription.PlanId);
+            var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            var periodEnd = plan != null && plan.BillingInterval.Equals("yearly", StringComparison.OrdinalIgnoreCase)
+                ? startDate.AddYears(1)
+                : startDate.AddMonths(1);
+
+            subscription.Status = "active";
+            subscription.StartDate = startDate;
+            subscription.CurrentPeriodStart = startDate;
+            subscription.CurrentPeriodEnd = periodEnd;
             subscription.CreatedAt = DateTime.UtcNow;
-            _context.UserSubscriptions.Add(subscription);
-            _context.SaveChanges();
+            await _context.UserSubscriptions.AddAsync(subscription);
+            await _context.SaveChangesAsync();
 
             return Ok(subscription);
         }
+
         [HttpGet("user/{userId}")]
-        public IActionResult GetUserSubscription(int userId)
+        public async Task<IActionResult> GetUserSubscription(long userId)
         {
-            var subscription = _context.UserSubscriptions.Where(s => s.UserId == userId).ToList();
-            if (subscription == null || subscription.Count == 0)
+            var subscription = await _context.UserSubscriptions
+                .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.CreatedAt)
+                .Select(s => new
+                {
+                    s.SubscriptionId,
+                    s.UserId,
+                    s.PlanId,
+                    s.Status,
+                    s.CurrentPeriodStart,
+                    s.CurrentPeriodEnd,
+                    s.CreatedAt,
+                    PlanName = s.Plan.PlanName,
+                    PriceAmount = s.Plan.PriceAmount,
+                    CurrencyCode = s.Plan.CurrencyCode,
+                })
+                .FirstOrDefaultAsync();
+
+            if (subscription == null)
             {
-                return NotFound();
+                return Ok(null);
             }
+
             return Ok(subscription);
         }
     }

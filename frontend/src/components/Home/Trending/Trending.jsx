@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { SubscriptionNotification } from "../../shared/Notification/Notification.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import MediaCard from "../../shared/MediaCard/MediaCard.jsx";
@@ -11,22 +11,18 @@ export default function Trending() {
   const navigate = useNavigate();
   const [showSubscriptionNotification, setShowSubscriptionNotification] =
     useState(false);
-const [trending, setTrending] = useState([]);
-     useEffect(() => {
-    try {
-      const fetchTrending= async () => {
+  const [trending, setTrending] = useState([]);
+  useEffect(() => {
+    const fetchTrending = async () => {
+      try {
         const response = await API.get("/media/trending");
         setTrending(response.data);
-      };
-      fetchTrending();
-    } catch (error) {
-      console.error("Error fetching trending media:", error);
-    }
+      } catch (error) {
+        console.error("Error fetching trending media:", error);
+      }
+    };
+    fetchTrending();
   }, []);
-
-
-
-
 
   function handleClick(trending) {
     if (
@@ -60,7 +56,6 @@ const [trending, setTrending] = useState([]);
           {trending.map((trending) => (
             <MediaCard
               key={trending.mediaId}
-              
               tagText={trending.isFree === true ? "free" : "paid"}
               imageSrc={getPosterUrl(trending.posterUrl)}
               imageAlt={trending.title}

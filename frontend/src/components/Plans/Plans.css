@@ -55,6 +55,7 @@
   border: 1px solid transparent;
   border-radius: 9px;
   background: transparent;
+  text-transform: capitalize;
   color: rgba(246, 248, 255, 0.86);
   font: inherit;
   font-weight: 600;

@@ -1,4 +1,4 @@
-// import UpcomingMovies from "../../data/Data.js";
+
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import MediaCard from "../shared/MediaCard/MediaCard.jsx";
@@ -13,15 +13,15 @@ function getPosterUrl(posterUrl) {
 export default function Upcoming() {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   useEffect(() => {
-    try {
-      const fetchUpcoming= async () => {
+    const fetchUpcoming = async () => {
+      try {
         const response = await API.get("/media/upcoming");
         setUpcomingMovies(response.data);
-      };
-      fetchUpcoming();
-    } catch (error) {
-      alert("Error fetching upcoming movies:", error);
-    }
+      } catch (error) {
+        console.error("Error fetching upcoming movies:", error);
+      }
+    };
+    fetchUpcoming();
   }, []);
 
   return (

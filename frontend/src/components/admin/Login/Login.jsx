@@ -21,7 +21,6 @@ export default function LoginAdmin() {
       localStorage.setItem("admin", JSON.stringify(res.data));
       navigate("/admin/dashboard");
     } catch (error) {
-      console.error("Error during admin login:", error);
       alert("An error occurred during login. Please try again.");
       return;
     }
@@ -38,9 +37,9 @@ export default function LoginAdmin() {
   return (
     <section className="auth-page">
       <div className="auth-card">
-        <h1 className="auth-title">Welcome Back</h1>
+        <h1 className="auth-title">Admin Panel</h1>
         <p className="auth-subtitle">
-          Sign in to continue watching on CineLux.
+          Sign in to access the admin dashboard.
         </p>
 
         <form className="auth-form" onSubmit={handleSubmit}>

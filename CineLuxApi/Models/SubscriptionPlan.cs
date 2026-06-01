@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineLuxApi.Models
 {
@@ -16,14 +17,15 @@ namespace CineLuxApi.Models
         [Required, MaxLength(10)]
         public string BillingInterval { get; set; } = string.Empty;  // monthly | yearly
 
-        public double PriceAmount { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal PriceAmount { get; set; }
 
         [Required, MaxLength(3)]
         public string CurrencyCode { get; set; } = "USD";
 
         public short MaxStreams { get; set; } = 1;
 
-        [Required, MaxLength(10)]
+        [Required, MaxLength(20)]
         public string VideoQuality { get; set; } = "HD";   // SD | HD | UHD
 
         public bool IsActive { get; set; } = true;

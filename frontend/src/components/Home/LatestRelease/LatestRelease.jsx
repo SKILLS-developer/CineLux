@@ -16,15 +16,15 @@ export default function LatestRelease() {
     useState(false);
   const [releases, setReleases] = useState([]);
   useEffect(() => {
-    try {
-      const fetchReleases = async () => {
+    const fetchReleases = async () => {
+      try {
         const response = await API.get("/media/latest-release");
         setReleases(response.data);
-      };
-      fetchReleases();
-    } catch (error) {
-      console.error("Error fetching latest releases:", error);
-    }
+      } catch (error) {
+        console.error("Error fetching latest releases:", error);
+      }
+    };
+    fetchReleases();
   }, []);
 
   function handleClick(release) {
@@ -70,7 +70,6 @@ export default function LatestRelease() {
           ))}
         </div>
       </div>
-      {/* <ToastContainer /> */}
     </section>
   );
 }

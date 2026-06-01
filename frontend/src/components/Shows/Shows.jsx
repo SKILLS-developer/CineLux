@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import ShowsTV from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import MediaCard from "../shared/MediaCard/MediaCard.jsx";
 import { useNavigate } from "react-router-dom";
-import { SubscriptionNotification } from "../shared/Notification/Notification.jsx";
 import API from "../../api.js";
 
 function getPosterUrl(posterUrl) {
@@ -18,15 +16,15 @@ export default function Shows() {
   //   useState(false);
   // const shows = ShowsTV.filter((item) => item.type === "series");
   useEffect(() => {
-    try {
-      const fetchShows = async () => {
+    const fetchShows = async () => {
+      try {
         const response = await API.get("/media/shows");
         setShows(response.data);
-      };
-      fetchShows();
-    } catch (error) {
-      alert("Error fetching shows:", error);
-    }
+      } catch (error) {
+        console.error("Error fetching shows:", error);
+      }
+    };
+    fetchShows();
   }, []);
   // function handleClick(vid) {
   //   // if (

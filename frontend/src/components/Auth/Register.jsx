@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import API from "../../api";
-//bootstrap
+
 export default function Register() {
   const navigate = useNavigate();
 
@@ -28,15 +28,8 @@ export default function Register() {
       );
       navigate("/login");
     } catch (error) {
-      alert(`Registration failed: ${error}`);
+      alert(`Registration failed: ${error?.response?.data || error.message}`);
     }
-
-    // localStorage.setItem("user", JSON.stringify(user));
-
-    // alert(
-    //   `Registered Successfully! Welcome, ${user.name}!\nPlease log in to continue.`,
-    // );
-    // navigate("/login");
   }
   return (
     <section className="auth-page">

@@ -40,10 +40,7 @@ function App() {
           <Route path="/shows" element={<Shows />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
-          <Route
-            path="/payments/:billingCycle/:planType"
-            element={<Payments />}
-          />
+          <Route path="/payments/:planCode/:planId" element={<Payments />} />
           <Route path="/admin/login" element={<LoginAdmin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>

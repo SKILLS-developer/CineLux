@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CineLuxApi.Data;
 using CineLuxApi.Models;
+using Microsoft.EntityFrameworkCore;
 namespace CineLuxApi.Controllers
 {
     [ApiController]
@@ -15,21 +16,23 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register(User user)
+        public async Task<IActionResult> Register(User user)
         {
-           
+            var emailExists = await _context.Users.AnyAsync(u => u.Email == user.Email);
+            if (emailExists) return BadRequest("An account with this email already exists.");
+
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(new { user.UserId, user.FullName, user.Email, user.Role, user.CreatedAt });
         }
 
         [HttpPost("login")]
-        public IActionResult Login(User user)
+        public async Task<IActionResult> Login(User user)
         {
-            var existingUser = _context.Users.FirstOrDefault(x =>
+            var existingUser = await _context.Users.FirstOrDefaultAsync(x =>
                 x.Email == user.Email &&
                 x.PasswordHash == user.PasswordHash
             );
@@ -39,13 +42,13 @@ namespace CineLuxApi.Controllers
                 return BadRequest("Invalid Email or Password");
             }
 
-            return Ok(existingUser);
+            return Ok(new { existingUser.UserId, existingUser.FullName, existingUser.Email, existingUser.Role, existingUser.CreatedAt });
         }
+
         [HttpPost("admin")]
-        public IActionResult GetAdminUsers(User user)
+        public async Task<IActionResult> GetAdminUsers(User user)
         {
-          
-            var adminUser = _context.Users.FirstOrDefault(x =>
+            var adminUser = await _context.Users.FirstOrDefaultAsync(x =>
                 x.Email == user.Email &&
                 x.PasswordHash == user.PasswordHash &&
                 x.Role == "admin"
@@ -56,7 +59,7 @@ namespace CineLuxApi.Controllers
                 return BadRequest("Invalid Email or Password");
             }
 
-            return Ok(adminUser);
+            return Ok(new { adminUser.UserId, adminUser.FullName, adminUser.Email, adminUser.Role, adminUser.CreatedAt });
         }
     }
 }

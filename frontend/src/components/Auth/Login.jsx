@@ -17,7 +17,7 @@ export default function Login() {
         Email: Email,
         PasswordHash: PasswordHash,
       });
-      alert(`Login Successful!\nWelcome back!,${res.data.fullName}`);
+      alert(`Login Successful!\nWelcome back!, ${res.data.fullName}`);
       const userData = {
         userId: res.data.userId,
         fullName: res.data.fullName,
@@ -27,22 +27,9 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(userData));
       navigate("/", { replace: true });
     } catch (error) {
-      const msg =
-        error.response?.data?.message ??
-        (typeof error.response?.data === "string"
-          ? error.response.data
-          : null) ??
-        error.message;
-      alert(`Login failed: ${msg}`);
+      alert(`Login failed: ${error?.response?.data || error.message}`);
     }
-    // if (user && email === user.email && password === user.password) {
-    //   alert(`Login Successful!\nWelcome back, ${user.name}!`);
-    //   localStorage.setItem("isLoggedIn", "true");
-    //   navigate("/", { replace: true });
-    // } else {
-    //   alert("Invalid email or password. Please try again.");
   }
-
   return (
     <section className="auth-page">
       <div className="auth-card">

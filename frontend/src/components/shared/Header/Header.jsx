@@ -5,16 +5,10 @@ import { Link } from "react-router-dom";
 import logo from "../../../assets/CineLux-Logo.png";
 
 export default function Header() {
-  const user = JSON.parse(window.localStorage.getItem("user"))?.fullName ?? "";
+  const [user, setUser] = useState(
+    () => JSON.parse(window.localStorage.getItem("user"))?.fullName ?? "",
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // const toggleMenu = () => {
-  //   setIsMenuOpen((open) => !open);
-  // };
-
-  // const closeMenu = () => {
-  //   setIsMenuOpen(false);
-  // };
 
   return (
     <header className={`header ${isMenuOpen ? "menu-open" : ""}`}>

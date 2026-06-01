@@ -5,45 +5,59 @@ import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./Discover.css";
 import API from "../../api.js";
-const quickTags = ["action", "drama", "horror", "mystery", "series", "movie"];
+import { useNavigate } from "react-router-dom";
 
-function filterMovies(movies, query) {
-  const q = query.trim().toLowerCase();
-  let result = q
-    ? movies.filter(
-        (m) =>
-          m.title.toLowerCase().includes(q) ||
-          (m.genre ?? "").toLowerCase().includes(q) ||
-          m.mediaType.toLowerCase().includes(q),
-      )
-    : [...movies];
+// function filterMovies(movies, query) {
+//   const q = query.trim().toLowerCase();
+//   let result = q
+//     ? movies.filter(
+//         (m) =>
+//           m.title.toLowerCase().includes(q) ||
+//           (m.genre ?? "").toLowerCase().includes(q) ||
+//           m.mediaType.toLowerCase().includes(q),
+//       )
+//     : [...movies];
 
-  return result;
-}
+//   return result;
+// }
 function getPosterUrl(posterUrl) {
   const filename = posterUrl.split(/[\\/]/).pop();
   return new URL(`../../assets/thumbnail/${filename}`, import.meta.url).href;
 }
 
 export default function Discover() {
+  const quickTags = ["action", "drama", "horror", "mystery", "series", "movie"];
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const response = await API.get("/media/all");
+    const fetchData = async () => {
+      try {
+        const response = await API.get(`/media/all`);
         setResults(response.data);
-      };
-      fetchData();
-    } catch (error) {
-      console.error("Error fetching Data movies:", error);
-    }
+      } catch (error) {
+        console.error("Error fetching all media:", error);
+      }
+    };
+    fetchData();
   }, []);
-  function update(q) {
+
+  function Update(q) {
     setQuery(q);
-    setResults(filterMovies(results, q));
+    const fetchData = async () => {
+      try {
+        const url = q.trim() ? `/media/search/${encodeURIComponent(q.trim())}` : `/media/all`;
+        const response = await API.get(url);
+        setResults(response.data);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
+    };
+    fetchData();
   }
+  // setResults(filterMovies(results, q));
+
   return (
     <>
       <Header />
@@ -65,7 +79,7 @@ export default function Discover() {
               <input
                 type="search"
                 value={query}
-                onChange={(event) => update(event.target.value)}
+                onChange={(e) => Update(e.target.value)}
                 className="discover-searchbar"
                 placeholder="Search by title, genre, or keyword..."
                 aria-label="Search content"
@@ -75,7 +89,7 @@ export default function Discover() {
                 <button
                   type="button"
                   className="clear-search-btn"
-                  onClick={() => update("")}
+                  onClick={() => Update("")}
                   aria-label="Clear search"
                 >
                   <FaTimes />
@@ -89,7 +103,7 @@ export default function Discover() {
                   key={tag}
                   type="button"
                   className="quick-tag-btn"
-                  onClick={() => update(tag)}
+                  onClick={() => Update(tag)}
                 >
                   {tag}
                 </button>
@@ -116,6 +130,7 @@ export default function Discover() {
                   <article
                     className="discover-result-card"
                     key={`${item.title}-${index}`}
+                    onClick={() => navigate(`/play/${item.mediaId}`)}
                   >
                     <span
                       className={`result-badge ${item.isFree ? "free" : "premium"}`}

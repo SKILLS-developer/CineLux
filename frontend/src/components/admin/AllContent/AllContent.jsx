@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { FiFilm, FiEdit2, FiTrash2, FiPlus, FiStar, FiX } from "react-icons/fi";
 import "./AllContent.css";
+import API from "../../../api.js";
 
 const EMPTY_FORM = {
   title: "",
-  meta: "",
-  duration: "",
-  type: "movie",
-  rating: "",
-  views: "",
+  genre: "",
+  runtimeMinutes: "",
+  mediaType: "movie",
+  averageRating: "",
+  totalViews: "",
   isFree: true,
 };
 
@@ -28,13 +29,13 @@ export default function AllContent({ mediaList, setMediaList }) {
     setFormData(
       item
         ? {
-            title: item.title,
-            meta: item.meta,
-            duration: item.duration,
-            type: item.type,
-            rating: item.rating,
-            views: item.views,
-            isFree: item.isFree,
+            title: item.title ?? "",
+            genre: item.genre ?? "",
+            runtimeMinutes: item.runtimeMinutes ?? "",
+            mediaType: item.mediaType ?? "movie",
+            averageRating: item.averageRating ?? "",
+            totalViews: item.totalViews ?? "",
+            isFree: item.isFree ?? true,
           }
         : EMPTY_FORM,
     );
@@ -52,36 +53,48 @@ export default function AllContent({ mediaList, setMediaList }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const parsed = {
       ...formData,
-      rating: parseFloat(formData.rating) || 0,
-      views: parseInt(formData.views) || 0,
+      averageRating: parseFloat(formData.averageRating) || 0,
+      totalViews: parseInt(formData.totalViews) || 0,
+      runtimeMinutes: parseInt(formData.runtimeMinutes) || null,
     };
     if (editItem) {
-      setMediaList((prev) =>
-        prev.map((m) => (m.id === editItem.id ? { ...m, ...parsed } : m)),
-      );
+      try {
+        await API.put(`/media/update/${editItem.mediaId}`, parsed);
+        setMediaList((prev) =>
+          prev.map((m) =>
+            m.mediaId === editItem.mediaId ? { ...m, ...parsed } : m,
+          ),
+        );
+      } catch (error) {
+        console.error("Error updating media:", error);
+        alert("Failed to update content. Please try again.");
+      }
     } else {
-      setMediaList((prev) => [
-        {
-          ...parsed,
-          id: `custom-${Date.now()}`,
-          thumbnail: null,
-          videoUrl: null,
-          trailer: null,
-          createdAt: new Date().toISOString().split("T")[0],
-          releaseDate: new Date().toISOString().split("T")[0],
-        },
-        ...prev,
-      ]);
+      try {
+        const response = await API.post("/media/add", parsed);
+        setMediaList((prev) => [response.data, ...prev]);
+      } catch (error) {
+        console.error("Error adding media:", error);
+        alert("Failed to add content. Please try again.");
+      }
     }
     closeModal();
   };
 
-  const handleDelete = (id) =>
-    setMediaList((prev) => prev.filter((m) => m.id !== id));
+  const handleDelete = async (mediaId) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
+    try {
+      await API.delete(`/media/delete/${mediaId}`);
+      setMediaList((prev) => prev.filter((m) => m.mediaId !== mediaId));
+    } catch (error) {
+      console.error("Error deleting media:", error);
+      alert("Failed to delete content. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -111,11 +124,11 @@ export default function AllContent({ mediaList, setMediaList }) {
             </thead>
             <tbody>
               {mediaList.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.mediaId}>
                   <td>
                     <div className="adm-thumb">
-                      {item.thumbnail ? (
-                        <img src={item.thumbnail} alt={item.title} />
+                      {item.posterUrl ? (
+                        <img src={item.posterUrl} alt={item.title} />
                       ) : (
                         <div className="adm-thumb__placeholder">
                           <FiFilm />
@@ -124,18 +137,18 @@ export default function AllContent({ mediaList, setMediaList }) {
                     </div>
                   </td>
                   <td className="adm-table__title">{item.title}</td>
-                  <td className="adm-table__meta">{item.meta}</td>
+                  <td className="adm-table__meta">{item.genre}</td>
                   <td>
-                    <span className={`adm-badge adm-badge--${item.type}`}>
-                      {item.type}
+                    <span className={`adm-badge adm-badge--${item.mediaType}`}>
+                      {item.mediaType}
                     </span>
                   </td>
                   <td>
                     <span className="adm-table__rating">
-                      <FiStar /> {item.rating}
+                      <FiStar /> {item.averageRating}
                     </span>
                   </td>
-                  <td>{formatViews(item.views)}</td>
+                  <td>{formatViews(item.totalViews)}</td>
                   <td>
                     <span
                       className={`adm-badge adm-badge--${item.isFree ? "free" : "premium"}`}
@@ -154,7 +167,7 @@ export default function AllContent({ mediaList, setMediaList }) {
                       </button>
                       <button
                         className="adm-icon-btn adm-icon-btn--delete"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDelete(item.mediaId)}
                         title="Delete"
                       >
                         <FiTrash2 />
@@ -192,33 +205,34 @@ export default function AllContent({ mediaList, setMediaList }) {
                   />
                 </div>
                 <div className="adm-form-field">
-                  <label htmlFor="adm-meta">Genre</label>
+                  <label htmlFor="adm-genre">Genre</label>
                   <input
-                    id="adm-meta"
-                    name="meta"
-                    value={formData.meta}
+                    id="adm-genre"
+                    name="genre"
+                    value={formData.genre}
                     onChange={handleFormChange}
                     placeholder="e.g. Action • Thriller"
                     required
                   />
                 </div>
                 <div className="adm-form-field">
-                  <label htmlFor="adm-duration">Duration</label>
+                  <label htmlFor="adm-runtimeMinutes">Runtime (minutes)</label>
                   <input
-                    id="adm-duration"
-                    name="duration"
-                    value={formData.duration}
+                    id="adm-runtimeMinutes"
+                    name="runtimeMinutes"
+                    type="number"
+                    min="0"
+                    value={formData.runtimeMinutes}
                     onChange={handleFormChange}
-                    placeholder="e.g. 2h 28m"
-                    required
+                    placeholder="e.g. 148"
                   />
                 </div>
                 <div className="adm-form-field">
-                  <label htmlFor="adm-type">Type</label>
+                  <label htmlFor="adm-mediaType">Type</label>
                   <select
-                    id="adm-type"
-                    name="type"
-                    value={formData.type}
+                    id="adm-mediaType"
+                    name="mediaType"
+                    value={formData.mediaType}
                     onChange={handleFormChange}
                   >
                     <option value="movie">Movie</option>
@@ -226,28 +240,28 @@ export default function AllContent({ mediaList, setMediaList }) {
                   </select>
                 </div>
                 <div className="adm-form-field">
-                  <label htmlFor="adm-rating">Rating (0–5)</label>
+                  <label htmlFor="adm-averageRating">Rating (0–10)</label>
                   <input
-                    id="adm-rating"
-                    name="rating"
+                    id="adm-averageRating"
+                    name="averageRating"
                     type="number"
                     min="0"
-                    max="5"
+                    max="10"
                     step="0.1"
-                    value={formData.rating}
+                    value={formData.averageRating}
                     onChange={handleFormChange}
-                    placeholder="4.8"
+                    placeholder="8.5"
                     required
                   />
                 </div>
                 <div className="adm-form-field">
-                  <label htmlFor="adm-views">Views</label>
+                  <label htmlFor="adm-totalViews">Views</label>
                   <input
-                    id="adm-views"
-                    name="views"
+                    id="adm-totalViews"
+                    name="totalViews"
                     type="number"
                     min="0"
-                    value={formData.views}
+                    value={formData.totalViews}
                     onChange={handleFormChange}
                     placeholder="1000"
                   />

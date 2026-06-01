@@ -17,6 +17,11 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasIndex(u => u.Email).IsUnique();
+        });
+
         // Explicitly configure both Payment FK relationships to prevent
         // EF from creating shadow properties and to fix multiple cascade paths.
         modelBuilder.Entity<Payment>(entity =>

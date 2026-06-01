@@ -3,11 +3,13 @@ import Dune from "../assets/thumbnail/Dune.jpg";
 import Oppenheimer from "../assets/thumbnail/Oppen Heimer.jpg";
 import JohnWick from "../assets/thumbnail/John Wick.jpg";
 import Spiderman from "../assets/thumbnail/SpiderMan.jpg";
-import BatmanTrailer from "../videos/THE BATMAN – Trailer.mp4";
-import DuneV from "../videos/Dune.mp4";
-import OppenheimerV from "../videos/Oppenheimer.mp4";
-import JohnWickV from "../videos/John Wick.mp4";
-import SpidermanV from "../videos/Spider-Man.mp4";
+const base = import.meta.env.BASE_URL ?? "/";
+const vid = (name) => `${base}videos/${name}`;
+const BatmanTrailer = vid("THE BATMAN \u2013 Trailer.mp4");
+const DuneV = vid("Dune.mp4");
+const OppenheimerV = vid("Oppenheimer.mp4");
+const JohnWickV = vid("John Wick.mp4");
+const SpidermanV = vid("Spider-Man.mp4");
 export const HeroSlides = [
   {
     id: "batman",

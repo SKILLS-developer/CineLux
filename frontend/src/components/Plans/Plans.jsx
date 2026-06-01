@@ -1,23 +1,65 @@
 import Header from "../shared/Header/Header.jsx";
 import Footer from "../shared/Footer/Footer.jsx";
 import "./Plans.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginNotification } from "../shared/Notification/Notification.jsx";
 import API from "../../api.js";
+import PlanCard from "../shared/PlanCard/PlanCard.jsx";
+
 export default function Plans() {
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
+  const [billingIntervals, setBillingIntervals] = useState([]);
+  const [selectedInterval, setSelectedInterval] = useState("monthly");
+  const [plans, setPlans] = useState([]);
   const [showLoginNotification, setShowLoginNotification] = useState(false);
   const navigate = useNavigate();
 
-  function handlePlan(type) {
+  useEffect(() => {
+    const fetchIntervals = async () => {
+      try {
+        const res = await API.get("/sub/billing-intervals");
+
+        setBillingIntervals(res.data);
+      } catch (error) {
+        const msg =
+          error.response?.data?.message ??
+          (typeof error.response?.data === "string"
+            ? error.response.data
+            : null) ??
+          error;
+        alert(`Error fetching Intervals: ${msg}`);
+      }
+    };
+    fetchIntervals();
+  }, []);
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await API.get(
+          `/sub/plans/${encodeURIComponent(selectedInterval)}`,
+        );
+        setPlans(response.data);
+      } catch (error) {
+        const msg =
+          error.response?.data?.message ??
+          (typeof error.response?.data === "string"
+            ? error.response.data
+            : null) ??
+          error;
+        alert(`Error fetching plans: ${msg}`);
+      }
+    };
+    fetchPlans();
+  }, [selectedInterval]);
+
+  function handlePlan(planCode, planId) {
     const user = localStorage.getItem("user") ? true : false;
     if (!user) {
       setShowLoginNotification(true);
       return;
     }
 
-    navigate(`/payments/${selectedPlan}/${type}`);
+    navigate(`/payments/${planCode}/${planId}`);
   }
 
   return (
@@ -27,7 +69,7 @@ export default function Plans() {
       {showLoginNotification && (
         <LoginNotification onClose={() => setShowLoginNotification(false)} />
       )}
-      {}
+
       <div className="plans">
         <h1>Choose Your Plan</h1>
         <p>
@@ -35,68 +77,33 @@ export default function Plans() {
           features.
         </p>
         <div className="plan-options">
-          <button
-            type="button"
-            className={`plan-option ${selectedPlan === "monthly" ? "active" : ""}`}
-            onClick={() => setSelectedPlan("monthly")}
-          >
-            Monthly
-          </button>
-          <button
-            type="button"
-            className={`plan-option ${selectedPlan === "yearly" ? "active" : ""}`}
-            onClick={() => setSelectedPlan("yearly")}
-          >
-            Yearly
-            <span className="plan-option-badge">Save 10%</span>
-          </button>
+          {billingIntervals.map((interval, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`plan-option ${selectedInterval === interval ? "active" : ""}`}
+              onClick={() => setSelectedInterval(interval)}
+            >
+              {interval}
+              {interval.includes("yearly") && (
+                <span className="plan-option-badge">Save 15%</span>
+              )}
+            </button>
+          ))}
         </div>
         <div className="plan-cards">
-          <div
-            className={`plan-card ${selectedPlan === "yearly" ? "yearly" : ""}`}
-          >
-            <h2>Basic</h2>
-
-            <p>
-              ${selectedPlan === "monthly" ? "9.99" : "89.99"}/{selectedPlan}
-            </p>
-            <ul>
-              <li>Access to basic features</li>
-              <li>Limited support</li>
-              <li>Single user</li>
-            </ul>
-            <button onClick={() => handlePlan("Basic")}>Get Started</button>
-          </div>
-          <div
-            className={`plan-card most-popular ${selectedPlan === "yearly" ? "yearly" : ""}`}
-          >
-            <h2>Standard</h2>
-
-            <p>
-              ${selectedPlan === "monthly" ? "19.99" : "169.99"}/{selectedPlan}
-            </p>
-            <ul>
-              <li>Access to all features</li>
-              <li>Priority support</li>
-              <li>Up to 5 users</li>
-            </ul>
-            <button onClick={() => handlePlan("Standard")}>Get Started</button>
-          </div>
-          <div
-            className={`plan-card ${selectedPlan === "yearly" ? "yearly" : ""}`}
-          >
-            <h2>Premium</h2>
-
-            <p>
-              ${selectedPlan === "monthly" ? "29.99" : "249.99"}/{selectedPlan}
-            </p>
-            <ul>
-              <li>Custom features</li>
-              <li>Dedicated support</li>
-              <li>Unlimited users</li>
-            </ul>
-            <button onClick={() => handlePlan("Premium")}>Get Started</button>
-          </div>
+          {plans.map((plan, index) => (
+            <PlanCard
+              key={index}
+              selectedInterval={selectedInterval}
+              handlePlan={() => handlePlan(plan.planCode, plan.planId)}
+              planName={plan.planName}
+              price={plan.priceAmount}
+              planCode={plan.planCode}
+              videoQuality={plan.videoQuality}
+              maxStreams={plan.maxStreams}
+            />
+          ))}
         </div>
       </div>
       <Footer />

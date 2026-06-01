@@ -8,23 +8,24 @@ import {
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import MovieData from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./Profile.css";
 import API from "../../api.js";
 
+const defaultSubscription = {
+  plan: "No active plan",
+  status: "Inactive",
+  renewalDate: "-",
+  price: "-",
+};
+
 export default function Profile() {
   const navigate = useNavigate();
   const userloggedIn = JSON.parse(localStorage.getItem("user"));
-  const [favoritedVideos, setFavoritedVideos] = useState([]);
-  const [watchHistory, setWatchHistory] = useState([]);
-  const [subscription, setSubscription] = useState({
-    plan: "No active plan",
-    status: "Inactive",
-    renewalDate: "-",
-    price: "-",
-  });
+  // const [favoritedVideos, setFavoritedVideos] = useState([]);
+  // const [watchHistory, setWatchHistory] = useState([]);
+  const [subscription, setSubscription] = useState(defaultSubscription);
   useEffect(() => {
     if (!userloggedIn) {
       navigate("/login");
@@ -33,71 +34,70 @@ export default function Profile() {
 
   useEffect(() => {
     const loadProfileVideoData = async () => {
-      try {
-        const favoriteIds = userloggedIn?.savedTitles || [];
-        const favorites = MovieData.filter((video) =>
-          favoriteIds.includes(video.id),
-        );
-        setFavoritedVideos(favorites);
+      if (!userloggedIn?.userId) {
+        setSubscription(defaultSubscription);
+        return;
+      }
 
-        const historyIds =
-          JSON.parse(localStorage.getItem("watchHistoryVideos")) || [];
-        const history = historyIds
-          .map((id) => MovieData.find((video) => video.id === id))
-          .filter(Boolean);
-        setWatchHistory(history);
+      try {
+        // const favoriteIds = userloggedIn?.savedTitles || [];
+        // const favorites = MovieData.filter((video) =>
+        //   favoriteIds.includes(video.id),
+        // );
+        // setFavoritedVideos(favorites);
+
+        // const historyIds =
+        //   JSON.parse(localStorage.getItem("watchHistoryVideos")) || [];
+        // const history = historyIds
+        //   .map((id) => MovieData.find((video) => video.id === id))
+        //   .filter(Boolean);
+        // setWatchHistory(history);
 
         // const parsedSubscription =
         //   JSON.parse(localStorage.getItem("subscription")) || null;
-        try {
-          const res = await API.get("/usersub/user/",userloggedIn.userId);
-          const userSubscription = Array.isArray(res.data) ? res.data[0] : null;
+        const res = await API.get(
+          `/usersub/user/${encodeURIComponent(userloggedIn.userId)}`,
+        );
 
-          if (userSubscription) {
-            setSubscription({
-              plan: userSubscription.plan || "Unknown",
-              status: userSubscription.status || "InActive",
-              renewalDate: userSubscription.currentPeriodEnd || "-",
-              price: userSubscription.price || "-",
-              
-            });
-          }
-        } catch (error) {
-          alert(`Failed to load subscription data. Please try again later.${error}`);
-          setSubscription({
-            plan: "No active plan",
-            status: "InActive",
-            renewalDate: "-",
-            price: "-",
-          });
+        if (!res.data) {
+          setSubscription(defaultSubscription);
+          return;
         }
-      } catch {
-        setFavoritedVideos([]);
-        setWatchHistory([]);
+
         setSubscription({
-          plan: "No active plan",
-          status: "InActive",
-          renewalDate: "-",
-          price: "-",
+          plan: res.data.planName || `Plan #${res.data.planId}`,
+          status:
+            (res.data.status || "").toLowerCase() === "active"
+              ? "Active"
+              : "Inactive",
+          renewalDate: res.data.currentPeriodEnd || "-",
+          price:
+            res.data.priceAmount != null
+              ? `${res.data.currencyCode || "USD"} ${res.data.priceAmount}`
+              : "-",
         });
+      } catch (error) {
+        alert(`Error loading profile video data: ${error}`);
       }
     };
 
     loadProfileVideoData();
 
     // Keep profile data updated when localStorage changes.
-    const handleStorageChange = () => loadProfileVideoData();
-    window.addEventListener("storage", handleStorageChange);
+    // const handleStorageChange = () => loadProfileVideoData();
+    // window.addEventListener("storage", handleStorageChange);
 
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
+    // return () => {
+    //   window.removeEventListener("storage", handleStorageChange);
+    // };
   }, [userloggedIn]);
 
   // Mock user data
   const user = {
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent("alex.anderson@example.com")}`,
   };
+
+  if (!userloggedIn) return null;
 
   return (
     <>
@@ -156,7 +156,7 @@ export default function Profile() {
                   {subscription.renewalDate}
                 </span>
               </div>
-              {subscription.status === "InActive" && (
+              {subscription.status !== "Active" && (
                 <button
                   className="subscription-btn"
                   onClick={() => navigate("/plans")}
@@ -177,7 +177,7 @@ export default function Profile() {
                 View All
               </Link>
             </div>
-            <div className="history-grid">
+            {/* <div className="history-grid">
               {watchHistory.length > 0 ? (
                 watchHistory.map((item) => (
                   <div key={item.id} className="history-item">
@@ -192,7 +192,7 @@ export default function Profile() {
                   No watch history yet. Start playing videos to see them here.
                 </p>
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* Saved Titles */}
@@ -205,7 +205,7 @@ export default function Profile() {
                 View All
               </Link>
             </div>
-            <div className="favorites-grid">
+            {/* <div className="favorites-grid">
               {favoritedVideos.length > 0 ? (
                 favoritedVideos.map((item) => (
                   <div key={item.id} className="favorite-card">
@@ -225,7 +225,7 @@ export default function Profile() {
                   Play page!
                 </p>
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* Account Settings */}

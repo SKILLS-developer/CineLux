@@ -3,21 +3,24 @@ import Dune from "../assets/thumbnail/Dune.jpg";
 import Oppenheimer from "../assets/thumbnail/Oppen Heimer.jpg";
 import JohnWick from "../assets/thumbnail/John Wick.jpg";
 import Spiderman from "../assets/thumbnail/SpiderMan.jpg";
-import BatmanTrailer from "../videos/THE BATMAN – Trailer.mp4";
-import DuneV from "../videos/Dune.mp4";
-import OppenheimerV from "../videos/Oppenheimer.mp4";
-import JohnWickV from "../videos/John Wick.mp4";
-import SpidermanV from "../videos/Spider-Man.mp4";
 import EnolaHolmes2 from "../assets/thumbnail/Enola Holmes 2.jpg";
 import SatansSlaves from "../assets/thumbnail/Satan's Slaves .jpg";
 import TheFlash from "../assets/thumbnail/The Flash.jpg";
 import WeakHero from "../assets/thumbnail/Weak Hero.jpg";
 import WonderWoman from "../assets/thumbnail/Wonder Woman.jpg";
-import EnolaHolmesV from "../videos/Enola Holmes 2.mp4";
-import SatansSlavesV from "../videos/SATAN'S SLAVES.mp4";
-import TheFlashV from "../videos/The Flash.mp4";
-import WeakHeroV from "../videos/Weak Hero Class 2.mp4";
-import WonderWomanV from "../videos/WONDER WOMAN.mp4";
+const base = import.meta.env.BASE_URL ?? "/";
+const vid = (name) => `${base}videos/${name}`;
+
+const EnolaHolmesV = vid("Enola Holmes 2.mp4");
+const SatansSlavesV = vid("SATAN'S SLAVES.mp4");
+const TheFlashV = vid("The Flash.mp4");
+const WeakHeroV = vid("Weak Hero Class 2.mp4");
+const WonderWomanV = vid("WONDER WOMAN.mp4");
+const BatmanTrailer = vid("THE BATMAN \u2013 Trailer.mp4");
+const DuneV = vid("Dune.mp4");
+const OppenheimerV = vid("Oppenheimer.mp4");
+const JohnWickV = vid("John Wick.mp4");
+const SpidermanV = vid("Spider-Man.mp4");
 
 export default [
   {
@@ -26,7 +29,8 @@ export default [
     rating: 4.8,
     meta: "Action ",
     duration: "2h 0m",
-    description: "Enola Holmes, the younger sister of the famous detective Sherlock Holmes, embarks on a thrilling adventure to solve a mysterious case that has stumped even her brilliant brother.",
+    description:
+      "Enola Holmes, the younger sister of the famous detective Sherlock Holmes, embarks on a thrilling adventure to solve a mysterious case that has stumped even her brilliant brother.",
     thumbnail: EnolaHolmes2,
     type: "movie",
     isFree: true,

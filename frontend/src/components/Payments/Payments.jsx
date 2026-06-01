@@ -2,53 +2,91 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../shared/Header/Header.jsx";
 import Footer from "../shared/Footer/Footer.jsx";
 import "./Payments.css";
+import { useEffect, useState } from "react";
+import API from "../../api.js";
 
 export default function Payments() {
-  const { planType = "Standard", billingCycle = "monthly" } = useParams();
+  const { planCode = "basic_monthly", planId = "" } = useParams();
+  const [planDetails, setPlanDetails] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const totalPrice =
-    planType === "Basic"
-      ? billingCycle === "yearly"
-        ? "89.99"
-        : "9.99"
-      : planType === "Premium"
-        ? billingCycle === "yearly"
-          ? "249.99"
-          : "29.99"
-        : billingCycle === "yearly"
-          ? "169.99"
-          : "19.99";
-  const renewalDate = (() => {
-    const next = new Date();
-    if (billingCycle === "yearly") {
-      next.setFullYear(next.getFullYear() + 1);
-    } else {
-      next.setMonth(next.getMonth() + 1);
-    }
-    return next.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  })();
-
-  const handleFinishPayment = () => {
-    const subscription = {
-      plan: planType,
-      status: "Active",
-      renewalDate,
-      price: `$${totalPrice}/${billingCycle}`,
-      billingCycle,
-      startedAt: new Date().toISOString(),
+  useEffect(() => {
+    const fetchPlan = async () => {
+      try {
+        const res = await API.get(
+          `/sub/plansDetails/${encodeURIComponent(planCode)}`,
+        );
+        setPlanDetails(res.data);
+      } catch (error) {
+        const msg =
+          error.response?.data?.message ??
+          (typeof error.response?.data === "string"
+            ? error.response.data
+            : null) ??
+          error;
+        alert(`Error fetching plan details: ${msg}`);
+      }
     };
+    fetchPlan();
+  }, [planCode]);
 
-    localStorage.setItem("subscription", JSON.stringify(subscription));
-    navigate("/profile");
+  // const renewalDate = (() => {
+  //   const next = new Date();
+  //   if (billingCycle === "yearly") {
+  //     next.setFullYear(next.getFullYear() + 1);
+  //   } else {
+  //     next.setMonth(next.getMonth() + 1);
+  //   }
+  //   return next.toLocaleDateString("en-US", {
+  //     month: "long",
+  //     day: "numeric",
+  //     year: "numeric",
+  //   });
+  // })();
+
+  const handleFinishPayment = async () => {
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    if (!user?.userId) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await API.post("/payment/create-payment", {
+        userId: user.userId,
+        planId: Number(planId),
+        paymentMethod: "card",
+      });
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          isSubscribed: true,
+        }),
+      );
+
+      alert("Payment successful! Your subscription is now active.");
+      navigate("/profile");
+    } catch (error) {
+      const msg =
+        error.response?.data?.message ??
+        (typeof error.response?.data === "string"
+          ? error.response.data
+          : null) ??
+        error.message ??
+        "Unknown error";
+      alert(`Error completing payment: ${msg}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
       <Header />
+
       <div className="Spacer"></div>
       <main className="payments-page">
         <section className="payments-card" aria-labelledby="payments-title">
@@ -56,14 +94,16 @@ export default function Payments() {
             <p className="payments-kicker">Secure Checkout</p>
             <h1 id="payments-title">Complete Your Payment</h1>
             <p className="payments-subtitle">
-              You selected the {planType} plan billed {billingCycle}.
+              You selected the {planDetails?.planName || "selected"} plan billed{" "}
+              {planDetails?.billingInterval || "monthly"}.
             </p>
           </div>
 
           <div className="payments-summary" role="status" aria-live="polite">
-            <span>{planType}</span>
+            <span>{planDetails?.planName || "Plan"}</span>
             <strong>
-              ${totalPrice}/{billingCycle}
+              ${planDetails?.priceAmount ?? "-"}/
+              {planDetails?.billingInterval || "-"}
             </strong>
           </div>
 
@@ -143,8 +183,11 @@ export default function Payments() {
                 type="button"
                 className="payments-btn payments-btn-primary"
                 onClick={handleFinishPayment}
+                disabled={isSubmitting}
               >
-                Pay ${totalPrice}
+                {isSubmitting
+                  ? "Processing..."
+                  : `Pay $${planDetails?.priceAmount ?? "-"}`}
               </button>
             </div>
           </form>

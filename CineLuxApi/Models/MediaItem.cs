@@ -10,7 +10,7 @@ namespace CineLuxApi.Models
         [Required, MaxLength(255)]
         public string Title { get; set; } = string.Empty;
 
-        [Required, MaxLength(300)]
+        [Required, MaxLength(50)]
         public string MediaType { get; set; } = "movie";
 
         [MaxLength(500)]
@@ -25,8 +25,11 @@ namespace CineLuxApi.Models
 
         public bool IsFree { get; set; } = false;
 
+        [MaxLength(2048)]
         public string? PosterUrl { get; set; }
+        [MaxLength(2048)]
         public string? TrailerUrl { get; set; }
+        [MaxLength(2048)]
         public string? StreamUrl { get; set; }
 
         public double? AverageRating { get; set; }

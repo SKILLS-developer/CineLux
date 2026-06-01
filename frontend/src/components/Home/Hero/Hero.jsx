@@ -6,13 +6,9 @@ import { HeroSlides } from "../../../data/HeroSlides";
 import { useNavigate } from "react-router-dom";
 export default function Hero() {
   const navigate = useNavigate();
-
   const user = JSON.parse(localStorage.getItem("user"));
-  
   const [activeSlide, setActiveSlide] = useState(0);
-
   const slide = HeroSlides[activeSlide];
-
   const [isTrailerHover, setIsTrailerHover] = useState(false);
 
   const hasMp4Trailer =
@@ -30,10 +26,10 @@ export default function Hero() {
       ? favorites.filter((id) => id !== slide.id)
       : [...favorites, slide.id];
     setFavorites(updatedFav);
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      user.savedTitles = updatedFav;
-      localStorage.setItem("user", JSON.stringify(user));
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    if (currentUser) {
+      currentUser.savedTitles = updatedFav;
+      localStorage.setItem("user", JSON.stringify(currentUser));
     }
   };
   return (

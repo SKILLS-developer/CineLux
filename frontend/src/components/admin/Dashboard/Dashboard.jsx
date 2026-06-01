@@ -51,7 +51,7 @@ export default function AdminDashboard() {
   const total = mediaList.length;
   const freeCount = mediaList.filter((m) => m.isFree).length;
   const premiumCount = total - freeCount;
-  const totalViews = mediaList.reduce((s, m) => s + (m.views || 0), 0);
+  const totalViews = mediaList.reduce((s, m) => s + (m.totalViews || 0), 0);
 
   return (
     <div className="adm-layout">
