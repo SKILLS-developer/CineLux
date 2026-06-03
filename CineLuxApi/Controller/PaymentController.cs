@@ -111,10 +111,10 @@ namespace CineLuxApi.Controllers
                     plan.BillingInterval,
                 });
             }
-            catch
+            catch(Exception ex)
             {
                 await transaction.RollbackAsync();
-                return StatusCode(500, "Payment could not be completed.");
+                return StatusCode(500, $"Payment could not be completed. Error: {ex.Message}");
             }
         }
     }

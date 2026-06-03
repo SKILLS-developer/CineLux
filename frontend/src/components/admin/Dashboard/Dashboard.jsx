@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 
 import AllContent from "../AllContent/AllContent.jsx";
-import logo from "../../../assets/CineLux-Logo.png";
+import logo from "/og-image.png";
 import "./Dashboard.css";
 import API from "../../../api.js";
 
@@ -34,6 +34,7 @@ export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [mediaList, setMediaList] = useState([]);
   useEffect(() => {
+    document.title = "Admin Dashboard - CineLux";
     if (!localStorage.getItem("admin")) {
       alert("Access denied. Please log in as admin.");
       navigate("/admin/login");

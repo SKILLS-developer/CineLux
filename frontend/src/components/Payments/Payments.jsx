@@ -10,6 +10,7 @@ export default function Payments() {
   const [planDetails, setPlanDetails] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchPlan = async () => {
       try {
@@ -18,31 +19,12 @@ export default function Payments() {
         );
         setPlanDetails(res.data);
       } catch (error) {
-        const msg =
-          error.response?.data?.message ??
-          (typeof error.response?.data === "string"
-            ? error.response.data
-            : null) ??
-          error;
-        alert(`Error fetching plan details: ${msg}`);
+        alert(`Error fetching plan details: ${error}`);
       }
     };
     fetchPlan();
+    document.title = "Payments - CineLux";
   }, [planCode]);
-
-  // const renewalDate = (() => {
-  //   const next = new Date();
-  //   if (billingCycle === "yearly") {
-  //     next.setFullYear(next.getFullYear() + 1);
-  //   } else {
-  //     next.setMonth(next.getMonth() + 1);
-  //   }
-  //   return next.toLocaleDateString("en-US", {
-  //     month: "long",
-  //     day: "numeric",
-  //     year: "numeric",
-  //   });
-  // })();
 
   const handleFinishPayment = async () => {
     const user = JSON.parse(localStorage.getItem("user") || "null");
@@ -59,25 +41,10 @@ export default function Payments() {
         paymentMethod: "card",
       });
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...user,
-          isSubscribed: true,
-        }),
-      );
-
       alert("Payment successful! Your subscription is now active.");
       navigate("/profile");
     } catch (error) {
-      const msg =
-        error.response?.data?.message ??
-        (typeof error.response?.data === "string"
-          ? error.response.data
-          : null) ??
-        error.message ??
-        "Unknown error";
-      alert(`Error completing payment: ${msg}`);
+      alert(`Error completing payment: ${error}`);
     } finally {
       setIsSubmitting(false);
     }

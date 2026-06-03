@@ -1,4 +1,3 @@
-
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import MediaCard from "../shared/MediaCard/MediaCard.jsx";
@@ -7,21 +6,23 @@ import { useEffect, useState } from "react";
 
 function getPosterUrl(posterUrl) {
   const filename = posterUrl.split(/[\\/]/).pop();
-  return new URL(`../../assets/thumbnail/${filename}`, import.meta.url).href;
+  return `${import.meta.env.BASE_URL}thumbnail/${filename}`;
 }
 
 export default function Upcoming() {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
+  
   useEffect(() => {
     const fetchUpcoming = async () => {
       try {
         const response = await API.get("/media/upcoming");
         setUpcomingMovies(response.data);
       } catch (error) {
-        console.error("Error fetching upcoming movies:", error);
+        console.error(`Error fetching upcoming movies: ${error}`);
       }
     };
     fetchUpcoming();
+    document.title = "Upcoming Movies - CineLux";
   }, []);
 
   return (

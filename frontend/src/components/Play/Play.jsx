@@ -4,22 +4,23 @@ import { useParams } from "react-router-dom";
 import "./Play.css";
 import Header from "../shared/Header/Header";
 import API from "../../api.js";
+import { useNavigate } from "react-router-dom";
 
 function getStreamUrl(streamUrl) {
   const filename = streamUrl.split(/[\\/]/).pop();
-  return new URL(`../../videos/${filename}`, import.meta.url).href;
+  return `${import.meta.env.BASE_URL}videos/${filename}`;
 }
 function getPosterUrl(posterUrl) {
   if (typeof posterUrl !== "string" || posterUrl.length === 0) {
     return null;
   }
   const filename = posterUrl.split(/[\\/]/).pop();
-  return new URL(`../../assets/thumbnail/${filename}`, import.meta.url).href;
+  return `${import.meta.env.BASE_URL}thumbnail/${filename}`;
 }
 
 export default function Play() {
   const { videoId } = useParams();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const [activeVideo, setActiveVideo] = useState(null);
   useEffect(() => {
@@ -27,18 +28,23 @@ export default function Play() {
       try {
         const response = await API.get(`/media/play/${videoId}`);
         setActiveVideo(response.data);
+        document.title = response.data ? `${response.data.title} - CineLux` : "Play - CineLux";
         if (response.data && !response.data.isFree) {
           const currentUser = JSON.parse(localStorage.getItem("user"));
           if (!currentUser) {
-            alert("This title is premium content. Please subscribe to access it.");
+            alert(
+              "This title is premium content. Please log in to access it.",
+            );
+            navigate("/login");
           }
+          
         }
       } catch (error) {
-        console.error("Error fetching video:", error);
+        alert(`Error fetching video: ${error}`);
       }
     };
     fetchVideo();
-  }, [videoId]);
+  }, [videoId, navigate]);
 
   // useEffect(() => {
   //   if (!activeVideo?.id) return;

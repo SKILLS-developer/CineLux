@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Auth/Auth.css";
 import API from "../../../api.js";
 
 export default function LoginAdmin() {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Admin Login - CineLux";
+  }, []);
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -15,13 +19,11 @@ export default function LoginAdmin() {
         Email: email,
         PasswordHash: password,
       });
-      alert(
-        `Login successful! ${res.data.email} Redirecting to dashboard...`,
-      );
+      alert(`Login successful! ${res.data.email} Redirecting to dashboard...`);
       localStorage.setItem("admin", JSON.stringify(res.data));
       navigate("/admin/dashboard");
     } catch (error) {
-      alert("An error occurred during login. Please try again.");
+      alert(`An error occurred during login. Please try again. ${error}`);
       return;
     }
 
@@ -38,9 +40,7 @@ export default function LoginAdmin() {
     <section className="auth-page">
       <div className="auth-card">
         <h1 className="auth-title">Admin Panel</h1>
-        <p className="auth-subtitle">
-          Sign in to access the admin dashboard.
-        </p>
+        <p className="auth-subtitle">Sign in to access the admin dashboard.</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">

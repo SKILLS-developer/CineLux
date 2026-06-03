@@ -21,13 +21,7 @@ export default function Plans() {
 
         setBillingIntervals(res.data);
       } catch (error) {
-        const msg =
-          error.response?.data?.message ??
-          (typeof error.response?.data === "string"
-            ? error.response.data
-            : null) ??
-          error;
-        alert(`Error fetching Intervals: ${msg}`);
+        alert(`Error fetching Intervals: ${error}`);
       }
     };
     fetchIntervals();
@@ -40,16 +34,11 @@ export default function Plans() {
         );
         setPlans(response.data);
       } catch (error) {
-        const msg =
-          error.response?.data?.message ??
-          (typeof error.response?.data === "string"
-            ? error.response.data
-            : null) ??
-          error;
-        alert(`Error fetching plans: ${msg}`);
+        alert(`Error fetching plans: ${error}`);
       }
     };
     fetchPlans();
+    document.title = "Plans - CineLux";
   }, [selectedInterval]);
 
   function handlePlan(planCode, planId) {

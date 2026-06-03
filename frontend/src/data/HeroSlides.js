@@ -1,10 +1,12 @@
-import Batman from "../assets/thumbnail/The Batman.jpg";
-import Dune from "../assets/thumbnail/Dune.jpg";
-import Oppenheimer from "../assets/thumbnail/Oppen Heimer.jpg";
-import JohnWick from "../assets/thumbnail/John Wick.jpg";
-import Spiderman from "../assets/thumbnail/SpiderMan.jpg";
 const base = import.meta.env.BASE_URL ?? "/";
+const thumb = (name) => `${base}thumbnail/${name}`;
 const vid = (name) => `${base}videos/${name}`;
+
+const Batman = thumb("The Batman.jpg");
+const Dune = thumb("Dune.jpg");
+const Oppenheimer = thumb("Oppen Heimer.jpg");
+const JohnWick = thumb("John Wick.jpg");
+const Spiderman = thumb("SpiderMan.jpg");
 const BatmanTrailer = vid("THE BATMAN \u2013 Trailer.mp4");
 const DuneV = vid("Dune.mp4");
 const OppenheimerV = vid("Oppenheimer.mp4");

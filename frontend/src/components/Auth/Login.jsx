@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Auth.css";
 import API from "../../api";
 
@@ -9,9 +9,12 @@ export default function Login() {
   const [Email, setEmail] = useState("");
   const [PasswordHash, setPassword] = useState("");
 
+  useEffect(() => {
+    document.title = "Login - CineLux";
+  }, []);
+
   async function handleSubmit(e) {
     e.preventDefault();
-    // const user = JSON.parse(localStorage.getItem("user"));
     try {
       const res = await API.post("/user/login", {
         Email: Email,

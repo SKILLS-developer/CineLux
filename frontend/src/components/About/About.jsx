@@ -3,13 +3,15 @@ import { Link } from "react-router-dom";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./About.css";
-
+import { useEffect } from "react";
 export default function About() {
+  useEffect(() => {
+    document.title = "About - CineLux";
+  }, []);
   return (
     <>
       <Header />
       <div className="Spacer"></div>
-
       <section className="about-page">
         <div className="about-shell">
           <header className="about-hero">

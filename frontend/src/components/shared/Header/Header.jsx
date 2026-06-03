@@ -2,10 +2,10 @@ import { useState } from "react";
 import { FiMenu, FiSearch, FiX } from "react-icons/fi";
 import "./Header.css";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/CineLux-Logo.png";
+import logo from "/og-image.png";
 
 export default function Header() {
-  const [user, setUser] = useState(
+  const [user, _setUser] = useState(
     () => JSON.parse(window.localStorage.getItem("user"))?.fullName ?? "",
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);

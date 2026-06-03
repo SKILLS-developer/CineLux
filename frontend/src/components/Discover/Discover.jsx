@@ -1,28 +1,14 @@
 import { useEffect, useState } from "react";
 import { FaSearch, FaStar, FaTimes } from "react-icons/fa";
-// import AllMovies from "../../data/Data.js";
 import Footer from "../shared/Footer/Footer.jsx";
 import Header from "../shared/Header/Header.jsx";
 import "./Discover.css";
 import API from "../../api.js";
 import { useNavigate } from "react-router-dom";
 
-// function filterMovies(movies, query) {
-//   const q = query.trim().toLowerCase();
-//   let result = q
-//     ? movies.filter(
-//         (m) =>
-//           m.title.toLowerCase().includes(q) ||
-//           (m.genre ?? "").toLowerCase().includes(q) ||
-//           m.mediaType.toLowerCase().includes(q),
-//       )
-//     : [...movies];
-
-//   return result;
-// }
 function getPosterUrl(posterUrl) {
   const filename = posterUrl.split(/[\\/]/).pop();
-  return new URL(`../../assets/thumbnail/${filename}`, import.meta.url).href;
+  return `${import.meta.env.BASE_URL}thumbnail/${filename}`;
 }
 
 export default function Discover() {
@@ -41,13 +27,16 @@ export default function Discover() {
       }
     };
     fetchData();
+    document.title = "Discover - CineLux";
   }, []);
 
   function Update(q) {
     setQuery(q);
     const fetchData = async () => {
       try {
-        const url = q.trim() ? `/media/search/${encodeURIComponent(q.trim())}` : `/media/all`;
+        const url = q.trim()
+          ? `/media/search/${encodeURIComponent(q.trim())}`
+          : `/media/all`;
         const response = await API.get(url);
         setResults(response.data);
       } catch (error) {
@@ -56,7 +45,6 @@ export default function Discover() {
     };
     fetchData();
   }
-  // setResults(filterMovies(results, q));
 
   return (
     <>

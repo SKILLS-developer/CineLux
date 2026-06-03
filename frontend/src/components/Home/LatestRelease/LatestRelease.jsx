@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { SubscriptionNotification } from "../../shared/Notification/Notification.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import MediaCard from "../../shared/MediaCard/MediaCard.jsx";
-
 import API from "../../../api.js";
 
 function getPosterUrl(posterUrl) {
   const filename = posterUrl.split(/[\\/]/).pop();
-  return new URL(`../../../assets/thumbnail/${filename}`, import.meta.url).href;
+  return `${import.meta.env.BASE_URL}thumbnail/${filename}`;
 }
 
 export default function LatestRelease() {
@@ -21,25 +20,11 @@ export default function LatestRelease() {
         const response = await API.get("/media/latest-release");
         setReleases(response.data);
       } catch (error) {
-        console.error("Error fetching latest releases:", error);
+        console.error(`Error fetching latest releases: ${error}`);
       }
     };
     fetchReleases();
   }, []);
-
-  function handleClick(release) {
-    if (
-      !release.isFree &&
-      (!localStorage.getItem("user") ||
-        JSON.parse(localStorage.getItem("user")).isSubscribed === false)
-    ) {
-      setShowSubscriptionNotification(true);
-      return;
-    }
-
-    navigate(`/play/${release.mediaId}`);
-  }
-
   return (
     <section className="rail-section">
       {showSubscriptionNotification && (
@@ -65,7 +50,7 @@ export default function LatestRelease() {
               title={release.title}
               rating={release.averageRating}
               meta={release.genre}
-              onClick={() => handleClick(release)}
+              onClick={() =>navigate(`/play/${release.mediaId}`)}
             />
           ))}
         </div>

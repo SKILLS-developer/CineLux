@@ -82,6 +82,7 @@ export default function Profile() {
     };
 
     loadProfileVideoData();
+    document.title = "Profile - CineLux";
 
     // Keep profile data updated when localStorage changes.
     // const handleStorageChange = () => loadProfileVideoData();

@@ -7,46 +7,27 @@ import API from "../../api.js";
 
 function getPosterUrl(posterUrl) {
   const filename = posterUrl.split(/[\\/]/).pop();
-  return new URL(`../../assets/thumbnail/${filename}`, import.meta.url).href;
+  return `${import.meta.env.BASE_URL}thumbnail/${filename}`;
 }
 export default function Shows() {
   const navigate = useNavigate();
   const [shows, setShows] = useState([]);
-  // const [showSubscriptionNotification, setShowSubscriptionNotification] =
-  //   useState(false);
-  // const shows = ShowsTV.filter((item) => item.type === "series");
   useEffect(() => {
     const fetchShows = async () => {
       try {
         const response = await API.get("/media/shows");
         setShows(response.data);
       } catch (error) {
-        console.error("Error fetching shows:", error);
+        console.error(`Error fetching shows: ${error}`);
       }
     };
     fetchShows();
+    document.title = "Shows - CineLux";
   }, []);
-  // function handleClick(vid) {
-  //   // if (
-  //   //   !show.isFree &&
-  //   //   (!localStorage.getItem("user") ||
-  //   //     JSON.parse(localStorage.getItem("user")).isSubscribed === false)
-  //   // ) {
-  //   //   setShowSubscriptionNotification(true);
-  //   //   return;
-  //   // }
-  //   navigate(`/play/${vid}`);
-  // }
-
   return (
     <>
       <Header />
       <div className="Spacer"></div>
-      {/* {showSubscriptionNotification && (
-        <SubscriptionNotification
-          onClose={() => setShowSubscriptionNotification(false)}
-        />
-      )} */}
       <section className="catalog-page shows-page">
         <div className="catalog-shell">
           <div className="catalog-heading">

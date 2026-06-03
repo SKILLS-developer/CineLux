@@ -1,7 +1,7 @@
 import { FiFacebook, FiInstagram, FiTwitter } from "react-icons/fi";
 import "./Footer.css";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/CineLux-Logo.png";
+import logo from "/og-image.png";
 
 export default function Footer() {
   return (

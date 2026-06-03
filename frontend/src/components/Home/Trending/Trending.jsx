@@ -5,7 +5,7 @@ import MediaCard from "../../shared/MediaCard/MediaCard.jsx";
 import API from "../../../api.js";
 function getPosterUrl(posterUrl) {
   const filename = posterUrl.split(/[\\/]/).pop();
-  return new URL(`../../../assets/thumbnail/${filename}`, import.meta.url).href;
+  return `${import.meta.env.BASE_URL}thumbnail/${filename}`;
 }
 export default function Trending() {
   const navigate = useNavigate();
@@ -18,24 +18,11 @@ export default function Trending() {
         const response = await API.get("/media/trending");
         setTrending(response.data);
       } catch (error) {
-        console.error("Error fetching trending media:", error);
+        console.error(`Error fetching trending media: ${error}`);
       }
     };
     fetchTrending();
   }, []);
-
-  function handleClick(trending) {
-    if (
-      !trending.isFree &&
-      (!localStorage.getItem("user") ||
-        JSON.parse(localStorage.getItem("user")).isSubscribed === false)
-    ) {
-      setShowSubscriptionNotification(true);
-      return;
-    }
-
-    navigate(`/play/${trending.mediaId}`);
-  }
 
   return (
     <section className="rail-section">
@@ -62,7 +49,7 @@ export default function Trending() {
               title={trending.title}
               rating={trending.averageRating}
               meta={trending.genre}
-              onClick={() => handleClick(trending)}
+              onClick={() =>navigate(`/play/${trending.mediaId}`)}
             />
           ))}
         </div>

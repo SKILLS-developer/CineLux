@@ -2,9 +2,13 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import API from "../../api";
+import { useEffect } from "react";
 
 export default function Register() {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Register - CineLux";
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -12,14 +16,6 @@ export default function Register() {
     const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
-    // const memberSince = new Date().toLocaleDateString("en-US", {
-    //   month: "long",
-    //   year: "numeric",
-    // });
-    // const watchHistory = [];
-    // const savedTitles = [];
-    // const isSubscribed = false;
-    // const user = { name, email, password, memberSince, watchHistory, savedTitles, isSubscribed };
     const user = { fullName: name, email, passwordHash: password };
     try {
       const response = await API.post("/user/register", user);
