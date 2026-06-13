@@ -29,7 +29,6 @@ export default function Discover() {
     fetchData();
     document.title = "Discover - CineLux";
   }, []);
-
   function Update(q) {
     setQuery(q);
     const fetchData = async () => {

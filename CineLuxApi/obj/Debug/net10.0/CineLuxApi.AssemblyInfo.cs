@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CineLuxApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+463958450942e051ee8db125d82de52bac70b473")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f0bcd2ab01b02700c1f11b5b9221d00182b24a1")]
 [assembly: System.Reflection.AssemblyProductAttribute("CineLuxApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CineLuxApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

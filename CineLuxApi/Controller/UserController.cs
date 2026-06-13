@@ -16,23 +16,23 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(User user)
+        public IActionResult Register(User user)
         {
-            var emailExists = await _context.Users.AnyAsync(u => u.Email == user.Email);
+            var emailExists = _context.Users.Any(u => u.Email == user.Email);
             if (emailExists) return BadRequest("An account with this email already exists.");
 
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            _context.Users.Add(user);
+            _context.SaveChanges();
 
             return Ok(new { user.UserId, user.FullName, user.Email, user.Role, user.CreatedAt });
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(User user)
+        public IActionResult Login(User user)
         {
-            var existingUser = await _context.Users.FirstOrDefaultAsync(x =>
+            var existingUser = _context.Users.FirstOrDefault(x =>
                 x.Email == user.Email &&
                 x.PasswordHash == user.PasswordHash
             );
@@ -46,9 +46,9 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("admin")]
-        public async Task<IActionResult> GetAdminUsers(User user)
+        public IActionResult GetAdminUsers(User user)
         {
-            var adminUser = await _context.Users.FirstOrDefaultAsync(x =>
+            var adminUser = _context.Users.FirstOrDefault(x =>
                 x.Email == user.Email &&
                 x.PasswordHash == user.PasswordHash &&
                 x.Role == "admin"

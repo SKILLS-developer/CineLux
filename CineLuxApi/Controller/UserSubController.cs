@@ -16,9 +16,9 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("subscribe")]
-        public async Task<IActionResult> Subscribe(UserSubscription subscription)
+        public IActionResult Subscribe(UserSubscription subscription)
         {
-            var plan = await _context.SubscriptionPlan.FindAsync(subscription.PlanId);
+            var plan = _context.SubscriptionPlan.Find(subscription.PlanId);
             var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
             var periodEnd = plan != null && plan.BillingInterval.Equals("yearly", StringComparison.OrdinalIgnoreCase)
                 ? startDate.AddYears(1)
@@ -29,16 +29,16 @@ namespace CineLuxApi.Controllers
             subscription.CurrentPeriodStart = startDate;
             subscription.CurrentPeriodEnd = periodEnd;
             subscription.CreatedAt = DateTime.UtcNow;
-            await _context.UserSubscriptions.AddAsync(subscription);
-            await _context.SaveChangesAsync();
+            _context.UserSubscriptions.Add(subscription);
+            _context.SaveChanges();
 
             return Ok(subscription);
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetUserSubscription(long userId)
+        public IActionResult GetUserSubscription(long userId)
         {
-            var subscription = await _context.UserSubscriptions
+            var subscription = _context.UserSubscriptions
                 .Where(s => s.UserId == userId)
                 .OrderByDescending(s => s.CreatedAt)
                 .Select(s => new
@@ -54,7 +54,7 @@ namespace CineLuxApi.Controllers
                     PriceAmount = s.Plan.PriceAmount,
                     CurrencyCode = s.Plan.CurrencyCode,
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (subscription == null)
             {

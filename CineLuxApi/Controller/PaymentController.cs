@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CineLuxApi.Data;
 using CineLuxApi.Models;
-using Microsoft.EntityFrameworkCore;
-
 namespace CineLuxApi.Controllers
 {
     [ApiController]
@@ -24,27 +22,27 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("create-payment")]
-        public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentRequest request)
+        public IActionResult CreatePayment([FromBody] CreatePaymentRequest request)
         {
             if (request == null || request.UserId <= 0 || request.PlanId <= 0)
             {
                 return BadRequest("Invalid payment data.");
             }
 
-            var userExists = await _context.Users.AnyAsync(u => u.UserId == request.UserId);
+            var userExists = _context.Users.Any(u => u.UserId == request.UserId);
             if (!userExists)
             {
                 return BadRequest("User not found.");
             }
 
-            var plan = await _context.SubscriptionPlan.FirstOrDefaultAsync(p =>
+            var plan = _context.SubscriptionPlan.FirstOrDefault(p =>
                 p.PlanId == request.PlanId && p.IsActive);
             if (plan == null)
             {
                 return BadRequest("Plan not found or inactive.");
             }
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            using var transaction = _context.Database.BeginTransaction();
 
             try
             {
@@ -54,9 +52,9 @@ namespace CineLuxApi.Controllers
                     ? startDate.AddYears(1)
                     : startDate.AddMonths(1);
 
-                var activeSubscriptions = await _context.UserSubscriptions
+                var activeSubscriptions = _context.UserSubscriptions
                     .Where(s => s.UserId == request.UserId && s.Status.ToLower() == "active")
-                    .ToListAsync();
+                    .ToList();
 
                 foreach (var existing in activeSubscriptions)
                 {
@@ -75,8 +73,8 @@ namespace CineLuxApi.Controllers
                     CreatedAt = utcNow,
                 };
 
-                await _context.UserSubscriptions.AddAsync(subscription);
-                await _context.SaveChangesAsync();
+                _context.UserSubscriptions.Add(subscription);
+                _context.SaveChanges();
 
                 var payment = new Payment
                 {
@@ -92,10 +90,10 @@ namespace CineLuxApi.Controllers
                     CreatedAt = utcNow,
                 };
 
-                await _context.Payments.AddAsync(payment);
-                await _context.SaveChangesAsync();
+                _context.Payments.Add(payment);
+                _context.SaveChanges();
 
-                await transaction.CommitAsync();
+                transaction.Commit();
 
                 return Ok(new
                 {
@@ -111,9 +109,9 @@ namespace CineLuxApi.Controllers
                     plan.BillingInterval,
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                await transaction.RollbackAsync();
+                transaction.Rollback();
                 return StatusCode(500, $"Payment could not be completed. Error: {ex.Message}");
             }
         }

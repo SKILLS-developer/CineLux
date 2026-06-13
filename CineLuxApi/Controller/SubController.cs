@@ -16,38 +16,38 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("add-plan")]
-        public async Task<IActionResult> Subscribe(SubscriptionPlan sub)
+        public IActionResult Subscribe(SubscriptionPlan sub)
         {
             sub.CreatedAt = DateTime.UtcNow;
-            await _context.SubscriptionPlan.AddAsync(sub);
-            await _context.SaveChangesAsync();
+            _context.SubscriptionPlan.Add(sub);
+            _context.SaveChanges();
 
             return Ok(sub);
         }
 
         [HttpGet("plans/{billingInterval}")]
-        public async Task<IActionResult> GetPlansByInterval(string billingInterval)
+        public IActionResult GetPlansByInterval(string billingInterval)
         {
-            var plans = await _context.SubscriptionPlan
+            var plans = _context.SubscriptionPlan
                 .Where(p => p.BillingInterval == billingInterval)
-                .ToListAsync();
+                .ToList();
             return Ok(plans);
         }
 
         [HttpGet("billing-intervals")]
-        public async Task<IActionResult> GetBillingIntervals()
+        public IActionResult GetBillingIntervals()
         {
-            var billingIntervals = await _context.SubscriptionPlan
+            var billingIntervals = _context.SubscriptionPlan
                 .Select(p => p.BillingInterval)
                 .Distinct()
-                .ToListAsync();
+                .ToList();
             return Ok(billingIntervals);
         }
 
         [HttpGet("plansDetails/{planCode}")]
-        public async Task<IActionResult> GetPlanByCode(string planCode)
+        public IActionResult GetPlanByCode(string planCode)
         {
-            var plan = await _context.SubscriptionPlan.FirstOrDefaultAsync(p => p.PlanCode == planCode);
+            var plan = _context.SubscriptionPlan.FirstOrDefault(p => p.PlanCode == planCode);
             if (plan == null)
             {
                 return NotFound();

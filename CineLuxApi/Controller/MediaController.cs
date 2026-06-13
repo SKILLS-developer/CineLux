@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using CineLuxApi.Data;
 using CineLuxApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace CineLuxApi.Controllers
 {
@@ -16,93 +16,94 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> AddMedia(MediaItem media)
+        public IActionResult AddMedia(MediaItem media)
         {
             media.CreatedAt = DateTime.UtcNow;
             media.UpdatedAt = DateTime.UtcNow;
 
-            await _context.MediaItems.AddAsync(media);
-            await _context.SaveChangesAsync();
+            _context.MediaItems.Add(media);
+            _context.SaveChanges();
 
             return Ok(media);
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllMedia()
+        public IActionResult GetAllMedia()
         {
-            var mediaItems = await _context.MediaItems
+            var mediaItems = _context.MediaItems
                 .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre, m.MediaType, m.IsFree })
-                .ToListAsync();
+                .ToList();
             return Ok(mediaItems);
         }
 
         [HttpGet("shows")]
-        public async Task<IActionResult> GetAllShows()
+        public IActionResult GetAllShows()
         {
-            var shows = await _context.MediaItems
+            var shows = _context.MediaItems
                 .Where(m => m.MediaType.Contains("series"))
                 .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre, m.MediaType })
-                .ToListAsync();
+                .ToList();
             return Ok(shows);
         }
 
         [HttpGet("upcoming")]
-        public async Task<IActionResult> GetUpcoming()
+        public IActionResult GetUpcoming()
         {
-            var upcoming = await _context.MediaItems
+            var upcoming = _context.MediaItems
                 .Where(m => string.IsNullOrEmpty(m.StreamUrl))
                 .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre })
-                .ToListAsync();
+                .ToList();
             return Ok(upcoming);
         }
 
         [HttpGet("latest-release")]
-        public async Task<IActionResult> GetLatestRelease()
+        public IActionResult GetLatestRelease()
         {
-            var lrelease = await _context.MediaItems.OrderByDescending(m => m.CreatedAt)
+            var lrelease = _context.MediaItems.OrderByDescending(m => m.CreatedAt)
                 .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre, m.IsFree })
                 .Take(5)
-                .ToListAsync();
+                .ToList();
             return Ok(lrelease);
         }
 
         [HttpGet("trending")]
-        public async Task<IActionResult> GetTrending()
+        public IActionResult GetTrending()
         {
-            var trending = await _context.MediaItems.OrderByDescending(m => m.AverageRating)
+            var trending = _context.MediaItems.OrderByDescending(m => m.AverageRating)
                 .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre, m.IsFree })
                 .Take(5)
-                .ToListAsync();
+                .ToList();
             return Ok(trending);
         }
 
         [HttpGet("search/{media?}")]
-        public async Task<IActionResult> SearchMedia(string? media)
+        public IActionResult SearchMedia(string? media)
         {
             if (string.IsNullOrEmpty(media))
             {
-                var all = await _context.MediaItems
+                var all = _context.MediaItems
                     .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre, m.MediaType, m.IsFree })
-                    .ToListAsync();
+                    .ToList();
                 return Ok(all);
             }
-            var results = await _context.MediaItems
+            var results = _context.MediaItems
                 .Where(m => m.Title.Contains(media) || (m.Genre != null && m.Genre.Contains(media)) || m.MediaType.Contains(media))
                 .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre, m.MediaType, m.IsFree })
-                .ToListAsync();
+                .ToList();
             if (results.Count == 0)
             {
                 return NotFound("No media items found matching the search criteria.");
             }
             return Ok(results);
         }
+
         [HttpGet("play/{id}")]
-        public async Task<IActionResult> GetMediaById(long id)
+        public IActionResult GetMediaById(long id)
         {
-            var mediaItem = await _context.MediaItems
+            var mediaItem = _context.MediaItems
                 .Where(m => m.MediaId == id)
                 .Select(m => new { m.MediaId, m.PosterUrl, m.Title, m.AverageRating, m.Genre, m.MediaType, m.IsFree, m.StreamUrl, m.Synopsis, m.ReleaseDate, m.RuntimeMinutes, m.TotalViews })
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (mediaItem == null)
             {
@@ -113,9 +114,9 @@ namespace CineLuxApi.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateMedia(long id, MediaItem updated)
+        public IActionResult UpdateMedia(long id, MediaItem updated)
         {
-            var media = await _context.MediaItems.FindAsync(id);
+            var media = _context.MediaItems.Find(id);
             if (media == null) return NotFound("Media item not found.");
 
             media.Title = updated.Title;
@@ -127,18 +128,18 @@ namespace CineLuxApi.Controllers
             media.RuntimeMinutes = updated.RuntimeMinutes;
             media.UpdatedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return Ok(media);
         }
 
         [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> DeleteMedia(long id)
+        public IActionResult DeleteMedia(long id)
         {
-            var media = await _context.MediaItems.FindAsync(id);
+            var media = _context.MediaItems.Find(id);
             if (media == null) return NotFound("Media item not found.");
 
             _context.MediaItems.Remove(media);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return NoContent();
         }
     }
